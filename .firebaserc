@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "easyacnival": {
+      "hosting": {
+        "app": [
+          "easyacnival"
+        ]
+      }
+    }
+  }
+}
