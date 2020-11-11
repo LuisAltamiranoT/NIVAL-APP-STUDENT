@@ -1,4 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input } from '@angular/core';
+
+import { FormControl, FormGroup } from '@angular/forms';
+import { ModalController } from '@ionic/angular';
+
+
 
 @Component({
   selector: 'app-register',
@@ -7,9 +12,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RegisterPage implements OnInit {
 
-  constructor() { }
+  registerForm = new FormGroup({
+    nombre: new FormControl(''),
+    apellido: new FormControl(''),
+    email: new FormControl(''),
+    password: new FormControl(''),
+    _password: new FormControl(''),
+  })
+
+  constructor(
+    public modalController:ModalController
+  ) { }
 
   ngOnInit() {
+  }
+  
+  dismiss(){
+    this.modalController.dismiss({
+      'dismissed': true
+    });
   }
 
 }

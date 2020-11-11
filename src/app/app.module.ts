@@ -10,9 +10,12 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
 import { AngularFireAuthModule} from '@angular/fire/auth';
-import {AngularFireModule } from '@angular/fire'
+import { AngularFireModule } from '@angular/fire'
 
 import { environment } from 'src/environments/environment'; 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,7 +25,8 @@ import { environment } from 'src/environments/environment';
     IonicModule.forRoot(), 
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    BrowserAnimationsModule
   ],
   providers: [
     StatusBar,

@@ -1,9 +1,36 @@
-<ion-header>
+<ion-header class="ion-no-border">
   <ion-toolbar>
-    <ion-title>login</ion-title>
+    <ion-title class="ion-text-center"></ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-
+<ion-content class="ion-padding">
+  <ion-grid>
+    <ion-row class="ion-justify-content-center">
+      <ion-img [src]="'../../assets/icon/logoNival.PNG'" id="logo"></ion-img>
+    </ion-row>
+    <ion-row  class="ion-margin-top">
+      <form [formGroup]="loginForm" class="input-modal">
+        <mat-form-field appearance="standard" class="input-modal">
+          <mat-label>Email</mat-label>
+          <input matInput [type]="'email'" spellcheck="false" formControlName="email">
+          <mat-icon matSuffix>email</mat-icon>
+      </mat-form-field>
+      <mat-form-field appearance="standard" class="input-modal">
+        <mat-label>Password</mat-label>
+        <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" spellcheck="false" autocomplete="off">
+        <a mat-icon-button matSuffix (click)="hide = !hide" [attr.arial-label]="'Hide password'"
+            [attr.arial-pressed]="hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </a>
+    </mat-form-field>
+      <ion-button color="secondary" expand="block"  class="ion-margin-top" size="small">Enviar</ion-button>
+      </form>
+    </ion-row>
+  </ion-grid>
 </ion-content>
