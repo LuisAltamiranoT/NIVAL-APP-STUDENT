@@ -22,7 +22,11 @@ const routes: Routes = [
   {
     path: 'admin',
     loadChildren: () => import('./admin/admin.module').then( m => m.AdminPageModule)
+  },  {
+    path: 'send-email-component',
+    loadChildren: () => import('./send-email-component/send-email-component.module').then( m => m.SendEmailComponentPageModule)
   },
+
 ];
 
 @NgModule({
