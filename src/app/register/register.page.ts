@@ -15,11 +15,12 @@ import { Router } from '@angular/router';
 })
 export class RegisterPage implements OnInit {
   validacionPass:boolean = false;
+  validacionEmail:boolean = false;
 
   registerForm = new FormGroup({
     nombre: new FormControl(''),
     apellido: new FormControl(''),
-    email: new FormControl('',[Validators.required, Validators.email]),
+    email: new FormControl('',[Validators.required, Validators.email,this.matchEmail()]),
     password: new FormControl('',[Validators.required, Validators.minLength(6)]),
     _password: new FormControl('', [Validators.required, Validators.minLength(6),this.match('password')]),
     codigoUnico: new FormControl('',[Validators.required, Validators.minLength(9)])
@@ -76,17 +77,38 @@ export class RegisterPage implements OnInit {
       if (control.parent) { // en las primeras llamadas control.parent es undefined
         const checkValue = control.parent.controls[controlKey].value;
         if (control.value !== checkValue) {
-          console.log('no son iguales');
+          //console.log('no son iguales');
           this.validacionPass=false;
           return {
             match: true
           };
         }
       }
-      console.log('iguales');
+      //console.log('iguales');
       this.validacionPass=true;
       return null;
     };
   }
+
+  matchEmail() {
+    return (control: AbstractControl): { [s: string]: boolean } => {
+      // control.parent es el FormGroup
+      if (control.parent) { // en las primeras llamadas control.parent es undefined
+        let dominio=control.value.split("@", 2);
+        //console.log(dominio[1],dominio.length);
+        if (dominio[1] !== 'epn.edu.ec') {
+          console.log(control.value,'no pertenece al dominio');
+          this.validacionEmail=false;
+          return {
+            match: true
+          };
+        }
+      }
+      //console.log('iguales');
+      this.validacionEmail=true;
+      return null;
+    };
+  }
+
 
 }
