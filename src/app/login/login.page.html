@@ -14,23 +14,31 @@
     <ion-row class="ion-justify-content-center">
       <ion-img [src]="'../../assets/icon/logoNival.PNG'" id="logo"></ion-img>
     </ion-row>
-    <ion-row  class="ion-margin-top">
-      <form [formGroup]="loginForm" class="input-modal">
+    <ion-row class="ion-margin-top">
+      <div *ngIf="validate else login">
+      </div>
+    </ion-row>
+    <ion-row>
+      <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
         <mat-form-field appearance="standard" class="input-modal">
           <mat-label>Email</mat-label>
-          <input matInput [type]="'email'" spellcheck="false" formControlName="email">
+          <input matInput [type]="'email'" placeholder="Ej: pepito.perez@epn.edu.ec" spellcheck="false" formControlName="email">
           <mat-icon matSuffix>email</mat-icon>
       </mat-form-field>
       <mat-form-field appearance="standard" class="input-modal">
         <mat-label>Password</mat-label>
-        <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" spellcheck="false" autocomplete="off">
-        <a mat-icon-button matSuffix (click)="hide = !hide" [attr.arial-label]="'Hide password'"
+        <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" spellcheck="false" autocomplete="off"  placeholder="**********">
+        <a class="aNival" mat-icon-button matSuffix (click)="hide = !hide" [attr.arial-label]="'Hide password'"
             [attr.arial-pressed]="hide">
             <mat-icon>{{hide ? 'visibility_off' : 'visibility' }}</mat-icon>
         </a>
     </mat-form-field>
-      <ion-button color="secondary" expand="block"  class="ion-margin-top" size="small">Enviar</ion-button>
+      <ion-button color="secondary" expand="block"  class="ion-margin-top" size="small" [disabled]="!loginForm.valid" type="submit">Enviar</ion-button>
       </form>
     </ion-row>
   </ion-grid>
 </ion-content>
+
+<ng-template  #login>
+  <ion-progress-bar type="indeterminate"></ion-progress-bar>
+</ng-template>

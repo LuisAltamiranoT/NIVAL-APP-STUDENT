@@ -15,11 +15,11 @@ import { Router } from '@angular/router';
 })
 export class RegisterPage implements OnInit {
   validacionPass:boolean = false;
-  validacionEmail:boolean = false;
+  //validacionEmail:boolean = false;
 
   registerForm = new FormGroup({
-    nombre: new FormControl(''),
-    apellido: new FormControl(''),
+    nombre: new FormControl('',[Validators.required, Validators.minLength(2)]),
+    apellido: new FormControl('',[Validators.required, Validators.minLength(2)]),
     email: new FormControl('',[Validators.required, Validators.email,this.matchEmail()]),
     password: new FormControl('',[Validators.required, Validators.minLength(6)]),
     _password: new FormControl('', [Validators.required, Validators.minLength(6),this.match('password')]),
@@ -97,15 +97,15 @@ export class RegisterPage implements OnInit {
         let dominio=control.value.split("@", 2);
         //console.log(dominio[1],dominio.length);
         if (dominio[1] !== 'epn.edu.ec') {
-          console.log(control.value,'no pertenece al dominio');
-          this.validacionEmail=false;
+          //console.log(control.value,'no pertenece al dominio');
+          //this.validacionEmail=false;
           return {
             match: true
           };
         }
       }
       //console.log('iguales');
-      this.validacionEmail=true;
+      //this.validacionEmail=true;
       return null;
     };
   }
