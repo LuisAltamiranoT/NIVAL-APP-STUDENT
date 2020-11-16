@@ -14,11 +14,14 @@ import { AngularFireModule } from '@angular/fire'
 
 import { environment } from 'src/environments/environment'; 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { FooterPage } from './footer/footer.page';
+import { NavbarPage } from './navbar/navbar.page';
+import { AuthService } from './service/auth.service';
+import { AuthGuard } from './shared/auth.guard';
 
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent,FooterPage,NavbarPage],
   entryComponents: [],
   imports: [
     BrowserModule, 
@@ -31,6 +34,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   providers: [
     StatusBar,
     SplashScreen,
+    AuthService,
+    AuthGuard,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

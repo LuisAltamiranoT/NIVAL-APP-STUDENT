@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './shared/auth.guard';
 
 const routes: Routes = [
   {
@@ -21,11 +22,18 @@ const routes: Routes = [
   },
   {
     path: 'admin',
-    loadChildren: () => import('./admin/admin.module').then( m => m.AdminPageModule)
-  },  {
+    loadChildren: () => import('./admin/admin.module').then( m => m.AdminPageModule),
+    canActivate:[AuthGuard]
+  },
+  {
     path: 'send-email-component',
     loadChildren: () => import('./send-email-component/send-email-component.module').then( m => m.SendEmailComponentPageModule)
   },
+  {
+    path: 'forgot-password',
+    loadChildren: () => import('./forgot-password/forgot-password.module').then( m => m.ForgotPasswordPageModule)
+  }
+
 
 ];
 
