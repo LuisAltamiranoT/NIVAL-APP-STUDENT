@@ -6,8 +6,6 @@ import { ModalController } from '@ionic/angular';
 import { AuthService } from '../service/auth.service';
 import { Router } from '@angular/router';
 
-
-
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
