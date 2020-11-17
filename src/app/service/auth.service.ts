@@ -10,7 +10,7 @@ import * as firebase from 'firebase/app';
 import {AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 
 import {Observable, of} from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { map, switchMap, take } from 'rxjs/operators';
 
 //import * as firebase from 'firebase/app';
 
@@ -34,7 +34,13 @@ export class AuthService extends RoleValidator {
       switchMap(user => {
         if (user) {
           this.dataUser = user.uid;
-          return this.afs.doc<User>(`users/${user.uid}`).valueChanges();
+          return this.afs.doc<User>(`users/${user.uid}`).valueChanges().pipe(
+            take(2),
+            map(actions =>{
+              console.log('datos',actions);
+              return actions;
+            })
+          )
         }
         return of(null);
       })
@@ -60,6 +66,8 @@ export class AuthService extends RoleValidator {
       this.showError(error);
     }
   }
+
+  async
 
   isEmailVerified(user:User): boolean{
     return user.emailVerified === true ? true : false;

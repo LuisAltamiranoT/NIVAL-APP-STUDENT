@@ -18,7 +18,7 @@
       <div *ngIf="validate else login">
       </div>
     </ion-row>
-    <ion-row>
+    <ion-row class="ion-justify-content-center">
       <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
         <mat-form-field appearance="standard" class="input-modal">
           <mat-label>Email</mat-label>
