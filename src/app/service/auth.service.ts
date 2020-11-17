@@ -19,7 +19,7 @@ import { switchMap } from 'rxjs/operators';
 })
 export class AuthService extends RoleValidator {
 
-  public user$: Observable<any>;
+  public user$: Observable<User>;
 
   private dataUser: any;
 
@@ -90,7 +90,7 @@ export class AuthService extends RoleValidator {
         email: user.email,
         emailVerified: user.emailVerified,
         codigoUnico:codigoUnico,
-        role: 'ADMIN'
+        role: 'EDITOR'
       };
 
       return await userRef.set(data, { merge: true });

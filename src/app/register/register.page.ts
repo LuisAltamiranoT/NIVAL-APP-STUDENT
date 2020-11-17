@@ -46,7 +46,7 @@ export class RegisterPage implements OnInit {
       const { email,password,nombre,apellido,codigoUnico } = this.registerForm.value;
       const user = await this.authService.register(email,password,nombre,apellido,codigoUnico);
       if(user){
-        const verifiedEmail=this.authService.isEmailVerified(user);
+        //const verifiedEmail=this.authService.isEmailVerified(user);
         this.dismiss();
         this.router.navigate(['/send-email-component']);
       }

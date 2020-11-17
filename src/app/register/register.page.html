@@ -15,7 +15,7 @@
       <ion-img [src]="'../../assets/icon/logoNival.PNG'" id="logoRegister"></ion-img>
     </ion-row>
     <ion-row class="ion-margin-top">
-      <form [formGroup]="registerForm" class="input-modal">
+      <form [formGroup]="registerForm" class="input-modal" (ngSubmit)="onRegister()">
 
         <mat-form-field appearance="standard" class="input-modal">
           <mat-label>Nombres</mat-label>
@@ -56,7 +56,7 @@
           <mat-hint *ngIf="!validacionPass" style="color: red;">Las contraseñas no coinciden</mat-hint>
         </mat-form-field>
 
-        <ion-button color="secondary" expand="block" class="ion-margin-top" size="small" [disabled]="!registerForm.valid">Enviar</ion-button>
+        <ion-button type="submit" color="secondary" expand="block" class="ion-margin-top" size="small" [disabled]="!registerForm.valid">Enviar</ion-button>
       </form>
     </ion-row>
   </ion-grid>

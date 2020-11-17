@@ -18,6 +18,7 @@ import { FooterPage } from './footer/footer.page';
 import { NavbarPage } from './navbar/navbar.page';
 import { AuthService } from './service/auth.service';
 import { AuthGuard } from './shared/auth.guard';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import { AuthGuard } from './shared/auth.guard';
     IonicModule.forRoot(), 
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFirestoreModule.enablePersistence(),
     AngularFireAuthModule,
     BrowserAnimationsModule
   ],

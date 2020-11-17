@@ -26,8 +26,8 @@ export class AuthGuard implements CanActivate {
          return true;
         }else{
           this.authService.logout();
+          this.authService.showError('Acceso denegado. No tiene permisos para usar el sistema');
           this.router.navigate(['/home']);
-          window.alert('Acceso denegado. No tiene permisos para usar el sistema');
           return false;
         }
       })
