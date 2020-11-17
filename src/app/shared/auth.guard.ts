@@ -33,14 +33,5 @@ export class AuthGuard implements CanActivate {
       })
     );
   }
-
-  dataUser() {
-    this.authService.getDataUser().subscribe((data) => {
-      this.role=data.role;
-      console.log(data);
-    });
-  }
-
-
   
 }
