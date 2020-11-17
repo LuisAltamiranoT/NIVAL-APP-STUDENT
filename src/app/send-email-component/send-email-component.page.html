@@ -1,9 +1,30 @@
-<ion-header>
+<ion-header class="ion-no-border">
   <ion-toolbar>
-    <ion-title>SendEmailComponent</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home"></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-
+<ion-content class="ion-padding">
+  <ion-grid>
+    <ion-row class="ion-justify-content-center">
+      <ion-img [src]="'../../assets/icon/logoNival.PNG'" id="logo"></ion-img>
+    </ion-row>
+    <ion-row class="ion-margin-top">
+      <div *ngIf="user$ | async as user; else loading">
+        <ion-text class="ion-text-center">
+          <h2>Gracias Por Registrarte</h2>
+        </ion-text>
+        <p class="ion-text-center">Se ha enviado un correo a. 
+          <ion-text color="primary">{{user?.email}}. </ion-text><br>
+         haz click en el enlace para verificarlo</p>
+        <ion-button color="secondary" expand="block" class="ion-margin-top" size="small" (click)="onSendEmail()">Reenviar verificación de correo</ion-button>
+      </div>
+    </ion-row>
+  </ion-grid>
 </ion-content>
+
+<ng-template #loading>
+  <ion-progress-bar type="indeterminate"></ion-progress-bar>
+</ng-template>

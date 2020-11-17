@@ -3,29 +3,37 @@ import { Injectable } from '@angular/core';
 import { ToastController } from '@ionic/angular';
 
 import { User } from 'src/app/shared/user.interface';
+import { RoleValidator } from 'src/app/helpers/rolValidator';
 
 import {AngularFireAuth} from '@angular/fire/auth';
-
+import * as firebase from 'firebase/app';
 import {AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 
 import {Observable, of} from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
+//import * as firebase from 'firebase/app';
+
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class AuthService extends RoleValidator {
 
   public user$: Observable<User>;
 
+  private dataUser: any;
+
   constructor(
-    private afAuth:AngularFireAuth,
+    public afAuth:AngularFireAuth,
     private afs:AngularFirestore,
     public toast:ToastController
   ) {
-    this.user$ = this.afAuth.authState.pipe(
-      switchMap((user) =>{
-        if(user){
+    super();
+     //es utilizado en el guard
+     this.user$ = this.afAuth.authState.pipe(
+      switchMap(user => {
+        if (user) {
+          this.dataUser = user.uid;
           return this.afs.doc<User>(`users/${user.uid}`).valueChanges();
         }
         return of(null);
@@ -33,16 +41,30 @@ export class AuthService {
     )
    }
 
+   public getDataUser() {
+    try {
+      let db = this.afs.doc<User>(`users/${this.dataUser}`).valueChanges();
+      return db;
+    } catch (error) {
+      this.showError(error);
+    }
+  }
 
   async login(email:string, password:string): Promise<User>{
     try{
+      await this.afAuth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
       const {user}= await this.afAuth.signInWithEmailAndPassword(email, password);
-      this.updateUserData(user);
+      await this.updateUserData(user);
       return user;
     }catch(error){
       this.showError(error);
     }
   }
+
+  isEmailVerified(user:User): boolean{
+    return user.emailVerified === true ? true : false;
+  }
+
 
   //registro estudiantte
   async register(email:string,password:string,nombre:string,apellido:string,codigoUnico:string): Promise<User>{

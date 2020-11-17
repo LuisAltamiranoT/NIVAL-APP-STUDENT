@@ -41,23 +41,29 @@ export class LoginPage implements OnInit {
       const { email, password } = this.loginForm.value;
       const user = await this.authService.login(email, password);
 
-      if(!user){
+      if(user){
+        const verifiedEmail = this.authService.isEmailVerified(user);
+        ///console.log(verifiedEmail); 
+        if (verifiedEmail) {
+          this.validate=true;
+          this.dismiss();
+          this.router.navigate(['/admin']);
+        }else{
+          this.validate=true;
+          this.dismiss();
+          this.router.navigate(['/send-email-component']);
+        }
+      }else{
         this.validate=true;
       }
-
-      if (user.emailVerified) {
-        this.router.navigate(['/admin']);
-        this.dismiss();
-        this.validate=true;
-      } else if (user) {
-        this.dismiss();
-        this.router.navigate(['/verification-email']);
-        this.validate=true;
-      }
-
     } catch (error) {
-
+      
     }
+  }
+
+  openReset(){
+    this.dismiss();
+    this.router.navigate(['/forgot-password']);
   }
 
   matchEmail() {
