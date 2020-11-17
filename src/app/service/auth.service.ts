@@ -10,7 +10,7 @@ import * as firebase from 'firebase/app';
 import {AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 
 import {Observable, of} from 'rxjs';
-import { map, switchMap, take } from 'rxjs/operators';
+import { first, map, switchMap, take } from 'rxjs/operators';
 
 //import * as firebase from 'firebase/app';
 
@@ -35,11 +35,7 @@ export class AuthService extends RoleValidator {
         if (user) {
           this.dataUser = user.uid;
           return this.afs.doc<User>(`users/${user.uid}`).valueChanges().pipe(
-            take(2),
-            map(actions =>{
-              console.log('datos',actions);
-              return actions;
-            })
+            first(data => data.role==='EDITOR'|| data.role==='ADMIN')
           )
         }
         return of(null);
