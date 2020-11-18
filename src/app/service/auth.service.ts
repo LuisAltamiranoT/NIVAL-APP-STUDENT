@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 //toast
 import { ToastController } from '@ionic/angular';
 
-import { User } from 'src/app/shared/user.interface';
+import { User,Curso } from 'src/app/shared/user.interface';
 import { RoleValidator } from 'src/app/helpers/rolValidator';
 
 import {AngularFireAuth} from '@angular/fire/auth';
@@ -43,9 +43,10 @@ export class AuthService extends RoleValidator {
     )
    }
 
+   //Obtener Datos
    public getDataUser() {
     try {
-      let db = this.afs.doc<User>(`users/${this.dataUser}`).valueChanges();
+      let db = this.afs.doc<User>(`users/${this.dataUser}`).snapshotChanges();
       return db;
     } catch (error) {
       this.showError(error);
@@ -151,6 +152,62 @@ export class AuthService extends RoleValidator {
     let color= 'danger';
     this.presentToast(mensaje,color);
   }
+
+   //toast Succes
+   async showSuccess(mensaje:string){
+    let color= 'success';
+    this.presentToast(mensaje,color);
+  }
+
+  showUpdatedata() {
+    this.showSuccess("Se ha actualizado su información");
+  }
+
+//informacion del profesor
+public getDataTeacher(idUser:any) {
+  try {
+    let db = this.afs.doc<User>(`users/${idUser}`).snapshotChanges();
+    return db;
+  } catch (error) {
+    this.showError(error);
+  }
+}
+
+//informacion del curso
+public getDataCursoId(idUser:any,id: any) {
+  try {
+    let db = this.afs.doc<Curso>(`users/${idUser}`).collection('cursos').doc(id).snapshotChanges();
+    return db;
+  } catch (error) {
+    this.showError(error);
+  }
+}
+
+//Obtener la materia con el id
+public getMateriaId(idUser:any,id: any) {
+  try {
+    let db = this.afs.doc<Curso>(`users/${idUser}`).collection('materias').doc(id).snapshotChanges();
+    return db;
+  } catch (error) {
+    this.showError(error);
+  }
+}
+
+//nombre
+public async updateName(valor: string) {
+  try {
+    const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${this.dataUser}`);
+    const data: User = {
+      nombre: valor
+    };
+    const dataUpdate = await userRef.set(data, { merge: true });
+    return { dataUpdate };
+
+  } catch (error) {
+    this.showError(error);
+  }
+}
+
 
   async presentToast(mensajeToast:string,colorToast:string) {
     const toast = await this.toast.create({

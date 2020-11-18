@@ -22,7 +22,10 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 
 @NgModule({
-  declarations: [AppComponent,FooterPage,NavbarPage],
+  declarations: [
+    AppComponent,
+    FooterPage,
+    NavbarPage],
   entryComponents: [],
   imports: [
     BrowserModule, 

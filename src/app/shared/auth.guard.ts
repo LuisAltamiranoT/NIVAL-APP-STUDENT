@@ -8,7 +8,6 @@ import { take, map, tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-  role:any;
 
   constructor(
     private authService:AuthService,
@@ -32,13 +31,6 @@ export class AuthGuard implements CanActivate {
         }
       })
     );
-
-    /*return this.authService.user$.pipe(
-      take(1),
-      map((user)=>{
-        console.log(user);return false
-      })
-    );*/
 
   }
   

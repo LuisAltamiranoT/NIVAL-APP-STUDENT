@@ -6,6 +6,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./admin.page.scss'],
 })
 export class AdminPage implements OnInit {
+  validate:boolean=true;
+  width=20;
+  imgProfesor= 'https://material.angular.io/assets/img/examples/shiba1.jpg';
+ 
 
   constructor() { }
 

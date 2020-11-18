@@ -1,4 +1,41 @@
+<ion-header>
+    <ion-toolbar>
+    </ion-toolbar>
+</ion-header>
 <ion-content>
-
+    <div *ngIf="validate else reeplace">
+        <ion-grid>
+            <ion-row class="ion-justify-content-center">
+                <ion-col col-12 col-sm-6 class="ion-align-self-center">
+                    <mat-card class="example-card">
+                        <mat-card-header>
+                            <div mat-card-avatar class="example-header-image" [ngStyle]="{'background-image':'url('+imgProfesor+')'}"></div>
+                            <mat-card-title>Filosofia-gr4</mat-card-title>
+                            <mat-card-subtitle>Anibal Smith</mat-card-subtitle>
+                        </mat-card-header>
+                        <img class="text-center" mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg"
+                            alt="Photo of a Shiba Inu">
+                        <mat-card-actions>
+                            <button mat-flat-button class="secondaryNival">Entrar</button>
+                        </mat-card-actions>
+                    </mat-card>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </div>
 </ion-content>
+<ion-footer>
+    <ion-toolbar>
+    </ion-toolbar>
+</ion-footer>
 
+<ng-template #reeplace>
+    <div id="containerEmpty">
+        <ion-grid>
+            <ion-row class="ion-justify-content-center">
+                <ion-img class="imageEmpty" [src]="'../../assets/icon/logoCompleto.PNG'" id="logo"></ion-img>
+                <ion-label color="dark" class="ion-margin-top imageEmpty">Sin registros</ion-label>
+            </ion-row>
+        </ion-grid>
+    </div>
+</ng-template>
