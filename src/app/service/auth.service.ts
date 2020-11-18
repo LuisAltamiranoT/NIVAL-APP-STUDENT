@@ -209,6 +209,37 @@ public async updateName(valor: string) {
 }
 
 
+  //apellido
+  public async updateLastName(valor: string) {
+    try {
+      const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${this.dataUser}`);
+      const data: User = {
+        apellido: valor
+      };
+      const dataUpdate = await userRef.set(data, { merge: true });
+      return { dataUpdate };
+
+    } catch (error) {
+      this.showError(error);
+    }
+  }
+
+    //codigoUnico
+    public async updateCodigoUnico(valor: string) {
+      try {
+        const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${this.dataUser}`);
+        const data: User = {
+          codigoUnico: valor
+        };
+        const dataUpdate = await userRef.set(data, { merge: true });
+        return { dataUpdate };
+  
+      } catch (error) {
+        this.showError(error);
+      }
+    }
+
+
   async presentToast(mensajeToast:string,colorToast:string) {
     const toast = await this.toast.create({
       color: colorToast,

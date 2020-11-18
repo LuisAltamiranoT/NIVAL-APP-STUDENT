@@ -54,7 +54,7 @@ export class NombrePage implements OnInit {
   }
   
   
-  dismiss() {
+  dimissModal() {
     this.dialogRef.close();
     this.mensaje='';
   }
@@ -85,7 +85,7 @@ export class NombrePage implements OnInit {
           return {
             match: true
           };
-        }else if (data[1]==="") {
+        }else if (data[1]==="" || data[1]===undefined) {
           this.mensaje='Debe ingresar dos nombres';
           return {
             match: true

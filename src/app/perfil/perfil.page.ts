@@ -3,6 +3,8 @@ import { Subscription } from 'rxjs';
 import { AuthService } from '../service/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { NombrePage } from './nombre/nombre.page';
+import { ApellidoPage } from './apellido/apellido.page';
+import { CodigoUnicoPage } from './codigo-unico/codigo-unico.page';
 
 @Component({
   selector: 'app-perfil',
@@ -47,6 +49,14 @@ export class PerfilPage implements OnInit {
 
   openNombreModal() {
     this.openMaterial1(NombrePage, this.nombre);
+  }
+
+  openApellidoModal() {
+    this.openMaterial1(ApellidoPage, this.apellido);
+  }
+
+  openCodigoUnicoModal(){
+    this.openMaterial1(CodigoUnicoPage, this.codigoUnico);
   }
 
 
