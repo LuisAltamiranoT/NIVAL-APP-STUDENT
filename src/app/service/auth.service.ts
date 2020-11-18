@@ -5,12 +5,12 @@ import { ToastController } from '@ionic/angular';
 import { User } from 'src/app/shared/user.interface';
 import { RoleValidator } from 'src/app/helpers/rolValidator';
 
-import {AngularFireAuth} from '@angular/fire/auth';
+import { AngularFireAuth } from '@angular/fire/auth';
 import * as firebase from 'firebase/app';
-import {AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 
-import {Observable, of} from 'rxjs';
-import { map, switchMap, take } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map, switchMap, first } from 'rxjs/operators';
 
 //import * as firebase from 'firebase/app';
 
@@ -24,30 +24,26 @@ export class AuthService extends RoleValidator {
   private dataUser: any;
 
   constructor(
-    public afAuth:AngularFireAuth,
-    private afs:AngularFirestore,
-    public toast:ToastController
+    public afAuth: AngularFireAuth,
+    private afs: AngularFirestore,
+    public toast: ToastController
   ) {
     super();
-     //es utilizado en el guard
-     this.user$ = this.afAuth.authState.pipe(
+    //es utilizado en el guard
+    this.user$ = this.afAuth.authState.pipe(
       switchMap(user => {
         if (user) {
           this.dataUser = user.uid;
           return this.afs.doc<User>(`users/${user.uid}`).valueChanges().pipe(
-            take(2),
-            map(actions =>{
-              console.log('datos',actions);
-              return actions;
-            })
+            first(data => data.role === 'EDITOR' || data.role === 'ADMIN')
           )
         }
         return of(null);
       })
     )
-   }
+  }
 
-   public getDataUser() {
+  public getDataUser() {
     try {
       let db = this.afs.doc<User>(`users/${this.dataUser}`).valueChanges();
       return db;
@@ -56,39 +52,39 @@ export class AuthService extends RoleValidator {
     }
   }
 
-  async login(email:string, password:string): Promise<User>{
-    try{
+  async login(email: string, password: string): Promise<User> {
+    try {
       await this.afAuth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-      const {user}= await this.afAuth.signInWithEmailAndPassword(email, password);
+      const { user } = await this.afAuth.signInWithEmailAndPassword(email, password);
       await this.updateUserData(user);
       return user;
-    }catch(error){
+    } catch (error) {
       this.showError(error);
     }
   }
 
   async
 
-  isEmailVerified(user:User): boolean{
+  isEmailVerified(user: User): boolean {
     return user.emailVerified === true ? true : false;
   }
 
 
   //registro estudiantte
-  async register(email:string,password:string,nombre:string,apellido:string,codigoUnico:string): Promise<User>{
-    try{
-      const {user}= await this.afAuth.createUserWithEmailAndPassword(email,password);
-      if(user){
-        await this.registerDataUser(user,nombre,apellido,codigoUnico);
+  async register(email: string, password: string, nombre: string, apellido: string, codigoUnico: string): Promise<User> {
+    try {
+      const { user } = await this.afAuth.createUserWithEmailAndPassword(email, password);
+      if (user) {
+        await this.registerDataUser(user, nombre, apellido, codigoUnico);
       }
       await this.sendVerificationEmail();
       return user;
-    }catch(error){
+    } catch (error) {
       this.showError(error);
     }
   }
 
-  private async registerDataUser(user: User, nombre: string, apellido: string, codigoUnico:string){
+  private async registerDataUser(user: User, nombre: string, apellido: string, codigoUnico: string) {
     try {
       const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${user.uid}`);
       const data: User = {
@@ -97,7 +93,7 @@ export class AuthService extends RoleValidator {
         apellido: apellido,
         email: user.email,
         emailVerified: user.emailVerified,
-        codigoUnico:codigoUnico,
+        codigoUnico: codigoUnico,
         role: 'EDITOR'
       };
 
@@ -108,55 +104,55 @@ export class AuthService extends RoleValidator {
     }
   }
 
-  async resetPassword(email:string): Promise<void>{
-    try{
+  async resetPassword(email: string): Promise<void> {
+    try {
       return this.afAuth.sendPasswordResetEmail(email);
-    }catch(error){
+    } catch (error) {
       this.showError(error);
     }
   }
 
-  async sendVerificationEmail(): Promise<void>{
-    try{
+  async sendVerificationEmail(): Promise<void> {
+    try {
       return (await this.afAuth.currentUser).sendEmailVerification();
-    }catch(error){
+    } catch (error) {
       this.showError(error);
     }
   }
 
   //sali de la apliccion
-  async logout(): Promise<void>{
-    try{
+  async logout(): Promise<void> {
+    try {
       await this.afAuth.signOut();
-    }catch(error){
+    } catch (error) {
       this.showError(error);
     }
   }
 
-  private updateUserData(user: User){
+  private updateUserData(user: User) {
     const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${user.uid}`);
     const data: User = {
-      uid:user.uid,
-      email:user.email,
-      emailVerified:user.emailVerified
+      uid: user.uid,
+      email: user.email,
+      emailVerified: user.emailVerified
     };
     //si existe que realixe merge
-    return userRef.set(data, {merge:true});
+    return userRef.set(data, { merge: true });
   }
 
   //toast Info
-  async showInfo(mensaje:string){
-    let color= 'secondary';
-    this.presentToast(mensaje,color);
+  async showInfo(mensaje: string) {
+    let color = 'secondary';
+    this.presentToast(mensaje, color);
   }
 
-   //toast Error
-   async showError(mensaje:string){
-    let color= 'danger';
-    this.presentToast(mensaje,color);
+  //toast Error
+  async showError(mensaje: string) {
+    let color = 'danger';
+    this.presentToast(mensaje, color);
   }
 
-  async presentToast(mensajeToast:string,colorToast:string) {
+  async presentToast(mensajeToast: string, colorToast: string) {
     const toast = await this.toast.create({
       color: colorToast,
       message: mensajeToast,

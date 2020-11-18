@@ -8,30 +8,30 @@ import { take, map, tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-  role:any;
+  role: any;
 
   constructor(
-    private authService:AuthService,
-    private router:Router
-    ){}
-    
+    private authService: AuthService,
+    private router: Router
+  ) { }
+
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return this.authService.user$.pipe(
-      take(1),
-      map((user)=> user && this.authService.isAdmin(user)),
-      tap(canEdit => {
-        if(canEdit){
-         return true;
-        }else{
-          this.authService.logout();
-          this.authService.showError('Acceso denegado. No tiene permisos para usar el sistema');
-          this.router.navigate(['/home']);
-          return false;
-        }
-      })
-    );
+      return this.authService.user$.pipe(
+        take(1),
+        map((user)=> user && this.authService.isAdmin(user)),
+        tap(canEdit => {
+          if(canEdit){
+           return true;
+          }else{
+            this.authService.logout();
+            this.authService.showError('Acceso denegado. No tiene permisos para usar el sistema');
+            this.router.navigate(['/home']);
+            return false;
+          }
+        })
+      );
   }
-  
+
 }
