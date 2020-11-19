@@ -43,14 +43,14 @@
         </mat-form-field>
 
         <mat-form-field hintLabel="Mínimo 6 Caracteres" appearance="standard" class="input-modal">
-          <mat-label>Password</mat-label>
+          <mat-label>Contraseña</mat-label>
           <input matInput #pass [type]="'password'" autocomplete="off" spellcheck="false" placeholder="**********" formControlName="password" required>
           <mat-icon matSuffix>lock</mat-icon>
           <mat-hint align="end">{{pass.value?.length || 0}}/6</mat-hint>
         </mat-form-field>
 
         <mat-form-field appearance="standard" class="input-modal">
-          <mat-label>Repetir Password</mat-label>
+          <mat-label>Repetir Contraseña</mat-label>
           <input matInput [type]="'password'" autocomplete="off" spellcheck="false" placeholder="**********" formControlName="_password" required>
           <mat-icon matSuffix>lock</mat-icon>
           <mat-hint *ngIf="!validacionPass" style="color: red;">Las contraseñas no coinciden</mat-hint>

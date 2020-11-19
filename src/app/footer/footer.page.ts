@@ -19,5 +19,8 @@ export class FooterPage implements OnInit {
     this.router.navigate(['/perfil']);
   }
 
+  onHorario(){
+    this.router.navigate(['/perfil']);
+  }
   
 }
