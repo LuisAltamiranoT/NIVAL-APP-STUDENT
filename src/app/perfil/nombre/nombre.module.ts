@@ -6,31 +6,29 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatIconModule} from '@angular/material/icon';
 
+//modal
+import {MatDialogModule} from '@angular/material/dialog';
 import {MatButtonModule} from '@angular/material/button';
-
-//card material
-import {MatCardModule} from '@angular/material/card';
 
 import { IonicModule } from '@ionic/angular';
 
-import { AdminPageRoutingModule } from './admin-routing.module';
+import { NombrePageRoutingModule } from './nombre-routing.module';
 
-import { AdminPage } from './admin.page';
+import { NombrePage } from './nombre.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    AdminPageRoutingModule,
+    NombrePageRoutingModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
-    //card
-    MatCardModule,
+    MatDialogModule,
     MatButtonModule
   ],
-  declarations: [AdminPage]
+  declarations: [NombrePage]
 })
-export class AdminPageModule {}
+export class NombrePageModule {}

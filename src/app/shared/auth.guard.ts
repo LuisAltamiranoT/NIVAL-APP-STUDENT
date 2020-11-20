@@ -8,6 +8,7 @@ import { take, map, tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
+
   role: any;
 
   constructor(

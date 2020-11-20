@@ -9,15 +9,15 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'admin',
     pathMatch: 'full'
   },
   {
-    path: 'login',
+    path: 'login_',
     loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
   },
   {
-    path: 'register',
+    path: 'register_',
     loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule)
   },
   {
@@ -27,12 +27,20 @@ const routes: Routes = [
   },
   {
     path: 'send-email-component',
-    loadChildren: () => import('./send-email-component/send-email-component.module').then( m => m.SendEmailComponentPageModule)
+    loadChildren: () => import('./send-email-component/send-email-component.module').then( m => m.SendEmailComponentPageModule),
+    canActivate:[AuthGuard]
   },
   {
     path: 'forgot-password',
-    loadChildren: () => import('./forgot-password/forgot-password.module').then( m => m.ForgotPasswordPageModule)
+    loadChildren: () => import('./forgot-password/forgot-password.module').then( m => m.ForgotPasswordPageModule),
+    canActivate:[AuthGuard]
+  },
+  {
+    path: 'perfil',
+    loadChildren: () => import('./perfil/perfil.module').then( m => m.PerfilPageModule),
+    canActivate:[AuthGuard]
   }
+
 
 
 ];

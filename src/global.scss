@@ -36,10 +36,6 @@
    object-position: 0px;
 }
 
-.borderNival{
-    border-color: red !important;
-}
-
 #logoRegister{
     height: 40px;
     padding: 0px;
@@ -86,7 +82,173 @@
     --ion-color-tint: var(--ion-color-white-tint);
   }
 
+  :root {
+    --ion-color-red: #d9534f;
+    --ion-color-red-rgb: 217,83,79;
+    --ion-color-red-contrast: #ffffff;
+    --ion-color-red-contrast-rgb: 255,255,255;
+    --ion-color-red-shade: #bf4946;
+    --ion-color-red-tint: #dd6461;
+  }
+  
+  .ion-color-red {
+    --ion-color-base: var(--ion-color-red);
+    --ion-color-base-rgb: var(--ion-color-red-rgb);
+    --ion-color-contrast: var(--ion-color-red-contrast);
+    --ion-color-contrast-rgb: var(--ion-color-red-contrast-rgb);
+    --ion-color-shade: var(--ion-color-red-shade);
+    --ion-color-tint: var(--ion-color-red-tint);
+  }
+
+  :root {
+    --ion-color-yellow: #f0ad4e;
+    --ion-color-yellow-rgb: 240,173,78;
+    --ion-color-yellow-contrast: #ffffff;
+    --ion-color-yellow-contrast-rgb: 255,255,255;
+    --ion-color-yellow-shade: #d39845;
+    --ion-color-yellow-tint: #f2b560;
+  }
+  
+  .ion-color-yellow {
+    --ion-color-base: var(--ion-color-yellow);
+    --ion-color-base-rgb: var(--ion-color-yellow-rgb);
+    --ion-color-contrast: var(--ion-color-yellow-contrast);
+    --ion-color-contrast-rgb: var(--ion-color-yellow-contrast-rgb);
+    --ion-color-shade: var(--ion-color-yellow-shade);
+    --ion-color-tint: var(--ion-color-yellow-tint);
+  }
+
+  :root {
+    --ion-color-blue: #0275d8;
+    --ion-color-blue-rgb: 2,117,216;
+    --ion-color-blue-contrast: #ffffff;
+    --ion-color-blue-contrast-rgb: 255,255,255;
+    --ion-color-blue-shade: #0267be;
+    --ion-color-blue-tint: #1b83dc;
+  }
+  
+  .ion-color-blue {
+    --ion-color-base: var(--ion-color-blue);
+    --ion-color-base-rgb: var(--ion-color-blue-rgb);
+    --ion-color-contrast: var(--ion-color-blue-contrast);
+    --ion-color-contrast-rgb: var(--ion-color-blue-contrast-rgb);
+    --ion-color-shade: var(--ion-color-blue-shade);
+    --ion-color-tint: var(--ion-color-blue-tint);
+  }
+
+  :root {
+    --ion-color-info: #5bc0de;
+    --ion-color-info-rgb: 91,192,222;
+    --ion-color-info-contrast: #ffffff;
+    --ion-color-info-contrast-rgb: 255,255,255;
+    --ion-color-info-shade: #50a9c3;
+    --ion-color-info-tint: #6bc6e1;
+  }
+  
+  .ion-color-info {
+    --ion-color-base: var(--ion-color-info);
+    --ion-color-base-rgb: var(--ion-color-info-rgb);
+    --ion-color-contrast: var(--ion-color-info-contrast);
+    --ion-color-contrast-rgb: var(--ion-color-info-contrast-rgb);
+    --ion-color-shade: var(--ion-color-info-shade);
+    --ion-color-tint: var(--ion-color-info-tint);
+  }
+
+
+
   .main-button{
     --box-shadow:none;
   }
   
+  .empty{
+    height: 100%;
+    vertical-align: middle;
+  }
+
+  #containerEmpty {
+    text-align: center;
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    top: 35%;
+    transform: translateY(-35%);
+  }
+
+  .imageEmpty{
+    opacity: 0.5;
+  }
+
+  .example-card {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .example-header-image {
+      background-size: cover;
+  }
+
+
+  //perfil
+  .bd-callout {
+    padding: 1rem;
+    margin-top: .25rem;
+    margin-bottom: .25rem;
+    border: 1px solid #eee;
+    border-left-width: .25rem;
+    border-radius: .25rem;
+}
+
+.bd-callout-info {
+    border-left-color: #5bc0de;
+}
+
+
+.bd-callout-default {
+    border-left-color: #333333;
+}
+
+h2{
+    margin-bottom: .15rem  !important;
+}
+
+h3{
+    margin-bottom: .4rem  !important;
+}
+
+h4{
+    margin-bottom: .15rem  !important;
+}
+
+p{
+    font-size: .85rem !important;
+    font-weight: bold;
+}
+
+#fontNival-p{
+    font: 200 16px/28px Roboto, "Helvetica Neue", sans-serif !important;
+}
+
+.fa-nival{
+    vertical-align: middle;
+}
+
+#font-p{
+    margin: 0.5px;
+    padding: 0px !important;
+}
+
+a{
+    cursor: pointer;
+}
+
+.fondo {
+    background-color: rgb(248, 249, 250);
+    padding-left: .2rem;
+}
+
+.avatarNival {     
+  width:100% !important;  
+  height : 100% !important;  
+  max-width: 140px !important;  //any size
+  max-height: 140px !important; //any size 
+}

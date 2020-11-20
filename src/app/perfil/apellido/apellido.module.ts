@@ -1,36 +1,34 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatIconModule} from '@angular/material/icon';
 
+//modal
+import {MatDialogModule} from '@angular/material/dialog';
 import {MatButtonModule} from '@angular/material/button';
 
-//card material
-import {MatCardModule} from '@angular/material/card';
 
 import { IonicModule } from '@ionic/angular';
 
-import { AdminPageRoutingModule } from './admin-routing.module';
+import { ApellidoPageRoutingModule } from './apellido-routing.module';
 
-import { AdminPage } from './admin.page';
+import { ApellidoPage } from './apellido.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    AdminPageRoutingModule,
+    ApellidoPageRoutingModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
-    //card
-    MatCardModule,
+    MatDialogModule,
     MatButtonModule
   ],
-  declarations: [AdminPage]
+  declarations: [ApellidoPage]
 })
-export class AdminPageModule {}
+export class ApellidoPageModule {}
