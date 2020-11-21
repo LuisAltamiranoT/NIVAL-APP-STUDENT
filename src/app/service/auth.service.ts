@@ -44,7 +44,19 @@ export class AuthService extends RoleValidator {
   }
 
 
-  public getDataUser() {
+
+  verifyConnection():boolean{
+    if (navigator.onLine) {
+      console.log('true');
+     return true;
+   } else {
+      console.log('true');
+     return false;
+   }
+ }
+
+   //Obtener Datos
+   public getDataUser() {
     try {
       let db = this.afs.doc<User>(`users/${this.dataUser}`).snapshotChanges();
       return db;
@@ -195,12 +207,16 @@ public getMateriaId(idUser:any,id: any) {
 
 //nombre
 public async updateName(valor: string) {
+  this.verifyConnection();
   try {
     const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${this.dataUser}`);
     const data: User = {
       nombre: valor
     };
     const dataUpdate = await userRef.set(data, { merge: true });
+    console.log('asdasdasjdkasbdhasjd'+dataUpdate);
+
+
     return { dataUpdate };
 
   } catch (error) {
@@ -238,6 +254,32 @@ public async updateName(valor: string) {
         this.showError(error);
       }
     }
+
+    
+  //password
+  public async updatePass(oldPass: string, newPass: string): Promise<Number> {
+    //estado cero no se logro, estado 1 se ha logrado 
+    const user = firebase.auth().currentUser;
+    let data: number;
+    try {
+      await this.reauthenticate(oldPass);
+      await user.updatePassword(newPass);
+      data = 1;
+      console.log(data + "se ha actualizado");
+      return data;
+    } catch (error) {
+      this.showError(error);
+      return data = 0;
+    }
+  }
+
+  private reauthenticate = (currentPassword) => {
+    var user = firebase.auth().currentUser;
+    var credential = firebase.auth.EmailAuthProvider.credential(
+      user.email, currentPassword
+    );
+    return user.reauthenticateWithCredential(credential);
+  }
 
 
   async presentToast(mensajeToast:string,colorToast:string) {

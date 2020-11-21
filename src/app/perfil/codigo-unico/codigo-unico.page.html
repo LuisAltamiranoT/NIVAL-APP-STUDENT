@@ -4,14 +4,17 @@
   </div>
   <mat-form-field hintLabel="Codigo único otorgado por la institución" appearance="standard" class="input-modal">
     <mat-label>Código Único</mat-label>
-    <input matInput #codigoU [type]="'text'" autocomplete="off" maxlength="9" placeholder="{{placeholder}}" spellcheck="false" formControlName="code" spellcheck="false" oninput="if(this.value.length > this.maxLength) this.value=this.value.slice(0,this.maxLength);" (keypress)="IngresarSoloNumeros($event)">
+    <input matInput #codigoU [type]="'text'" autocomplete="off" maxlength="9" placeholder="{{placeholder}}"
+      spellcheck="false" formControlName="code" spellcheck="false"
+      oninput="if(this.value.length > this.maxLength) this.value=this.value.slice(0,this.maxLength);"
+      (keypress)="IngresarSoloNumeros($event)">
     <mat-icon matSuffix>school</mat-icon>
     <mat-hint align="end">{{codigoU.value?.length || 0}}/9</mat-hint>
   </mat-form-field>
   <ion-grid>
     <ion-row>
       <ion-col col-12 col-sm-4>
-        <ion-button type="submit" expand="full" size="small" [disabled]="!form.valid" >
+        <ion-button type="submit" expand="full" size="small" [disabled]="!form.valid">
           <ion-icon name="send-sharp"></ion-icon>
         </ion-button>
       </ion-col>

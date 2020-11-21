@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { NombrePage } from './nombre/nombre.page';
 import { ApellidoPage } from './apellido/apellido.page';
 import { CodigoUnicoPage } from './codigo-unico/codigo-unico.page';
+import { PasswordPage } from './password/password.page';
 
 @Component({
   selector: 'app-perfil',
@@ -57,6 +58,10 @@ export class PerfilPage implements OnInit {
 
   openCodigoUnicoModal(){
     this.openMaterial1(CodigoUnicoPage, this.codigoUnico);
+  }
+
+  openPasswordModal() {
+    this.openMaterial1(PasswordPage, this.password);
   }
 
 
