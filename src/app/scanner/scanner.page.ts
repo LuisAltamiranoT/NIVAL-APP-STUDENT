@@ -12,6 +12,17 @@ import { computeStackId } from '@ionic/angular/directives/navigation/stack-utils
   styleUrls: ['./scanner.page.scss'],
 })
 export class ScannerPage implements OnInit {
+  image = "src/assets/profe.jpg";
+  perfil = "https://firebasestorage.googleapis.com/v0/b/easyacnival.appspot.com/o/imageCurso%2FwithoutUser.jpg?alt=media&token=61ba721c-b7c1-42eb-8712-829f4c465680";
+  nombre = "Prueba";
+  apellido = "Prueba";
+  codigoUnico = "";
+  correo = "";
+  password = "";
+  uidEstudiante: any;
+  //datos a almacenar 
+  datosAlmacenar: any;
+
 
   @ViewChild('video', { static: false }) video: ElementRef;
   @ViewChild('canvas', { static: false }) canvas: ElementRef;
@@ -40,6 +51,7 @@ export class ScannerPage implements OnInit {
 
   ngOnInit() {
     this.startScan();
+    this.dataUser();
   }
 
   ngAfterViewInit() {
@@ -57,22 +69,27 @@ export class ScannerPage implements OnInit {
     var cadena = CryptoJS.AES.decrypt(this.scanResult.trim(), informacion.trim()).toString(CryptoJS.enc.Utf8);
     let splitted = cadena.split("//");
     console.log('ver splitted', splitted, 'valor', splitted.length);
-    if(splitted.length === 4){
+    if (splitted.length === 5) {
       var idProfesor = splitted[0];
       var idMateria = splitted[1];
       var idCurso = splitted[2];
       var idNomina = splitted[3];
-      console.log('cadena', cadena);
-      console.log('datos profesor', idProfesor);
-      console.log('datos curso', idCurso);
-      console.log('datos materia', idMateria);
+      var codigoQr = splitted[4];
+
+      //console.log('cadena', cadena);
+      //console.log('datos profesor', idProfesor);
+      //console.log('datos curso', idCurso);
+      //console.log('datos materia', idMateria);
+      //console.log('datos materia', idMateria);
+
       this.getMateria(idProfesor, idMateria, idCurso);
+      this.getNomina(idProfesor, idMateria, idNomina, codigoQr)
     }
     else {
       this.authService.showError('Código QR desconocido. Vuelva a intentarlo');
-      this.startScan();
+      //this.startScan();
     }
-  
+
   }
 
   async startScan() {
@@ -161,39 +178,114 @@ export class ScannerPage implements OnInit {
   materias = [];
   image_curso: any;
   num_aula: any;
-  getMateria(id_profe, idMateria, idCurso) {
-    this.suscripcion1 = this.authService.getMateriaId(id_profe, idMateria).subscribe((data) => {
-      this.materias.length = 0;
-      let datos: any = data.payload.data();
-      console.log('datos', datos);
-      var name_profesor = datos.profesor;
-      var name_materia = datos.nombre;
-      var idprofesor = datos.uidProfesor;
-      var imagen = datos.photoUrl;
-      console.log('profesor ', name_profesor, 'materia ', name_materia, 'id_profesor ', idprofesor, 'imagen ', imagen)
-      datos.cursos.forEach((element: any) => {
-        console.log('elementos ', element.image, element.aula, element.uidNomina);
-        if (element.id === idCurso) {
-          console.log('entra al cusro', element.id);
-          this.image_curso = element.image;
-          this.num_aula = element.aula
-        }
-      })
-      var datosAlmacenar = {
-        profesor: name_profesor,
-        idProfesor: idprofesor,
-        photoProfesor: imagen,
-        materia: name_materia,
-        photoCurso: this.image_curso,
-        aula: this.num_aula
-      }
 
-      console.log('datos totales', datosAlmacenar);
-      this.registrarMateria(datosAlmacenar)
+  //primera parte comprueba el qr y realiza la actualizacion en la nomina
+  dataUser() {
+    this.suscripcion1 = this.authService.getDataUser().subscribe((data) => {
+      this.uidEstudiante = data.payload.id;
+      let dataUser: any = data.payload.data();
+      this.nombre = dataUser.nombre;
+      this.apellido = dataUser.apellido;
+      this.perfil = dataUser.photoUrl;
+      this.correo = dataUser.email;
+      this.codigoUnico = dataUser.codigoUnico;
+      console.log('este es el usuario', dataUser);
     });
   }
 
-  registrarMateria(data: any) {
-    const dat = this.authService.createMateria(data);
+  getMateria(id_profe: any, idMateria: any, idCurso: any) {
+    this.suscripcion1 = this.authService.getMateriaId(id_profe, idMateria).subscribe((data) => {
+      this.materias.length = 0;
+      let datos: any = data.payload.data();
+
+      datos.cursos.forEach((element: any) => {
+        if (element.id === idCurso) {
+          console.log('entra al cusro', element.id);
+          this.datosAlmacenar = {
+            profesor: datos.profesor,
+            idProfesor: datos.uidProfesor,
+            photoProfesor: datos.photoUrl,
+            materia: datos.nombre,
+            photoCurso: element.image,
+            aula: element.aula
+          }
+        }
+      })
+    });
   }
+
+  getNomina(idProfesor: any, idMateria: any, idNomina: any, codigoQr: any) {
+    this.suscripcion1 = this.authService.getDataNominaCursoId(idProfesor, idMateria, idNomina).subscribe((data) => {
+      let dataNomina: any = data.payload.data();
+      //console.log('extraeno',dataNomina);
+      if (codigoQr != dataNomina.code) {
+        this.authService.showError('Codigo Invalido');
+      } else {
+        var guardado = false
+        dataNomina.nomina.forEach(element => {
+          if (this.correo != element.correo) {
+            //this.authService.showInfo('Usten no esta registrado en la Materia'+this.datosAlmacenar.materia);
+          } else {
+            //valida si se encuntra registrado el estudiante en el sistema
+            guardado = true;
+            //validar si el estuiante no tieneasistencias
+            if (element.asistencia.length == 0 && dataNomina.numeroAlmacenado != 0) {
+              for (let i = 0; i < dataNomina.historial.length - 1; i++) {
+                let splitted = dataNomina.historial[i].split("//");
+                let dia = splitted[0];
+                let fecha = splitted[1];
+                element.asistencia.push({
+                  presente: false,
+                  atraso: false,
+                  falta: true,
+                  fecha: fecha,
+                  dia: dia,
+                  estado: false
+                })
+                console.log(dia, fecha, element);
+              }
+            }
+            
+            if (element.asistencia.length == dataNomina.numeroAlmacenado) {
+              let splittedUltimo = dataNomina.historial[dataNomina.historial.length - 1].split("//");
+              let diaUltimo = splittedUltimo[0];
+              let fechaUltimo = splittedUltimo[1];
+              if (dataNomina.estado == 'presente') {
+                element.asistencia.push({
+                  presente: true,
+                  atraso: false,
+                  falta: false,
+                  fecha: fechaUltimo,
+                  dia: diaUltimo,
+                  estado: true
+                })
+              }else if (dataNomina.estado == 'atraso') {
+                element.asistencia.push({
+                  presente: false,
+                  atraso: true,
+                  falta: false,
+                  fecha: fechaUltimo,
+                  dia: diaUltimo,
+                  estado: true
+                })
+              }
+            }
+            //actualizacion de tabla nomina con ls datos el estudiante
+            element.image = this.perfil;
+            element.uidUser = this.uidEstudiante;
+            element.nombre = this.nombre;
+            element.codigoUnico = this.codigoUnico;
+            //console.log('sip array de asistencia',element.asistencia.length);
+            this.authService.updateNominaEstudiante(idProfesor,idMateria,idNomina,dataNomina);
+            this.authService.createMateria(this.datosAlmacenar);
+          }
+        });
+        if (guardado) {
+        } else {
+          this.authService.showInfo('Usten no esta registrado en el curso ' + this.datosAlmacenar.materia + ' ' + this.datosAlmacenar.aula);
+        }
+      }
+    });
+  }
+
 }

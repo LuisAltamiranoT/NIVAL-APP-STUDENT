@@ -1,26 +1,97 @@
 <ion-header>
   <ion-toolbar>
+    <ion-title>horario</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div *ngFor="let curso1 of curso">
-    <div>
-      <p>
-        curso {{curso1.uidProfesor}}
-      </p>
-    </div>
-  </div>
 
-  <div *ngFor="let curso11 of materias">
-    <div>
-      materia {{curso11}}
-    </div>
-  </div>
-
-  zxcvzxvzxvzxc
 </ion-content>
+<ion-header>
+  <ion-toolbar>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12">
+        <h3 class="font-weight-normal">
+          <mat-icon class="fa-nival" matSuffix>today</mat-icon> Horario
+        </h3>
+      </ion-col>
+      <ion-col size="12">
+        <hr class="hr-nival">
+        <mat-form-field class="input-modal">
+          <mat-label>Buscar</mat-label>
+          <input matInput autocomplete="off" (keyup)="applyFilter($event)" placeholder="Ejemplo GR3 o Filosofía" #input>
+        </mat-form-field>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-12 col-sm-12>
+        <div class="example-container mat-elevation-z3">
+          <table mat-table [dataSource]="dataSource">
 
+            <!-- Position Column -->
+            <ng-container matColumnDef="hora" sticky>
+              <th mat-header-cell *matHeaderCellDef> Hora. </th>
+              <td mat-cell *matCellDef="let element"> {{element.hora}}
+              </td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="lunes">
+              <th mat-header-cell *matHeaderCellDef> Lunes </th>
+              <td class="px-1" mat-cell *matCellDef="let element, let l = index;">
+                <button mat-button [style.background-color]="element.LC" style="color: white;"
+                  (click)="openCurso(element.Lid)">{{element.lunes}}</button>
+              </td>
+            </ng-container>
+
+            <!-- Weight Column -->
+            <ng-container matColumnDef="martes">
+              <th mat-header-cell *matHeaderCellDef> Martes </th>
+              <td class="px-1" mat-cell *matCellDef="let element, let m = index;">
+                <button mat-button [style.background-color]="element.MC" style="color: white;"
+                  (click)="openCurso(element.Mid)">{{element.martes}}</button>
+              </td>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="miercoles">
+              <th mat-header-cell *matHeaderCellDef> Miercoles </th>
+              <td class="px-1" mat-cell *matCellDef="let element, let mi = index;">
+                <button mat-button [style.background-color]="element.MiC" style="color: white;"
+                  (click)="openCurso(element.Miid)">{{element.miercoles}}</button>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="jueves">
+              <th mat-header-cell *matHeaderCellDef> Jueves </th>
+              <td class="px-1" mat-cell *matCellDef="let element, let j = index;">
+                <button mat-button [style.background-color]="element.JC" style="color: white;"
+                  (click)="openCurso(element.Jid)">{{element.jueves}}</button>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="viernes">
+              <th mat-header-cell *matHeaderCellDef> viernes </th>
+              <td class="px-1" mat-cell *matCellDef="let element, let v = index;">
+                <button mat-button [style.background-color]="element.VC" style="color: white;"
+                  (click)="openCurso(element.Vid)">{{element.viernes}}</button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" colspan="5">No se ha encontrado: "{{input.value}}"</td>
+            </tr>
+          </table>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
 <ion-footer>
   <ion-toolbar>
   </ion-toolbar>

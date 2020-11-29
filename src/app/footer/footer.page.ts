@@ -20,7 +20,7 @@ export class FooterPage implements OnInit {
   }
 
   onHorario(){
-    this.router.navigate(['/horario']);
+    this.router.navigate(['/perfil']);
   }
   
 }

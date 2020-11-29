@@ -61,6 +61,13 @@ export class AdminPage implements OnInit {
         });
         console.log('datos_vista', this.materias)
       })
+
+      
+      if(this.materias.length !=0 ){
+      }else{
+        this.validate=false;
+      }
+
       this.materias.forEach((element: any) => {
         if (element.data.photoCurso === '') {
           element.data.photoCurso = '../../../assets/icon/clase.jpg';

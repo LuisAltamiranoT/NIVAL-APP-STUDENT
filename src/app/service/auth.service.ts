@@ -2,24 +2,15 @@ import { Injectable } from '@angular/core';
 //toast
 import { ToastController } from '@ionic/angular';
 
-<<<<<<< HEAD
-import { User, Curso, Materia } from 'src/app/shared/user.interface';
-=======
 import { User, Curso } from 'src/app/shared/user.interface';
->>>>>>> 4c81420057d342d5a6f031359bd6c710263b4316
 import { RoleValidator } from 'src/app/helpers/rolValidator';
 
 import { AngularFireAuth } from '@angular/fire/auth';
 import * as firebase from 'firebase/app';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 
-<<<<<<< HEAD
-import { Observable, of } from 'rxjs';
-import { first, map, mergeMap, switchMap, take } from 'rxjs/operators';
-=======
 import { Observable, of, Subject } from 'rxjs';
 import { first, map, switchMap, take } from 'rxjs/operators';
->>>>>>> 4c81420057d342d5a6f031359bd6c710263b4316
 
 //import * as firebase from 'firebase/app';
 
@@ -71,7 +62,7 @@ export class AuthService extends RoleValidator {
   //Obtener Datos
   public getDataUser() {
     try {
-      let db = this.afs.doc<User>(`users/2JGiKUIFzSSPuCB21xNmxCjs2N13`).snapshotChanges();
+      let db = this.afs.doc<User>(`users/${this.dataUser}`).snapshotChanges();
       return db;
     } catch (error) {
       this.showError(error);
@@ -99,11 +90,34 @@ export class AuthService extends RoleValidator {
     }
   }
 
-  async
 
   isEmailVerified(user: User): boolean {
     return user.emailVerified === true ? true : false;
   }
+
+  
+  //Obtener la nomina del curso
+  public getDataNominaCursoId(idProfesor:any, idMateria: any, idNomina: any) {
+    try {
+      let db = this.afs.doc<any>(`users/${idProfesor}`).collection('materias').doc(idMateria).collection('nomina').doc(idNomina).snapshotChanges();
+      return db;
+    } catch (error) {
+      this.showError(error);
+    }
+  }
+
+  
+   //actualizar estudiante en la nomina el profesor
+   public async updateNominaEstudiante(idProfesor:any, idMateria: any,idNomina: any, array: any): Promise<void>{
+    try {
+      let db = await this.afs.doc(`users/${idProfesor}`).collection('materias').doc(idMateria).collection('nomina').doc(idNomina).set(array, { merge: true });
+      this.showUpdatedata();
+      return db;
+    } catch (error) {
+      this.showError(error);
+    }
+  }
+
 
 
   //registro estudiantte
@@ -357,7 +371,7 @@ export class AuthService extends RoleValidator {
     const toast = await this.toast.create({
       color: colorToast,
       message: mensajeToast,
-      duration: 2000,
+      duration: 3000,
       position: 'top',
       cssClass: "toastClass",
       //showCloseButton: true
@@ -365,79 +379,4 @@ export class AuthService extends RoleValidator {
     toast.present();
   }
 
-    //Actuzalizar cursos
-    public async upadteCursoJson() {
-      try {
-        const datosActualizar = {
-          cursos: [
-            {
-              id: '1234',
-              aula: 'gr4',
-              photo: 'asdsad',
-              horario: [
-                {
-                  dia: 'lunes',
-                  posicion: 10
-                },
-                {
-                  dia: 'Martes',
-                  posicion: 10
-                }
-              ]
-            }
-          ]
-        }
-        const create = await this.afs.doc(`users/${this.dataUser}`).collection('materias');
-      
-        return create;
-      } catch (error) {
-        this.showError(error);
-      }
-    }
-
-  public async createMateriaJson() {
-    try {
-      const data = {
-        nombre: 'matematicas2',
-        cursos: [
-          {
-            id: '1234',
-            aula: 'gr4',
-            photo: 'asdsad',
-            horario: [
-              {
-                dia: 'lunes',
-                posicion: 10
-              },
-              {
-                dia: 'Martes',
-                posicion: 10
-              }
-            ]
-          }
-        ]
-      }
-      const create = await this.afs.doc(`users/${this.dataUser}`).collection('materias').add(data);
-      return create;
-    } catch (error) {
-      this.showError(error);
-    }
-  }
-
-  public getMaterias() {
-    try {
-      let db = this.afs.doc<Curso>(`users/${this.dataUser}`).collection('materias').snapshotChanges();
-      return db;
-    } catch (error) {
-      this.showError(error);
-    }
-  }
-  public getMateriaPrueba() {
-    try {
-      let db = this.afs.collectionGroup('materias', ref => ref.where('nombre', '==', 'mate')).snapshotChanges();
-      return db;
-    } catch (error) {
-      this.showError(error);
-    }
-  }
 }
