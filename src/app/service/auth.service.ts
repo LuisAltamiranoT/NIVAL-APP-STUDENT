@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 //toast
 import { ToastController } from '@ionic/angular';
 
-import { User,Curso } from 'src/app/shared/user.interface';
+import { User, Curso } from 'src/app/shared/user.interface';
 import { RoleValidator } from 'src/app/helpers/rolValidator';
 
 import { AngularFireAuth } from '@angular/fire/auth';
 import * as firebase from 'firebase/app';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 
-import {Observable, of} from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { first, map, switchMap, take } from 'rxjs/operators';
 
 //import * as firebase from 'firebase/app';
@@ -18,10 +18,14 @@ import { first, map, switchMap, take } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AuthService extends RoleValidator {
-
+  //observable y subject
+  private estadoImgenUpdate = new Subject<void>();
+  public finalizoImage$ = this.estadoImgenUpdate.asObservable();
+  
   public user$: Observable<User>;
 
   private dataUser: any;
+
 
   constructor(
     public afAuth: AngularFireAuth,
@@ -45,20 +49,30 @@ export class AuthService extends RoleValidator {
 
 
 
-  verifyConnection():boolean{
+  verifyConnection(): boolean {
     if (navigator.onLine) {
       console.log('true');
-     return true;
-   } else {
+      return true;
+    } else {
       console.log('true');
-     return false;
-   }
- }
+      return false;
+    }
+  }
 
-   //Obtener Datos
-   public getDataUser() {
+  //Obtener Datos
+  public getDataUser() {
     try {
       let db = this.afs.doc<User>(`users/${this.dataUser}`).snapshotChanges();
+      return db;
+    } catch (error) {
+      this.showError(error);
+    }
+  }
+
+  //Obtener Datos
+  public getDataProfesor(datos: any) {
+    try {
+      let db = this.afs.doc<User>(`users/${datos}`).snapshotChanges();
       return db;
     } catch (error) {
       this.showError(error);
@@ -153,6 +167,33 @@ export class AuthService extends RoleValidator {
     return userRef.set(data, { merge: true });
   }
 
+  //crear materia
+  public async createMateria(data: any) {
+    try {
+      const create = await this.afs.doc<any>(`users/${this.dataUser}`).collection('materiasEstudiante').add(data);
+      this.showRegisterQR();
+      return create;
+    } catch (error) {
+      this.showError(error);
+    }
+  }
+
+  //imagen
+  public async updatePhoto(valor: any) {
+    try {
+      const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${this.dataUser}`);
+      const data: User = {
+        photoUrl: valor
+      };
+      await userRef.set(data, { merge: true });
+      this.estadoImgenUpdate.next();
+
+    } catch (error) {
+      this.showError(error);
+    }
+  }
+
+
   //toast Info
   async showInfo(mensaje: string) {
     let color = 'secondary';
@@ -165,64 +206,76 @@ export class AuthService extends RoleValidator {
     this.presentToast(mensaje, color);
   }
 
-   //toast Succes
-   async showSuccess(mensaje:string){
-    let color= 'success';
-    this.presentToast(mensaje,color);
+  //toast Succes
+  async showSuccess(mensaje: string) {
+    let color = 'success';
+    this.presentToast(mensaje, color);
   }
 
   showUpdatedata() {
     this.showSuccess("Se ha actualizado su información");
   }
 
-//informacion del profesor
-public getDataTeacher(idUser:any) {
-  try {
-    let db = this.afs.doc<User>(`users/${idUser}`).snapshotChanges();
-    return db;
-  } catch (error) {
-    this.showError(error);
+  showRegisterQR() {
+    this.showSuccess("Usted se ha registrado en este curso");
   }
-}
 
-//informacion del curso
-public getDataCursoId(idUser:any,id: any) {
-  try {
-    let db = this.afs.doc<Curso>(`users/${idUser}`).collection('cursos').doc(id).snapshotChanges();
-    return db;
-  } catch (error) {
-    this.showError(error);
+  //informacion del profesor
+  public getDataTeacher(idUser: any) {
+    try {
+      let db = this.afs.doc<User>(`users/${idUser}`).snapshotChanges();
+      return db;
+    } catch (error) {
+      this.showError(error);
+    }
   }
-}
 
-//Obtener la materia con el id
-public getMateriaId(idUser:any,id: any) {
-  try {
-    let db = this.afs.doc<Curso>(`users/${idUser}`).collection('materias').doc(id).snapshotChanges();
-    return db;
-  } catch (error) {
-    this.showError(error);
+  //informacion del curso
+  public getDataCursoId(idUser: any, id: any) {
+    try {
+      let db = this.afs.doc<Curso>(`users/${idUser}`).collection('cursos').doc(id).snapshotChanges();
+      return db;
+    } catch (error) {
+      this.showError(error);
+    }
   }
-}
 
-//nombre
-public async updateName(valor: string) {
-  this.verifyConnection();
-  try {
-    const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${this.dataUser}`);
-    const data: User = {
-      nombre: valor
-    };
-    const dataUpdate = await userRef.set(data, { merge: true });
-    console.log('asdasdasjdkasbdhasjd'+dataUpdate);
-
-
-    return { dataUpdate };
-
-  } catch (error) {
-    this.showError(error);
+  //Obtener la materia con el id
+  /*  public getMateriaId(idUser: any, id: any) {
+      try {
+        let db = this.afs.doc<Curso>(`users/${idUser}`).collection('materias').doc(id).snapshotChanges();
+        return db;
+      } catch (error) {
+        this.showError(error);
+      }
+    }*/
+  public getMateriaId(idProfesor: any, id: any) {
+    try {
+      let db = this.afs.doc<Curso>(`users/${idProfesor}`).collection('materias').doc(id).snapshotChanges();
+      return db;
+    } catch (error) {
+      this.showError(error);
+    }
   }
-}
+
+  //nombre
+  public async updateName(valor: string) {
+    this.verifyConnection();
+    try {
+      const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${this.dataUser}`);
+      const data: User = {
+        nombre: valor
+      };
+      const dataUpdate = await userRef.set(data, { merge: true });
+      console.log('asdasdasjdkasbdhasjd' + dataUpdate);
+
+
+      return { dataUpdate };
+
+    } catch (error) {
+      this.showError(error);
+    }
+  }
 
 
   //apellido
@@ -240,22 +293,22 @@ public async updateName(valor: string) {
     }
   }
 
-    //codigoUnico
-    public async updateCodigoUnico(valor: string) {
-      try {
-        const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${this.dataUser}`);
-        const data: User = {
-          codigoUnico: valor
-        };
-        const dataUpdate = await userRef.set(data, { merge: true });
-        return { dataUpdate };
-  
-      } catch (error) {
-        this.showError(error);
-      }
-    }
+  //codigoUnico
+  public async updateCodigoUnico(valor: string) {
+    try {
+      const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${this.dataUser}`);
+      const data: User = {
+        codigoUnico: valor
+      };
+      const dataUpdate = await userRef.set(data, { merge: true });
+      return { dataUpdate };
 
-    
+    } catch (error) {
+      this.showError(error);
+    }
+  }
+
+
   //password
   public async updatePass(oldPass: string, newPass: string): Promise<Number> {
     //estado cero no se logro, estado 1 se ha logrado 
@@ -281,8 +334,17 @@ public async updateName(valor: string) {
     return user.reauthenticateWithCredential(credential);
   }
 
+  public getDataMateria() {
+    try {
+      let db = this.afs.doc<any>(`users/${this.dataUser}`).collection('materiasEstudiante').snapshotChanges();
+      return db;
+    } catch (error) {
+      this.showError(error);
+    }
+  }
 
-  async presentToast(mensajeToast:string,colorToast:string) {
+
+  async presentToast(mensajeToast: string, colorToast: string) {
     const toast = await this.toast.create({
       color: colorToast,
       message: mensajeToast,

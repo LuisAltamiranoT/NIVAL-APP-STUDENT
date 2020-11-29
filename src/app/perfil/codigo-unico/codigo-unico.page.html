@@ -8,22 +8,17 @@
       spellcheck="false" formControlName="code" spellcheck="false"
       oninput="if(this.value.length > this.maxLength) this.value=this.value.slice(0,this.maxLength);"
       (keypress)="IngresarSoloNumeros($event)">
-    <mat-icon matSuffix>school</mat-icon>
+      <mat-icon matSuffix (click)="eraser()">backspace</mat-icon>
     <mat-hint align="end">{{codigoU.value?.length || 0}}/9</mat-hint>
   </mat-form-field>
   <ion-grid>
     <ion-row>
-      <ion-col col-12 col-sm-4>
+      <ion-col col-12 col-sm-6>
         <ion-button type="submit" expand="full" size="small" [disabled]="!form.valid">
           <ion-icon name="send-sharp"></ion-icon>
         </ion-button>
       </ion-col>
-      <ion-col col-12 col-sm-4>
-        <ion-button (click)="eraser()" color="yellow" expand="full" size="small">
-          <ion-icon name="backspace-sharp"></ion-icon>
-        </ion-button>
-      </ion-col>
-      <ion-col col-12 col-sm-4>
+      <ion-col col-12 col-sm-6>
         <ion-button (click)=" dimissModal()" color="red" expand="full" size="small">
           <ion-icon name="close-sharp"></ion-icon>
         </ion-button>

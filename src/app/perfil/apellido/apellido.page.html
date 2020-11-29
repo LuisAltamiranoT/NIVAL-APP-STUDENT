@@ -4,23 +4,18 @@
   </div>
   <mat-form-field hintLabel='{{mensaje}}' appearance="standard" class="input-modal">
     <mat-label>Apellido</mat-label>
-    <input matInput [type]="'text'" placeholder="{{placeholder}}" spellcheck="false" formControlName="lastName" spellcheck="false"
-    autocomplete="off">
-    <mat-icon matSuffix>person</mat-icon>
+    <input matInput [type]="'text'" placeholder="{{placeholder}}" spellcheck="false" formControlName="lastName"
+      spellcheck="false" autocomplete="off" (keypress)="IngresarSoloLetras($event)">
+      <mat-icon matSuffix (click)="eraser()">backspace</mat-icon>
   </mat-form-field>
   <ion-grid>
     <ion-row>
-      <ion-col col-12 col-sm-4>
-        <ion-button type="submit" expand="full" size="small" [disabled]="!apellidoForm.valid" >
+      <ion-col col-12 col-sm-6>
+        <ion-button type="submit" expand="full" size="small" [disabled]="!apellidoForm.valid">
           <ion-icon name="send-sharp"></ion-icon>
         </ion-button>
       </ion-col>
-      <ion-col col-12 col-sm-4>
-        <ion-button (click)="eraser()" color="yellow" expand="full" size="small">
-          <ion-icon name="backspace-sharp"></ion-icon>
-        </ion-button>
-      </ion-col>
-      <ion-col col-12 col-sm-4>
+      <ion-col col-12 col-sm-6>
         <ion-button (click)=" dimissModal()" color="red" expand="full" size="small">
           <ion-icon name="close-sharp"></ion-icon>
         </ion-button>

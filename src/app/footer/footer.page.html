@@ -3,17 +3,17 @@
     <ion-grid>
       <ion-row>
         <ion-col>
-          <ion-button class="main-button" color="white" expand="full" (click)="click()">
+          <ion-button class="main-button" color="white" expand="full" [routerLink]="['/horario']">
             <ion-icon  name="calendar-outline"></ion-icon>
           </ion-button>
         </ion-col>
         <ion-col>
-          <ion-button class="main-button" color="white" fill="solid" expand="full">
+          <ion-button class="main-button" color="white" fill="solid" expand="full" [routerLink]="['/scanner']">
             <ion-icon name="scan-outline"></ion-icon>
           </ion-button>
         </ion-col>
         <ion-col>
-          <ion-button class="main-button" color="white" fill="solid" expand="full">
+          <ion-button class="main-button" color="white" fill="solid" expand="full" [routerLink]="['/admin']">
             <ion-icon name="library-outline"></ion-icon>
           </ion-button>
         </ion-col>

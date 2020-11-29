@@ -5,8 +5,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
-import { MatDialogModule } from '@angular/material/dialog';
 
+//modal
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 
 //card material
@@ -14,25 +15,24 @@ import { MatCardModule } from '@angular/material/card';
 
 import { IonicModule } from '@ionic/angular';
 
-import { AdminPageRoutingModule } from './admin-routing.module';
+import { ViewImagePageRoutingModule } from './view-image-routing.module';
 
-import { AdminPage } from './admin.page';
+import { ViewImagePage } from './view-image.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    AdminPageRoutingModule,
+    ViewImagePageRoutingModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
-    //card
-    MatCardModule,
+    MatDialogModule,
     MatButtonModule,
-    MatDialogModule
+    MatCardModule
   ],
-  declarations: [AdminPage]
+  declarations: [ViewImagePage]
 })
-export class AdminPageModule { }
+export class ViewImagePageModule { }

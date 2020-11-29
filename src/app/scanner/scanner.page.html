@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-row  class="aVideo">
+    <ion-col size="12">
+      <!-- Shows our camera stream -->
+      <video #video [hidden]="!scanActive" width="100%"></video>
+    </ion-col>
+    <!-- Used to render the camera stream images -->
+    <canvas #canvas hidden></canvas>
+  </ion-row>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+  </ion-toolbar>
+</ion-footer>

@@ -28,21 +28,37 @@ const routes: Routes = [
   {
     path: 'send-email-component',
     loadChildren: () => import('./send-email-component/send-email-component.module').then( m => m.SendEmailComponentPageModule),
-    canActivate:[AuthGuard]
   },
   {
     path: 'forgot-password',
     loadChildren: () => import('./forgot-password/forgot-password.module').then( m => m.ForgotPasswordPageModule),
-    canActivate:[AuthGuard]
   },
   {
     path: 'perfil',
     loadChildren: () => import('./perfil/perfil.module').then( m => m.PerfilPageModule),
     canActivate:[AuthGuard]
-  },  {
+  },
+  {
     path: 'horario',
     loadChildren: () => import('./horario/horario.module').then( m => m.HorarioPageModule)
+  },
+  {
+    path: 'scanner',
+    loadChildren: () => import('./scanner/scanner.module').then( m => m.ScannerPageModule)
+  },
+  {
+    path: 'profesor/:data',
+    loadChildren: () => import('./profesor/profesor.module').then( m => m.ProfesorPageModule)
+  },
+  {
+    path: 'view-image',
+    loadChildren: () => import('./view-image/view-image.module').then( m => m.ViewImagePageModule)
+  },
+  {
+    path: 'reporte',
+    loadChildren: () => import('./reporte/reporte.module').then( m => m.ReportePageModule)
   }
+
 
 
 

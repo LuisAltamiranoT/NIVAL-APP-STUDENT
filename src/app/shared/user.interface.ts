@@ -44,4 +44,4 @@ export interface Nomina{
 export interface NominaObligatoria{
     codigoUnico: any,
     nombre: any,
-}
+} 

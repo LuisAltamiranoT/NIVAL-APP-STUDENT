@@ -31,8 +31,9 @@
               "qrcode",
               "@firebase/component",
               "@firebase/util",
-              "xlsx"
-          ],
+              "xlsx",
+              "crypto-js"
+            ],
             "outputPath": "www",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -202,7 +203,8 @@
     }
   },
   "cli": {
-    "defaultCollection": "@ionic/angular-toolkit"
+    "defaultCollection": "@ionic/angular-toolkit",
+    "analytics": "f7871439-f8e0-4462-9de9-f24df4fa2283"
   },
   "schematics": {
     "@ionic/angular-toolkit:component": {
@@ -213,3 +215,5 @@
     }
   }
 }
+
+
