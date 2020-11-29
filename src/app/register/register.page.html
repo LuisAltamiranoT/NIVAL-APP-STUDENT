@@ -17,46 +17,55 @@
     <ion-row class="ion-margin-top ion-justify-content-center">
       <form [formGroup]="registerForm" class="input-modal" (ngSubmit)="onRegister()">
 
-        <mat-form-field appearance="standard" class="input-modal">
+        <mat-form-field appearance="standard" class="input-modal" hintLabel='{{mensaje_nombre}}'>
           <mat-label>Nombres</mat-label>
-          <input matInput [type]="'text'" autocomplete="off" placeholder="Ej: Pepito" spellcheck="false" formControlName="nombre" required>
+          <input matInput [type]="'text'" autocomplete="off" placeholder="Ej: Pepito" spellcheck="false"
+            formControlName="nombre" required (keypress)="IngresarSoloLetras($event)">
           <mat-icon matSuffix>person</mat-icon>
         </mat-form-field>
 
-        <mat-form-field appearance="standard" class="input-modal">
+        <mat-form-field appearance="standard" class="input-modal" hintLabel='{{mensaje_apellido}}'>
           <mat-label>Apellidos</mat-label>
-          <input matInput [type]="'text'" autocomplete="off" placeholder="Ej: Perez" spellcheck="false" formControlName="apellido" required>
+          <input matInput [type]="'text'" autocomplete="off" placeholder="Ej: Perez" spellcheck="false"
+            formControlName="apellido" required (keypress)="IngresarSoloLetras($event)">
           <mat-icon matSuffix>person</mat-icon>
         </mat-form-field>
 
         <mat-form-field hintLabel="Correo otorgado por la institución" appearance="standard" class="input-modal">
           <mat-label>Correo Electrónico</mat-label>
-          <input matInput [type]="'email'" autocomplete="off" spellcheck="false" placeholder="Ej: pepito.perez@epn.edu.ec" formControlName="email" required>
+          <input matInput [type]="'email'" autocomplete="off" spellcheck="false"
+            placeholder="Ej: pepito.perez@epn.edu.ec" formControlName="email" required>
           <mat-icon matSuffix>email</mat-icon>
         </mat-form-field>
 
         <mat-form-field hintLabel="Codigo único otorgado por la institución" appearance="standard" class="input-modal">
           <mat-label>Codigo Único</mat-label>
-          <input matInput #codigoU [type]="'text'" autocomplete="off" maxlength="9" placeholder="Ej: 200109780" formControlName="codigoUnico" oninput="if(this.value.length > this.maxLength) this.value=this.value.slice(0,this.maxLength);" (keypress)="IngresarSoloNumeros($event)" required>
+          <input matInput #codigoU [type]="'text'" autocomplete="off" maxlength="9" placeholder="Ej: 200109780"
+            formControlName="codigoUnico"
+            oninput="if(this.value.length > this.maxLength) this.value=this.value.slice(0,this.maxLength);"
+            (keypress)="IngresarSoloNumeros($event)" required>
           <mat-icon matSuffix>school</mat-icon>
           <mat-hint align="end">{{codigoU.value?.length || 0}}/9</mat-hint>
         </mat-form-field>
 
         <mat-form-field hintLabel="Mínimo 6 Caracteres" appearance="standard" class="input-modal">
           <mat-label>Contraseña</mat-label>
-          <input matInput #pass [type]="'password'" autocomplete="off" spellcheck="false" placeholder="**********" formControlName="password" required>
+          <input matInput #pass [type]="'password'" autocomplete="off" spellcheck="false" placeholder="**********"
+            formControlName="password" required>
           <mat-icon matSuffix>lock</mat-icon>
           <mat-hint align="end">{{pass.value?.length || 0}}/6</mat-hint>
         </mat-form-field>
 
         <mat-form-field appearance="standard" class="input-modal">
           <mat-label>Repetir Contraseña</mat-label>
-          <input matInput [type]="'password'" autocomplete="off" spellcheck="false" placeholder="**********" formControlName="_password" required>
+          <input matInput [type]="'password'" autocomplete="off" spellcheck="false" placeholder="**********"
+            formControlName="_password" required>
           <mat-icon matSuffix>lock</mat-icon>
           <mat-hint *ngIf="!validacionPass" style="color: red;">Las contraseñas no coinciden</mat-hint>
         </mat-form-field>
 
-        <ion-button type="submit" color="secondary" expand="block" class="ion-margin-top" size="small" [disabled]="!registerForm.valid">Enviar</ion-button>
+        <ion-button type="submit" color="secondary" expand="block" class="ion-margin-top" size="small"
+          [disabled]="!registerForm.valid">Enviar</ion-button>
       </form>
     </ion-row>
   </ion-grid>

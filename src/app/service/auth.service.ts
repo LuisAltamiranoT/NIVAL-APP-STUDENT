@@ -2,15 +2,24 @@ import { Injectable } from '@angular/core';
 //toast
 import { ToastController } from '@ionic/angular';
 
+<<<<<<< HEAD
 import { User, Curso, Materia } from 'src/app/shared/user.interface';
+=======
+import { User, Curso } from 'src/app/shared/user.interface';
+>>>>>>> 4c81420057d342d5a6f031359bd6c710263b4316
 import { RoleValidator } from 'src/app/helpers/rolValidator';
 
 import { AngularFireAuth } from '@angular/fire/auth';
 import * as firebase from 'firebase/app';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 
+<<<<<<< HEAD
 import { Observable, of } from 'rxjs';
 import { first, map, mergeMap, switchMap, take } from 'rxjs/operators';
+=======
+import { Observable, of, Subject } from 'rxjs';
+import { first, map, switchMap, take } from 'rxjs/operators';
+>>>>>>> 4c81420057d342d5a6f031359bd6c710263b4316
 
 //import * as firebase from 'firebase/app';
 
@@ -18,10 +27,14 @@ import { first, map, mergeMap, switchMap, take } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AuthService extends RoleValidator {
-
+  //observable y subject
+  private estadoImgenUpdate = new Subject<void>();
+  public finalizoImage$ = this.estadoImgenUpdate.asObservable();
+  
   public user$: Observable<User>;
 
   private dataUser: any;
+
 
   constructor(
     public afAuth: AngularFireAuth,
@@ -43,6 +56,8 @@ export class AuthService extends RoleValidator {
     )
   }
 
+
+
   verifyConnection(): boolean {
     if (navigator.onLine) {
       console.log('true');
@@ -57,6 +72,16 @@ export class AuthService extends RoleValidator {
   public getDataUser() {
     try {
       let db = this.afs.doc<User>(`users/2JGiKUIFzSSPuCB21xNmxCjs2N13`).snapshotChanges();
+      return db;
+    } catch (error) {
+      this.showError(error);
+    }
+  }
+
+  //Obtener Datos
+  public getDataProfesor(datos: any) {
+    try {
+      let db = this.afs.doc<User>(`users/${datos}`).snapshotChanges();
       return db;
     } catch (error) {
       this.showError(error);
@@ -105,8 +130,7 @@ export class AuthService extends RoleValidator {
         email: user.email,
         emailVerified: user.emailVerified,
         codigoUnico: codigoUnico,
-        role: 'EDITOR',
-        photoUrl:'https://firebasestorage.googleapis.com/v0/b/easyacnival.appspot.com/o/imageCurso%2FwithoutUser.jpg?alt=media&token=61ba721c-b7c1-42eb-8712-829f4c465680'
+        role: 'EDITOR'
       };
 
       return await userRef.set(data, { merge: true });
@@ -152,6 +176,33 @@ export class AuthService extends RoleValidator {
     return userRef.set(data, { merge: true });
   }
 
+  //crear materia
+  public async createMateria(data: any) {
+    try {
+      const create = await this.afs.doc<any>(`users/${this.dataUser}`).collection('materiasEstudiante').add(data);
+      this.showRegisterQR();
+      return create;
+    } catch (error) {
+      this.showError(error);
+    }
+  }
+
+  //imagen
+  public async updatePhoto(valor: any) {
+    try {
+      const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${this.dataUser}`);
+      const data: User = {
+        photoUrl: valor
+      };
+      await userRef.set(data, { merge: true });
+      this.estadoImgenUpdate.next();
+
+    } catch (error) {
+      this.showError(error);
+    }
+  }
+
+
   //toast Info
   async showInfo(mensaje: string) {
     let color = 'secondary';
@@ -174,18 +225,9 @@ export class AuthService extends RoleValidator {
     this.showSuccess("Se ha actualizado su información");
   }
 
-  async presentToast(mensajeToast: string, colorToast: string) {
-    const toast = await this.toast.create({
-      color: colorToast,
-      message: mensajeToast,
-      duration: 2000,
-      position: 'top',
-      cssClass: "toastClass",
-      //showCloseButton: true
-    });
-    toast.present();
+  showRegisterQR() {
+    this.showSuccess("Usted se ha registrado en este curso");
   }
-
 
   //informacion del profesor
   public getDataTeacher(idUser: any) {
@@ -200,7 +242,7 @@ export class AuthService extends RoleValidator {
   //informacion del curso
   public getDataCursoId(idUser: any, id: any) {
     try {
-      let db = this.afs.doc<Curso>(`users/${idUser}`).collection('cursos').doc(id);
+      let db = this.afs.doc<Curso>(`users/${idUser}`).collection('cursos').doc(id).snapshotChanges();
       return db;
     } catch (error) {
       this.showError(error);
@@ -208,9 +250,17 @@ export class AuthService extends RoleValidator {
   }
 
   //Obtener la materia con el id
-  public getMateriaId(idUser: any, id: any) {
+  /*  public getMateriaId(idUser: any, id: any) {
+      try {
+        let db = this.afs.doc<Curso>(`users/${idUser}`).collection('materias').doc(id).snapshotChanges();
+        return db;
+      } catch (error) {
+        this.showError(error);
+      }
+    }*/
+  public getMateriaId(idProfesor: any, id: any) {
     try {
-      let db = this.afs.doc<Curso>(`users/${idUser}`).collection('materias').doc(id).snapshotChanges();
+      let db = this.afs.doc<Curso>(`users/${idProfesor}`).collection('materias').doc(id).snapshotChanges();
       return db;
     } catch (error) {
       this.showError(error);
@@ -293,110 +343,26 @@ export class AuthService extends RoleValidator {
     return user.reauthenticateWithCredential(credential);
   }
 
-
-
-
-  // obtener materias segund su id
-  public getDataMateriaId(idMateria: any) {
+  public getDataMateria() {
     try {
-      let db = this.afs.doc<Materia>('users').collection('materias').doc(idMateria).snapshotChanges();
+      let db = this.afs.doc<any>(`users/${this.dataUser}`).collection('materiasEstudiante').snapshotChanges();
       return db;
     } catch (error) {
       this.showError(error);
     }
   }
 
-  public prueba() {
-    try {
-      let db = this.afs.collectionGroup('uidCurso')
-    } catch (error) {
-      this.showError(error);
-    }
-  }
 
-  //crear materia
-  public async createMateria() {
-    try {
-      const data = {
-        materias: [
-          {
-            nombre: 'Matematicas',
-            cursos: [
-              {
-                aula: 'gr4',
-                image: 'https://firebasestorage.googleapis.com/v0/b/easyacnival.appspot.com/o/imageCurso%2F1605848930650_m17_f2_FINAL.jpg?alt=media&token=ec445141-e9f3-463a-aaad-a3a3b8266db2',
-                horario: [
-                  {
-                    dia: 'lunes',
-                    posicion: '0',
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            nombre: 'Matematicas',
-            cursos: [
-              {
-                aula: 'gr4',
-                image: 'https://firebasestorage.googleapis.com/v0/b/easyacnival.appspot.com/o/imageCurso%2F1605848930650_m17_f2_FINAL.jpg?alt=media&token=ec445141-e9f3-463a-aaad-a3a3b8266db2',
-                horario: [
-                  {
-                    dia: 'lunes',
-                    posicion: '0',
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      }
-      const create = await this.afs.doc(`users/${this.dataUser}`).collection('materias').add(data);
-      return create;
-    } catch (error) {
-      this.showError(error);
-    }
-  }
-  //Actuzalizar cursos
-  public async upadteMateriaJson() {
-    try {
-      const datosActualizar = {
-        cursos: [
-          {
-            id: '1234',
-            aula: 'gr4',
-            photo: 'asdsad',
-            horario: [
-              {
-                dia: 'lunes',
-                posicion: 10
-              },
-              {
-                dia: 'Martes',
-                posicion: 10
-              }
-            ]
-          }
-        ]
-      }
-      const create = await this.afs.doc(`users/${this.dataUser}`).collection('materias');
-      create.snapshotChanges().pipe(map(a=>{
-        return  a.map(element => {
-          return element.payload.doc.id;
-        });
-      })).subscribe(
-        data=>{
-          data.forEach(element => {
-            console.log(element);
-            create.doc(element).set(datosActualizar,{merge:true});
-          });
-          console.log(data);
-        }
-      );
-      return create;
-    } catch (error) {
-      this.showError(error);
-    }
+  async presentToast(mensajeToast: string, colorToast: string) {
+    const toast = await this.toast.create({
+      color: colorToast,
+      message: mensajeToast,
+      duration: 2000,
+      position: 'top',
+      cssClass: "toastClass",
+      //showCloseButton: true
+    });
+    toast.present();
   }
 
     //Actuzalizar cursos

@@ -1,9 +1,39 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>foto</ion-title>
-  </ion-toolbar>
-</ion-header>
+<form [formGroup]="photoForm" (ngSubmit)="addFoto()">
+  <h2 mat-dialog-title class="pb-1">Foto Perfil:</h2>
+  <div *ngIf="validate else barra">
+  </div>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-12 col-sm-12 class="ion-text-center" style="display: flex; justify-content: center">
+        <ion-avatar class="avatarNival">
+          <img (click)="photoInput.click()" src="{{photoSelected}}" />
+        </ion-avatar>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-12 col-sm-12 class="ion-text-center" style="display: none; justify-content: center">
+        <input type="file" (change)="onPhotoSelected($event)" #photoInput formControlName="image">
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-12 col-sm-6>
+        <ion-button type="submit" expand="full" size="small" [disabled]="!photoForm.valid">
+          <ion-icon name="send-sharp"></ion-icon>
+        </ion-button>
+      </ion-col>
+      <ion-col col-12 col-sm-6>
+        <ion-button (click)="closeModal()" color="red" expand="full" size="small">
+          <ion-icon name="close-sharp"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</form>
 
-<ion-content>
-
-</ion-content>
+<ng-template #barra>
+  <ion-progress-bar type="indeterminate"></ion-progress-bar>
+</ng-template>

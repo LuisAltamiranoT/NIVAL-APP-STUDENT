@@ -6,8 +6,6 @@ import { ModalController } from '@ionic/angular';
 import { AuthService } from '../service/auth.service';
 import { Router } from '@angular/router';
 
-
-
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
@@ -18,13 +16,16 @@ export class RegisterPage implements OnInit {
   //validacionEmail:boolean = false;
 
   registerForm = new FormGroup({
-    nombre: new FormControl('',[Validators.required, Validators.minLength(2)]),
-    apellido: new FormControl('',[Validators.required, Validators.minLength(2)]),
+    nombre: new FormControl('', [Validators.required, Validators.minLength(2), this.match_nombre()]),
+    apellido: new FormControl('', [Validators.required, Validators.minLength(2), this.match_apellido()]),
     email: new FormControl('',[Validators.required, Validators.email,this.matchEmail()]),
     password: new FormControl('',[Validators.required, Validators.minLength(6)]),
     _password: new FormControl('', [Validators.required, Validators.minLength(6),this.match('password')]),
     codigoUnico: new FormControl('',[Validators.required, Validators.minLength(9)])
   })
+
+  mensaje_nombre = '';
+  mensaje_apellido = '';
 
   constructor(
     public modalController:ModalController,
@@ -111,5 +112,84 @@ export class RegisterPage implements OnInit {
     };
   }
 
+  IngresarSoloLetras(e) {
+    let key = e.keyCode || e.which;
+    let tecla = String.fromCharCode(key).toString();
+    //Se define todo el abecedario que se va a usar.
+    let letras = " áéíóúabcdefghijklmnñopqrstuvwxyzÁÉÍÓÚABCDEFGHIJKLMNÑOPQRSTUVWXYZ";
+    //Es la validación del KeyCodes, que teclas recibe el campo de texto.
+    let especiales = [8, 37, 39, 46, 6, 13];
+    let tecla_especial = false
+    for (var i in especiales) {
+      if (key == especiales[i]) {
+        tecla_especial = true;
+        break;
+      }
+    }
+    if (letras.indexOf(tecla) == -1 && !tecla_especial) {
+      this.authService.showInfo('No se admite el ingreso de números');
+      return false;
+    }
+  }
+
+  //validar dos nombres
+  match_nombre() {
+    return (control: AbstractControl): { [s: string]: boolean } => {
+      if (control.parent) {
+        let data = control.value.split(' ');
+        let long = data.length;
+        //console.log(data);
+        //console.log(long)
+        if (long > 2) {
+          this.mensaje_nombre = 'Solo puede ingresar dos nombres';
+          return {
+            match: true
+          };
+        } else if (data[0] === "") {
+          this.mensaje_nombre = 'No use espacios al inicio del primer nombre';
+          return {
+            match: true
+          };
+        } else if (data[1] === "" || data[1] === undefined) {
+          this.mensaje_nombre = 'Debe ingresar dos nombres';
+          return {
+            match: true
+          };
+        }
+      }
+      this.mensaje_nombre = '';
+      return null;
+    };
+  }
+
+  //validar dos nombres
+  match_apellido() {
+    return (control: AbstractControl): { [s: string]: boolean } => {
+      if (control.parent) {
+        let data = control.value.split(' ');
+        let long = data.length;
+        //console.log(data);
+        //console.log(long)
+        if (long > 2) {
+          this.mensaje_apellido = 'Solo puede ingresar dos apellidos';
+          return {
+            match: true
+          };
+        } else if (data[0] === "") {
+          this.mensaje_apellido = 'No use espacios al inicio del primer apellido';
+          return {
+            match: true
+          };
+        } else if (data[1] === "" || data[1] === undefined) {
+          this.mensaje_apellido = 'Debe ingresar dos apellidos';
+          return {
+            match: true
+          };
+        }
+      }
+      this.mensaje_apellido = '';
+      return null;
+    };
+  }
 
 }
