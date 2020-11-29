@@ -19,9 +19,9 @@ export class AdminPage implements OnInit {
   width = 20;
   imgProfesor = 'https://material.angular.io/assets/img/examples/shiba1.jpg';
 
-  //informacion de los cursos guardados en el sistema
+  // Información de los cursos guardados en el sistema
   public cursoVista = [];
-  //carga la informacion de la base de datos acerca de las materias
+  // Carga la información de la base de datos acerca de las materias
   public materias = [];
   //caraga la informacion del curso
   public curso = [];
