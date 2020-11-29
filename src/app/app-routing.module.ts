@@ -39,9 +39,11 @@ const routes: Routes = [
     path: 'perfil',
     loadChildren: () => import('./perfil/perfil.module').then( m => m.PerfilPageModule),
     canActivate:[AuthGuard]
-  },  {
+  },
+  {
     path: 'horario',
-    loadChildren: () => import('./horario/horario.module').then( m => m.HorarioPageModule)
+    loadChildren: () => import('./horario/horario.module').then( m => m.HorarioPageModule),
+    canActivate:[AuthGuard]
   }
 
 

@@ -1,9 +1,27 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>horario</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <div *ngFor="let curso1 of curso">
+    <div>
+      <p>
+        curso {{curso1.uidProfesor}}
+      </p>
+    </div>
+  </div>
 
+  <div *ngFor="let curso11 of materias">
+    <div>
+      materia {{curso11}}
+    </div>
+  </div>
+
+  zxcvzxvzxvzxc
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+  </ion-toolbar>
+</ion-footer>
