@@ -4,11 +4,12 @@
       <ion-row>
         <ion-col>
           <ion-button class="main-button" color="white" expand="full" [routerLink]="['/horario']">
-            <ion-icon  name="calendar-outline"></ion-icon>
+            <ion-icon name="calendar-outline"></ion-icon>
           </ion-button>
         </ion-col>
         <ion-col>
-          <ion-button class="main-button" color="white" fill="solid" expand="full" [routerLink]="['/scanner']">
+          <ion-button class="main-button" color="white" fill="solid" expand="full" [routerLink]="['/scanner']"
+            [disabled]="networkStatus && networkStatus.connected ? 'false':'true'">
             <ion-icon name="scan-outline"></ion-icon>
           </ion-button>
         </ion-col>
@@ -26,4 +27,3 @@
     </ion-grid>
   </ion-toolbar>
 </ion-footer>
-

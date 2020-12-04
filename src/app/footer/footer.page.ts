@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { Plugins, PluginListenerHandle, NetworkStatus } from '@capacitor/core';
+
+
+const { Network } = Plugins;
+
 @Component({
   selector: 'app-footer',
   templateUrl: './footer.page.html',
@@ -8,19 +13,32 @@ import { Router } from '@angular/router';
 })
 export class FooterPage implements OnInit {
 
+  networkStatus: NetworkStatus;
+  networkListener: PluginListenerHandle;
+
   constructor(
     private router: Router
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.networkListener = Network.addListener('networkStatusChange', status => {
+      console.log('network', status);
+      this.networkStatus = status;
+    });
+    this.networkStatus = await Network.getStatus();
+
   }
 
-  onPerfil(){
+  ngOnDestroy(): void{
+    this.networkListener.remove();
+  }
+
+  onPerfil() {
     this.router.navigate(['/perfil']);
   }
 
-  onHorario(){
+  onHorario() {
     this.router.navigate(['/perfil']);
   }
-  
+
 }
