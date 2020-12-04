@@ -10,15 +10,15 @@
                     <mat-card class="example-card">
                         <mat-card-header>
                             <div mat-card-avatar class="example-header-image"
-                                [ngStyle]="{'background-image':'url('+curso.data.photoProfesor+')'}"></div>
-                            <mat-card-title>{{curso.data.materia}} - {{curso.data.aula}} </mat-card-title>
+                                [ngStyle]="{'background-image':'url('+curso.photoProfesor+')'}"></div>
+                            <mat-card-title>{{curso.materia}} - {{curso.aula}} </mat-card-title>
                             <mat-card-subtitle>
-                                <a [routerLink]="['/profesor', curso.data.idProfesor]"
-                                    style="text-decoration: none;">{{curso.data.profesor}}</a>
+                                <a [routerLink]="['/profesor', curso.idProfesor]"
+                                    style="text-decoration: none;">{{curso.profesor}}</a>
                             </mat-card-subtitle>
                         </mat-card-header>
-                        <a (click)="openPhoto(curso.data.photoCurso)">
-                            <img class="text-center" mat-card-image [src]="curso.data.photoCurso" alt="Image Curso">
+                        <a (click)="openPhoto(curso.photoCurso)">
+                            <img class="text-center" mat-card-image [src]="curso.photoCurso" alt="Image Curso">
                         </a>
                         <ion-button expand="full" size="small" color="info">
                             <ion-icon name="send-sharp"></ion-icon>

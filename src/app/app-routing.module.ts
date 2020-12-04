@@ -55,7 +55,7 @@ const routes: Routes = [
     loadChildren: () => import('./view-image/view-image.module').then( m => m.ViewImagePageModule)
   },
   {
-    path: 'reporte',
+    path: 'reporte/:data',
     loadChildren: () => import('./reporte/reporte.module').then( m => m.ReportePageModule)
   }
 

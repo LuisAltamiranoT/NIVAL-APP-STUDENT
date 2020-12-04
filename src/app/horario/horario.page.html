@@ -1,14 +1,5 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>horario</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-
-</ion-content>
-<ion-header>
-  <ion-toolbar>
   </ion-toolbar>
 </ion-header>
 <ion-content>
@@ -24,6 +15,7 @@
         <mat-form-field class="input-modal">
           <mat-label>Buscar</mat-label>
           <input matInput autocomplete="off" (keyup)="applyFilter($event)" placeholder="Ejemplo GR3 o Filosofía" #input>
+          <mat-icon matSuffix (click)="limpiarBusqueda(input)">backspace</mat-icon>
         </mat-form-field>
       </ion-col>
     </ion-row>

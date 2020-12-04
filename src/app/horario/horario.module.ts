@@ -11,6 +11,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 
+
 import { IonicModule } from '@ionic/angular';
 
 import { HorarioPageRoutingModule } from './horario-routing.module';

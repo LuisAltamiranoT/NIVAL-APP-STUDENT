@@ -367,6 +367,18 @@ export class AuthService extends RoleValidator {
   }
 
 
+  public getDataMateriaId(idMateria:any) {
+    try {
+      let db = this.afs.doc<any>(`users/${this.dataUser}`).collection('materiasEstudiante').doc(idMateria).snapshotChanges();
+      return db;
+    } catch (error) {
+      this.showError(error);
+    }
+  }
+
+
+
+
   async presentToast(mensajeToast: string, colorToast: string) {
     const toast = await this.toast.create({
       color: colorToast,

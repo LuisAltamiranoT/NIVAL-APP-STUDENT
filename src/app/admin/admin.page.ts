@@ -1,9 +1,6 @@
-
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { element } from 'protractor';
-import { Subscription } from 'rxjs';
 
 import { AuthService } from 'src/app/service/auth.service';
 import { ViewImagePage } from '../view-image/view-image.page';
@@ -25,15 +22,8 @@ export class AdminPage implements OnInit {
   public materias = [];
   //caraga la informacion del curso
   public curso = [];
-  //carga horario guardado
-  public cursosGuardados = [];
-  //controla imagen de fondo
-  public stateImage: boolean = false;
   //colores para cada materia
   private color = ['DARKSLATEGRAY', 'CADETBLUE', 'CORAL', 'FIREBRICK', 'TEAL', 'INDIANRED', 'DARKSLATEBLUE', 'SEAGREEN', 'BROWN', 'LIGHTSLATEGRAY'];
-
-  //control de suscripciones
-  private suscripcion1: Subscription;
 
 
   constructor(
@@ -43,41 +33,61 @@ export class AdminPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getMateria();
+    this.getMateriaEstudiante();
   }
 
+ 
   click() {
     console.log('vale');
   }
 
-  getMateria() {
-    this.suscripcion1 = this.authService.getDataMateria().subscribe((data) => {
-      this.materias.length = 0;
-      console.log('datos', data)
-      data.forEach((dataMateria: any) => {
-        this.materias.push({
-          id: dataMateria.payload.doc.id,
-          data: dataMateria.payload.doc.data()
-        });
-        console.log('datos_vista', this.materias)
-      })
+  getMateriaEstudiante() {
+    this.authService.getDataMateria().subscribe(data => {
+      data.forEach(element => {
+        let idProfesor = element.payload.doc.data().idProfesor;
+        let idMateria = element.payload.doc.data().uidMateria;
+        let idCurso = element.payload.doc.data().idCurso;
+        this.authService.getMateriaId(idProfesor, idMateria).subscribe(dataMateria => {
+          let informacionCurso:any=dataMateria.payload.data();
+          let NombreMateria=informacionCurso.nombre;
+          let NombreProfesor=informacionCurso.profesor;
+          let PhotoProfesor:any='';
 
-      
-      if(this.materias.length !=0 ){
-      }else{
-        this.validate=false;
-      }
+          if (informacionCurso.photoUrl === '') {
+            PhotoProfesor = 'https://firebasestorage.googleapis.com/v0/b/easyacnival.appspot.com/o/imageCurso%2FwithoutUser.jpg?alt=media&token=61ba721c-b7c1-42eb-8712-829f4c465680';
+          }else{
+            PhotoProfesor=informacionCurso.photoUrl
+          }
 
-      this.materias.forEach((element: any) => {
-        if (element.data.photoCurso === '') {
-          element.data.photoCurso = '../../../assets/icon/clase.jpg';
-        }
-        if (element.data.photoProfesor === '') {
-          element.data.photoProfesor = 'https://firebasestorage.googleapis.com/v0/b/easyacnival.appspot.com/o/imageCurso%2FwithoutUser.jpg?alt=media&token=61ba721c-b7c1-42eb-8712-829f4c465680';
-        }
-      })
-    });
+          
+          console.log('busqueda',dataMateria.payload.data())
+          informacionCurso.cursos.forEach(element => {
+
+            let imageCursoSeleccionado:any='';
+            if (element.image === '') {
+              imageCursoSeleccionado = '../../../assets/icon/clase.jpg';
+            }else{
+              imageCursoSeleccionado = element.image
+            }
+
+            if(element.id!=idCurso){
+            }else{
+              this.materias.push({
+                aula:element.aula,
+                idProfesor:idProfesor,
+                materia:NombreMateria,
+                profesor:NombreProfesor,
+                photoCurso:imageCursoSeleccionado,
+                photoProfesor:PhotoProfesor
+              });
+            }
+          });
+          console.log(this.materias);
+        })
+      });
+    })
   }
+
 
   openPhoto(image: any) {
     if (image != '') {

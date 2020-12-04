@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
+import { Component, ViewChild, ElementRef, OnInit,OnDestroy } from '@angular/core';
 import { LoadingController, Platform } from '@ionic/angular';
 import jsQR from 'jsqr';
 import * as CryptoJS from 'crypto-js'
@@ -11,17 +11,33 @@ import { computeStackId } from '@ionic/angular/directives/navigation/stack-utils
   templateUrl: './scanner.page.html',
   styleUrls: ['./scanner.page.scss'],
 })
-export class ScannerPage implements OnInit {
+export class ScannerPage implements OnInit, OnDestroy {
   image = "src/assets/profe.jpg";
   perfil = "https://firebasestorage.googleapis.com/v0/b/easyacnival.appspot.com/o/imageCurso%2FwithoutUser.jpg?alt=media&token=61ba721c-b7c1-42eb-8712-829f4c465680";
-  nombre = "Prueba";
-  apellido = "Prueba";
+  nombre = "";
+  apellido = "";
   codigoUnico = "";
   correo = "";
   password = "";
-  uidEstudiante: any;
+  uidEstudiante: any='';
   //datos a almacenar 
-  datosAlmacenar: any;
+  datosAlmacenar: any='';
+
+  splitted: any[] = [];
+  materiasEstudiante: any[]=[];
+
+  idProfesor: any='';
+  idMateria: any='';
+  idCurso: any='';
+  idNomina: any='';
+  codigoQr: any='';
+
+
+  private suscripcion1: Subscription;
+  private suscripcion2: Subscription;
+  private suscripcion3: Subscription;
+  private suscripcion4: Subscription;
+
 
 
   @ViewChild('video', { static: false }) video: ElementRef;
@@ -34,7 +50,6 @@ export class ScannerPage implements OnInit {
   scanResult = null;
   loading: HTMLIonLoadingElement = null;
 
-  private suscripcion1: Subscription;
 
   constructor(
     private authService: AuthService,
@@ -52,12 +67,25 @@ export class ScannerPage implements OnInit {
   ngOnInit() {
     this.startScan();
     this.dataUser();
+    this.getMateriaEstudiante();
   }
 
   ngAfterViewInit() {
     this.canvasElement = this.canvas.nativeElement;
     this.canvasContext = this.canvasElement.getContext('2d');
     this.videoElement = this.video.nativeElement;
+  }
+
+  ngOnDestroy() {
+    if(this.suscripcion1){
+      this.suscripcion1.unsubscribe();
+    }
+    if(this.suscripcion2){
+      this.suscripcion2.unsubscribe();
+    }
+    if(this.suscripcion3){
+      this.suscripcion3.unsubscribe();
+    }
   }
 
   // Helper functions
@@ -67,14 +95,14 @@ export class ScannerPage implements OnInit {
     console.log('resultado', this.scanResult)
     //aqui leer el qr y registrar la asistencia
     var cadena = CryptoJS.AES.decrypt(this.scanResult.trim(), informacion.trim()).toString(CryptoJS.enc.Utf8);
-    let splitted = cadena.split("//");
-    console.log('ver splitted', splitted, 'valor', splitted.length);
-    if (splitted.length === 5) {
-      var idProfesor = splitted[0];
-      var idMateria = splitted[1];
-      var idCurso = splitted[2];
-      var idNomina = splitted[3];
-      var codigoQr = splitted[4];
+    this.splitted = cadena.split("//");
+    console.log('ver splitted', this.splitted, 'valor', this.splitted.length);
+    if (this.splitted.length === 5) {
+      this.idProfesor = this.splitted[0];
+      this.idMateria = this.splitted[1];
+      this.idCurso = this.splitted[2];
+      this.idNomina = this.splitted[3];
+      this.codigoQr = this.splitted[4];
 
       //console.log('cadena', cadena);
       //console.log('datos profesor', idProfesor);
@@ -82,8 +110,8 @@ export class ScannerPage implements OnInit {
       //console.log('datos materia', idMateria);
       //console.log('datos materia', idMateria);
 
-      this.getMateria(idProfesor, idMateria, idCurso);
-      this.getNomina(idProfesor, idMateria, idNomina, codigoQr)
+      this.getMateria(this.idProfesor, this.idMateria, this.idCurso);
+      this.getNomina(this.idProfesor, this.idMateria, this.idNomina, this.codigoQr)
     }
     else {
       this.authService.showError('Código QR desconocido. Vuelva a intentarlo');
@@ -91,7 +119,7 @@ export class ScannerPage implements OnInit {
     }
 
   }
-
+  
   async startScan() {
     // Not working on iOS standalone mode!
     const stream = await navigator.mediaDevices.getUserMedia({
@@ -194,7 +222,7 @@ export class ScannerPage implements OnInit {
   }
 
   getMateria(id_profe: any, idMateria: any, idCurso: any) {
-    this.suscripcion1 = this.authService.getMateriaId(id_profe, idMateria).subscribe((data) => {
+    this.suscripcion2 = this.authService.getMateriaId(id_profe, idMateria).subscribe((data) => {
       this.materias.length = 0;
       let datos: any = data.payload.data();
 
@@ -207,17 +235,30 @@ export class ScannerPage implements OnInit {
             photoProfesor: datos.photoUrl,
             materia: datos.nombre,
             photoCurso: element.image,
-            aula: element.aula
+            aula: element.aula,
+            idCurso: idCurso
           }
         }
       })
     });
   }
 
+  getMateriaEstudiante() {
+    this.suscripcion3 = this.authService.getDataMateria().subscribe(data => {
+      this.materiasEstudiante.length = 0;
+      data.forEach(dataEstuiante => {
+        this.materiasEstudiante.push(
+          dataEstuiante.payload.doc.data().idCurso
+        )
+      })
+    })
+  }
+
+
   getNomina(idProfesor: any, idMateria: any, idNomina: any, codigoQr: any) {
-    this.suscripcion1 = this.authService.getDataNominaCursoId(idProfesor, idMateria, idNomina).subscribe((data) => {
+    this.suscripcion4 = this.authService.getDataNominaCursoId(idProfesor, idMateria, idNomina).subscribe((data) => {
       let dataNomina: any = data.payload.data();
-      //console.log('extraeno',dataNomina);
+     // console.log('extraeno',dataNomina);
       if (codigoQr != dataNomina.code) {
         this.authService.showError('Codigo Invalido');
       } else {
@@ -245,8 +286,8 @@ export class ScannerPage implements OnInit {
                 console.log(dia, fecha, element);
               }
             }
-            
-            if (element.asistencia.length == dataNomina.numeroAlmacenado) {
+            console.log('estos son los valores', element.asistencia.length,Number(dataNomina.numeroAlmacenado));
+            if (element.asistencia.length == Number(dataNomina.numeroAlmacenado)) {
               let splittedUltimo = dataNomina.historial[dataNomina.historial.length - 1].split("//");
               let diaUltimo = splittedUltimo[0];
               let fechaUltimo = splittedUltimo[1];
@@ -259,7 +300,7 @@ export class ScannerPage implements OnInit {
                   dia: diaUltimo,
                   estado: true
                 })
-              }else if (dataNomina.estado == 'atraso') {
+              } else if (dataNomina.estado == 'atraso') {
                 element.asistencia.push({
                   presente: false,
                   atraso: true,
@@ -270,19 +311,48 @@ export class ScannerPage implements OnInit {
                 })
               }
             }
+            
+            if (element.asistencia.length == Number(dataNomina.numeroAlmacenado)+1) {
+              console.log('lllega a qui done quiero');
+              if (dataNomina.estado == 'presente') {
+                element.asistencia[Number(dataNomina.numeroAlmacenado)].presente=true;
+                element.asistencia[Number(dataNomina.numeroAlmacenado)].atraso=false;
+                element.asistencia[Number(dataNomina.numeroAlmacenado)].falta=false;
+              } else if (dataNomina.estado == 'atraso') {
+                element.asistencia[Number(dataNomina.numeroAlmacenado)].presente=false;
+                element.asistencia[Number(dataNomina.numeroAlmacenado)].atraso=true;
+                element.asistencia[Number(dataNomina.numeroAlmacenado)].falta=false;
+              }
+              console.log(element.asistencia[Number(dataNomina.numeroAlmacenado)].presente,dataNomina.estado);
+              console.log(element.asistencia[Number(dataNomina.numeroAlmacenado)]);
+            }
             //actualizacion de tabla nomina con ls datos el estudiante
             element.image = this.perfil;
             element.uidUser = this.uidEstudiante;
-            element.nombre = this.nombre;
+            element.nombre = this.nombre+' '+this.apellido;
             element.codigoUnico = this.codigoUnico;
             //console.log('sip array de asistencia',element.asistencia.length);
-            this.authService.updateNominaEstudiante(idProfesor,idMateria,idNomina,dataNomina);
-            this.authService.createMateria(this.datosAlmacenar);
+
+            
+            this.authService.updateNominaEstudiante(idProfesor, idMateria, idNomina, dataNomina);
+
+            console.log('lllega al guardado e materias');
+
+            
+            if(this.materiasEstudiante.includes(this.idCurso)){
+             
+            }else{
+              this.datosAlmacenar['uidMateria']=idMateria;
+              this.datosAlmacenar['uidNomina']=idNomina;
+              this.datosAlmacenar['correo']=this.correo;
+              this.authService.createMateria(this.datosAlmacenar);
+            }
+
           }
         });
         if (guardado) {
         } else {
-          this.authService.showInfo('Usten no esta registrado en el curso ' + this.datosAlmacenar.materia + ' ' + this.datosAlmacenar.aula);
+          this.authService.showInfo('Usted no esta registrado en el curso ' + this.datosAlmacenar.materia + ' ' + this.datosAlmacenar.aula);
         }
       }
     });
