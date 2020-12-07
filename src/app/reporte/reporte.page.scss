@@ -20,31 +20,21 @@
     padding-top: 1rem;
   }
   
-  td.mat-column-fila {
-    width: 10px;
+  td.mat-column-Fila {
+    width: 100rem;
+    text-align: left;
     padding-right: 8px;
   }
   
-  td.mat-column-codigoUnico {
-    width: 100px;
-    padding-right: 8px;
-  }
-  td.mat-column-nombre {
-    width:300px;
-    padding-right: 8px;
-  }
-  td.mat-column-presente {
-    width: 100px;
-    padding-right: 8px;
-  }
-  td.mat-column-atraso {
-    width: 100px;
-    padding-right: 8px;
-  }
-  td.mat-column-falta {
-    width: 100px;
-    padding-right: 8px;
-  }
+
+
+
+  .hr-nival{
+    margin-top: 0.4rem;
+    margin-bottom: 1rem;
+    border: 0;
+    border-top: 1px solid rgba(0,0,0,.1);
+}
   
   /*table th td{
       padding: .5rem;

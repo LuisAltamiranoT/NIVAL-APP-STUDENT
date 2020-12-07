@@ -2,6 +2,7 @@
   <ion-toolbar>
   </ion-toolbar>
 </ion-header>
+
 <ion-content>
   <ion-grid>
     <ion-row>
@@ -9,9 +10,9 @@
         <h3 class="font-weight-normal">
           <mat-icon class="fa-nival" matSuffix>today</mat-icon> Horario
         </h3>
+        <hr class="hr-nival">
       </ion-col>
       <ion-col size="12">
-        <hr class="hr-nival">
         <mat-form-field class="input-modal">
           <mat-label>Buscar</mat-label>
           <input matInput autocomplete="off" (keyup)="applyFilter($event)" placeholder="Ejemplo GR3 o Filosofía" #input>

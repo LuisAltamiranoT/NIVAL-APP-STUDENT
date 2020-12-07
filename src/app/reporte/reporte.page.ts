@@ -67,28 +67,40 @@ export class ReportePage implements OnInit {
           if (dataMateria.correo != correo) {
 
           } else {
-            obj = {
-              Numero: filas
-            }
+            this.ejemplo.push({
+              Fila:'Numero',
+              Detalle: ''+filas
+            })
             dataMateria.asistencia.forEach(element => {
               cont = cont + 1;
-
               if (element.presente === true) {
-                obj[cont + ') ' + element.fecha + ' ' + element.dia] = 'Presente';
+                obj['Fila']=cont + ') ' + element.fecha + ' ' + element.dia;
+                obj['Detalle'] = 'Presente';
                 porcentaje = porcentaje + 1;
               }
               if (element.atraso === true) {
-                obj[cont + ') ' + element.fecha + ' ' + element.dia] = 'Atraso';
+                obj['Fila']=cont + ') ' + element.fecha + ' ' + element.dia;
+                obj['Detalle'] = 'Atraso';
                 porcentaje = porcentaje + 0.5;
               }
               if (element.falta === true) {
-                obj[cont + ') ' + element.fecha + ' ' + element.dia] = 'Falta';
+                obj['Fila']=cont + ') ' + element.fecha + ' ' + element.dia;
+                obj['Detalle'] = 'Falta';
               }
+              this.ejemplo.push(obj);
+              obj = {};
+              console.log(this.ejemplo);
 
             });
-            obj['Porcentaje'] = ((porcentaje / cont) * 100).toFixed(0) + '%';
-            this.ejemplo.push(obj);
-            obj = {};
+            
+            this.ejemplo.push({
+              Fila:'Porcentaje',
+              Detalle: ((porcentaje / cont) * 100).toFixed(0) + '%'
+            })
+            //obj['Porcentaje'] = ((porcentaje / cont) * 100).toFixed(0) + '%';
+            //this.ejemplo.push(obj);
+            //obj = {};
+            
           }
 
         });
@@ -105,11 +117,13 @@ export class ReportePage implements OnInit {
     ////console.log(data);
     switch (data) {
       case 'Presente':
-        return '#21618C';
+        return '#3f51b5';
       case 'Atraso':
-        return '#BA4A00 ';
+        return '#E2B657';
       case 'Falta':
-        return '#2E4053';
+        return '#D94949';
+      default:
+        return '#808B96';
     }
   }
 

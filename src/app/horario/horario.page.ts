@@ -71,17 +71,33 @@ export class HorarioPage implements OnInit, OnDestroy {
 
 
   getMateriaEstudiante() {
-    this.authService.getDataMateria().subscribe(data => {
+    this.authService.getDataMateria().subscribe((data:any) => {
+
       data.forEach(element => {
         let idProfesor = element.payload.doc.data().idProfesor;
         let idMateria = element.payload.doc.data().uidMateria;
-        let IdMateriaEstudiante =element.payload.doc.id;
-        this.authService.getMateriaId(idProfesor, idMateria).subscribe(dataMateria => {
-          this.materias.push({
-            data: dataMateria.payload.data(),
-            id: IdMateriaEstudiante
+        let idCurso = element.payload.doc.data().idCurso;
+        let IdMateriaEstudiante = element.payload.doc.id;
+
+        this.authService.getMateriaId(idProfesor, idMateria).subscribe((dataMateria: any) => {
+          let nombreMateria = dataMateria.payload.data().nombre;
+          //console.log('informacion buscaa', dataMateria.payload.data().nombre);
+          dataMateria.payload.data().cursos.forEach(elementCursos => {
+            //console.log('esta validando si es',elementCursos.id, idCurso)
+            if (elementCursos.id != idCurso) {
+              //console.log('no llega a ejecutarse');
+            } else {
+              //console.log('llega a ejecutarse');
+              //console.log(elementCursos)
+              this.materias.push({
+                data: elementCursos,
+                nombre: nombreMateria,
+                id: IdMateriaEstudiante
+              });
+              //console.log(this.materias);
+            }
           });
-          console.log(this.materias);
+          //console.log(this.materias);
           this.replaceHorario();
         })
       });
@@ -90,53 +106,48 @@ export class HorarioPage implements OnInit, OnDestroy {
 
 
   replaceHorario() {
-    console.log('no esta llegando');
-    this.ValidateData = false;
-    let cont = 0;
-    this.materias.forEach(element => {
-      console.log(element)
-      element.data.cursos.forEach(elementCurso => {
-        //console.log('id materias'+element.id);
-        if ([elementCurso].length != 0) {
-          if (cont < this.color.length - 1) {
-            cont = cont + 1
-          } else {
-            cont = 0;
-          }
-          elementCurso.horario.forEach(elementHorario => {
-            let idCurso = element.id;
-            //console.log('uid nomina',elementCurso.uidNomina);
-            this.horarioVista[elementHorario.posicion][elementHorario.dia] = element.data.nombre + ' - ' + elementCurso.aula;
-            if (elementHorario.dia === 'lunes') {
-              this.horarioVista[elementHorario.posicion]['LC'] = this.color[cont];
-              this.horarioVista[elementHorario.posicion]['Lid'] = idCurso;
-            }
-            if (elementHorario.dia === 'martes') {
-              this.horarioVista[elementHorario.posicion]['MC'] = this.color[cont];
-              this.horarioVista[elementHorario.posicion]['Mid'] = idCurso;
-            }
-            if (elementHorario.dia === 'miercoles') {
-              this.horarioVista[elementHorario.posicion]['MiC'] = this.color[cont];
-              this.horarioVista[elementHorario.posicion]['Miid'] = idCurso;
-            }
-            if (elementHorario.dia === 'jueves') {
-              this.horarioVista[elementHorario.posicion]['JC'] = this.color[cont];
-              this.horarioVista[elementHorario.posicion]['Jid'] = idCurso;
-            }
-            if (elementHorario.dia === 'viernes') {
-              this.horarioVista[elementHorario.posicion]['VC'] = this.color[cont];
-              this.horarioVista[elementHorario.posicion]['Vid'] = idCurso;
-            }
-
-          });
-        }
-      });
-    });
-    console.log(this.horarioVista);
+    //console.log('no esta llegando');
     if (this.materias.length != 0) {
+      this.ValidateData = false;
+      let cont = 0;
+      this.materias.forEach(element => {
+        //console.log('datos a imprimir', element.data)
+        if (cont < this.color.length - 1) {
+          cont = cont + 1
+        } else {
+          cont = 0;
+        }
+        element.data.horario.forEach(elementHorario => {
+          //console.log('este es el horario', elementHorario)
+          let idCurso = element.id;
+          //console.log('uid nomina',elementCurso.uidNomina);
+          this.horarioVista[elementHorario.posicion][elementHorario.dia] = element.nombre + ' - ' + element.data.aula;
+          if (elementHorario.dia === 'lunes') {
+            this.horarioVista[elementHorario.posicion]['LC'] = this.color[cont];
+            this.horarioVista[elementHorario.posicion]['Lid'] = idCurso;
+          }
+          if (elementHorario.dia === 'martes') {
+            this.horarioVista[elementHorario.posicion]['MC'] = this.color[cont];
+            this.horarioVista[elementHorario.posicion]['Mid'] = idCurso;
+          }
+          if (elementHorario.dia === 'miercoles') {
+            this.horarioVista[elementHorario.posicion]['MiC'] = this.color[cont];
+            this.horarioVista[elementHorario.posicion]['Miid'] = idCurso;
+          }
+          if (elementHorario.dia === 'jueves') {
+            this.horarioVista[elementHorario.posicion]['JC'] = this.color[cont];
+            this.horarioVista[elementHorario.posicion]['Jid'] = idCurso;
+          }
+          if (elementHorario.dia === 'viernes') {
+            this.horarioVista[elementHorario.posicion]['VC'] = this.color[cont];
+            this.horarioVista[elementHorario.posicion]['Vid'] = idCurso;
+          }
+        });
+      });
     } else {
-      this.ValidateData = true;
+
     }
+    //console.log(this.horarioVista);
   }
 
   applyFilter(event: Event) {
@@ -147,7 +158,7 @@ export class HorarioPage implements OnInit, OnDestroy {
 
   openCurso(id: any) {
     //this.router.navigate(['vista-curso', id]);
-    this.router.navigate(['reporte',id]);
+    this.router.navigate(['reporte', id]);
   }
 
   limpiarBusqueda(input) {

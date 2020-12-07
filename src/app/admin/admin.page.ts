@@ -49,6 +49,8 @@ export class AdminPage implements OnInit {
         let idCurso = element.payload.doc.data().idCurso;
         this.authService.getMateriaId(idProfesor, idMateria).subscribe(dataMateria => {
           let informacionCurso:any=dataMateria.payload.data();
+          console.log('busca materias',informacionCurso,idCurso);
+
           let NombreMateria=informacionCurso.nombre;
           let NombreProfesor=informacionCurso.profesor;
           let PhotoProfesor:any='';
@@ -58,9 +60,8 @@ export class AdminPage implements OnInit {
           }else{
             PhotoProfesor=informacionCurso.photoUrl
           }
-
           
-          console.log('busqueda',dataMateria.payload.data())
+          //console.log('busqueda',dataMateria.payload.data())
           informacionCurso.cursos.forEach(element => {
 
             let imageCursoSeleccionado:any='';

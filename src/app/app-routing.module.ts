@@ -14,11 +14,13 @@ const routes: Routes = [
   },
   {
     path: 'login_',
-    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
+    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule),
+    canActivate:[AuthGuard]
   },
   {
     path: 'register_',
-    loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule)
+    loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule),
+    canActivate:[AuthGuard]
   },
   {
     path: 'admin',
@@ -28,10 +30,12 @@ const routes: Routes = [
   {
     path: 'send-email-component',
     loadChildren: () => import('./send-email-component/send-email-component.module').then( m => m.SendEmailComponentPageModule),
+    canActivate:[AuthGuard]
   },
   {
     path: 'forgot-password',
     loadChildren: () => import('./forgot-password/forgot-password.module').then( m => m.ForgotPasswordPageModule),
+    canActivate:[AuthGuard]
   },
   {
     path: 'perfil',
@@ -40,28 +44,29 @@ const routes: Routes = [
   },
   {
     path: 'horario',
-    loadChildren: () => import('./horario/horario.module').then( m => m.HorarioPageModule)
+    loadChildren: () => import('./horario/horario.module').then( m => m.HorarioPageModule),
+    canActivate:[AuthGuard]
   },
   {
     path: 'scanner',
-    loadChildren: () => import('./scanner/scanner.module').then( m => m.ScannerPageModule)
+    loadChildren: () => import('./scanner/scanner.module').then( m => m.ScannerPageModule),
+    canActivate:[AuthGuard]
   },
   {
     path: 'profesor/:data',
-    loadChildren: () => import('./profesor/profesor.module').then( m => m.ProfesorPageModule)
+    loadChildren: () => import('./profesor/profesor.module').then( m => m.ProfesorPageModule),
+    canActivate:[AuthGuard]
   },
   {
     path: 'view-image',
-    loadChildren: () => import('./view-image/view-image.module').then( m => m.ViewImagePageModule)
+    loadChildren: () => import('./view-image/view-image.module').then( m => m.ViewImagePageModule),
+    canActivate:[AuthGuard]
   },
   {
     path: 'reporte/:data',
-    loadChildren: () => import('./reporte/reporte.module').then( m => m.ReportePageModule)
+    loadChildren: () => import('./reporte/reporte.module').then( m => m.ReportePageModule),
+    canActivate:[AuthGuard]
   }
-
-
-
-
 
 ];
 
