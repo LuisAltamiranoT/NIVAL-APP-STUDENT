@@ -4,28 +4,30 @@ import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatIconModule} from '@angular/material/icon';
-import { MatDialogModule } from '@angular/material/dialog';
+
+//modal
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatButtonModule} from '@angular/material/button';
 
 import { IonicModule } from '@ionic/angular';
 
-import { PerfilPageRoutingModule } from './perfil-routing.module';
+import { DeletePageRoutingModule } from './delete-routing.module';
 
-import { PerfilPage } from './perfil.page';
-import { NgFallimgModule } from 'ng-fallimg';
+import { DeletePage } from './delete.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    PerfilPageRoutingModule,
+    DeletePageRoutingModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
     MatDialogModule,
-    NgFallimgModule,
+    MatButtonModule
   ],
-  declarations: [PerfilPage]
+  declarations: [DeletePage]
 })
-export class PerfilPageModule {}
+export class DeletePageModule {}

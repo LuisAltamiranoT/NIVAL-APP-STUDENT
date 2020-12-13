@@ -27,6 +27,10 @@ const routes: Routes = [
   {
     path: 'password',
     loadChildren: () => import('./password/password.module').then( m => m.PasswordPageModule)
+  },
+  {
+    path: 'delete',
+    loadChildren: () => import('./delete/delete.module').then( m => m.DeletePageModule)
   }
 ];
 

@@ -12,7 +12,7 @@ import { AuthService } from 'src/app/service/auth.service';
 export class NombrePage implements OnInit {
 
   validate = true;
-  placeholder = "Ingresa tus nombres";
+  placeholder = "";
   mensaje = '';
 
   nombreForm = new FormGroup({

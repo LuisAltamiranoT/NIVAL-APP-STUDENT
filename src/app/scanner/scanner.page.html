@@ -3,18 +3,34 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <ion-row  class="aVideo">
-    <ion-col size="12">
-      <!-- Shows our camera stream -->
-      <video #video [hidden]="!scanActive" width="100%"></video>
-    </ion-col>
-    <!-- Used to render the camera stream images -->
+<ion-content>
+  <ion-item>
+    <ion-label>
+      <ion-img class="imageEmpty" [src]="'../../assets/icon/logo.png'" id="logoScanner"></ion-img>
+      <div *ngIf="!validacionBar else login">
+      </div>
+    </ion-label>
+  </ion-item>
+  <div class="fullheight xc">
+    <video #video [hidden]="!scanActive" height="100%"></video>
     <canvas #canvas hidden></canvas>
-  </ion-row>
+  </div>
+
+  <ion-button expand="full" (click)=" stopScan()" color="danger" *ngIf="scanActive">
+    <ion-icon name="close"></ion-icon> Cancelar
+  </ion-button>
+
+  <ion-button expand="full" (click)=" startScan()" color="secondary" *ngIf = "!scanActive" [disabled]="validacionBar">
+    <ion-icon name="scan-outline"></ion-icon>  Scanear Código
+  </ion-button>
+
 </ion-content>
 
 <ion-footer>
   <ion-toolbar>
   </ion-toolbar>
 </ion-footer>
+
+<ng-template #login>
+  <ion-progress-bar type="indeterminate"></ion-progress-bar>
+</ng-template>

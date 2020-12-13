@@ -7,6 +7,7 @@ import { ApellidoPage } from './apellido/apellido.page';
 import { CodigoUnicoPage } from './codigo-unico/codigo-unico.page';
 import { PasswordPage } from './password/password.page';
 import { FotoPage } from './foto/foto.page';
+import { DeletePage } from './delete/delete.page';
 
 @Component({
   selector: 'app-perfil',
@@ -14,13 +15,15 @@ import { FotoPage } from './foto/foto.page';
   styleUrls: ['./perfil.page.scss'],
 })
 export class PerfilPage implements OnInit {
-  image = "src/assets/profe.jpg";
-  perfil = "https://firebasestorage.googleapis.com/v0/b/easyacnival.appspot.com/o/imageCurso%2FwithoutUser.jpg?alt=media&token=61ba721c-b7c1-42eb-8712-829f4c465680";
+  perfil = '';
   nombre = "Prueba";
   apellido = "Preuab";
   codigoUnico = "";
   correo = "";
   password = "";
+  //comprobar fucnionamiento del init
+  contInit:number = 0;
+
 
   val = true;
   private suscripcion1: Subscription;
@@ -31,11 +34,24 @@ export class PerfilPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.dataUser();
+    if (this.contInit == 0) {
+      //console.log('se ejecuta init');
+      this.dataUser();
+    }
+  }
+  ionViewWillEnter(){
+    this.contInit = this.contInit + 1;
+    if (this.contInit > 1) {
+      //console.log('se ejecuta initview');
+      this.dataUser();
+    }
   }
 
-  ngOnDestroy() {
-    this.suscripcion1.unsubscribe();
+  ionViewDidLeave() {
+    if (this.suscripcion1) {
+      this.suscripcion1.unsubscribe();
+      //console.log('se cancela la suscripcion 1');
+    }
   }
 
   dataUser() {
@@ -43,7 +59,9 @@ export class PerfilPage implements OnInit {
       let dataUser: any = [data.payload.data()];
       this.nombre = dataUser[0].nombre;
       this.apellido = dataUser[0].apellido;
-      this.perfil = dataUser[0].photoUrl;
+      if(dataUser[0].photoUrl!=''){
+        this.perfil = dataUser[0].photoUrl;
+      }
       this.correo = dataUser[0].email;
       this.codigoUnico = dataUser[0].codigoUnico;
     });
@@ -65,6 +83,10 @@ export class PerfilPage implements OnInit {
     this.openMaterial1(PasswordPage, this.password);
   }
 
+  openDeleteModal() {
+    this.openMaterial1(DeletePage,this.perfil);
+  }
+
 
   openMaterial(component: any) {
     this.ventana.open(component,
@@ -82,7 +104,7 @@ export class PerfilPage implements OnInit {
   }
 
   openPhoto() {
-    if (this.perfil != 'https://firebasestorage.googleapis.com/v0/b/easyacnival.appspot.com/o/imageCurso%2FwithoutUser.jpg?alt=media&token=61ba721c-b7c1-42eb-8712-829f4c465680') {
+    if (this.perfil != '') {
       this.ventana.open(FotoPage,
         { width: ' 25rem', data: this.perfil }).afterClosed().subscribe(item => {
         });

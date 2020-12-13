@@ -17,7 +17,6 @@ import { ImageValidator } from 'src/app/shared/helpers/imageValidators';
 export class UploadImageService extends ImageValidator {
   private filePath: any;
   private downloadURL: Observable<string>;
-  private MEDIA_STORAGE_PATH = 'imageCurso';
   private MEDIA_STORAGE_PATH_PERFIL = 'perfil';
   public nominaDat: any;
   public nominaHorario: any;

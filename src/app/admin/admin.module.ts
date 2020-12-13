@@ -17,6 +17,7 @@ import { IonicModule } from '@ionic/angular';
 import { AdminPageRoutingModule } from './admin-routing.module';
 
 import { AdminPage } from './admin.page';
+import { NgFallimgModule } from 'ng-fallimg';
 
 @NgModule({
   imports: [
@@ -31,7 +32,8 @@ import { AdminPage } from './admin.page';
     //card
     MatCardModule,
     MatButtonModule,
-    MatDialogModule
+    MatDialogModule,
+    NgFallimgModule
   ],
   declarations: [AdminPage]
 })

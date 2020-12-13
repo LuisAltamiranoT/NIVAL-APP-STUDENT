@@ -1,6 +1,6 @@
 {
-  "appId": "io.ionic.starter",
-  "appName": "nival-estudent",
+  "appId": "com.nivalstudent.app",
+  "appName": "nival-student",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",

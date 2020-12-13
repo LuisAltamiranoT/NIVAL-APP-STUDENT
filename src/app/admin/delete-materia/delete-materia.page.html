@@ -1,0 +1,23 @@
+<form [formGroup]="materiaForm" (ngSubmit)="onClick()">
+  <h2 mat-dialog-title class="pb-1">Materias:</h2>
+  <div *ngIf="validate else barra">
+  </div>
+  <h3>Está seguro de eliminar: <br><strong>{{materia}}</strong> de su lista</h3>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-12 col-sm-6>
+        <ion-button type="submit" expand="full" size="small">
+          <ion-icon name="send-sharp"></ion-icon>
+        </ion-button>
+      </ion-col>
+      <ion-col col-12 col-sm-6>
+        <ion-button (click)=" dimissModal()" color="red" expand="full" size="small">
+          <ion-icon name="close-sharp"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</form>
+<ng-template #barra>
+  <ion-progress-bar type="indeterminate"></ion-progress-bar>
+</ng-template>

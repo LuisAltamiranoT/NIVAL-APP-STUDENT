@@ -10,7 +10,8 @@ import * as firebase from 'firebase/app';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 
 import { Observable, of, Subject } from 'rxjs';
-import { first, map, switchMap, take } from 'rxjs/operators';
+import { first, switchMap, catchError, map } from 'rxjs/operators';
+import { AngularFireStorage } from '@angular/fire/storage';
 
 //import * as firebase from 'firebase/app';
 
@@ -21,16 +22,21 @@ export class AuthService extends RoleValidator {
   //observable y subject
   private estadoImgenUpdate = new Subject<void>();
   public finalizoImage$ = this.estadoImgenUpdate.asObservable();
-  
+
+  public stateScanner= new Subject<any>();
+
   public user$: Observable<User>;
+  public stateUser$: Observable<any>;
 
   private dataUser: any;
+  private MEDIA_STORAGE_PATH_PERFIL = 'perfil';
 
 
   constructor(
     public afAuth: AngularFireAuth,
     private afs: AngularFirestore,
-    public toast: ToastController
+    public toast: ToastController,
+    private storage: AngularFireStorage,
   ) {
     super();
     //es utilizado en el guard
@@ -45,19 +51,10 @@ export class AuthService extends RoleValidator {
         return of(null);
       })
     )
+
+    this.stateUser$ = this.afAuth.authState.pipe(map(auth => auth));
   }
 
-
-
-  verifyConnection(): boolean {
-    if (navigator.onLine) {
-      console.log('true');
-      return true;
-    } else {
-      console.log('true');
-      return false;
-    }
-  }
 
   //Obtener Datos
   public getDataUser() {
@@ -95,9 +92,9 @@ export class AuthService extends RoleValidator {
     return user.emailVerified === true ? true : false;
   }
 
-  
+
   //Obtener la nomina del curso
-  public getDataNominaCursoId(idProfesor:any, idMateria: any, idNomina: any) {
+  public getDataNominaCursoId(idProfesor: any, idMateria: any, idNomina: any) {
     try {
       let db = this.afs.doc<any>(`users/${idProfesor}`).collection('materias').doc(idMateria).collection('nomina').doc(idNomina).snapshotChanges();
       return db;
@@ -106,12 +103,15 @@ export class AuthService extends RoleValidator {
     }
   }
 
-  
-   //actualizar estudiante en la nomina el profesor
-   public async updateNominaEstudiante(idProfesor:any, idMateria: any,idNomina: any, array: any): Promise<void>{
+
+  //actualizar estudiante en la nomina el profesor
+  public async updateNominaEstudiante(idProfesor: any, idMateria: any, idNomina: any, array: any): Promise<void> {
+    let data = {
+      nomina: array
+    }
     try {
-      let db = await this.afs.doc(`users/${idProfesor}`).collection('materias').doc(idMateria).collection('nomina').doc(idNomina).set(array, { merge: true });
-      this.showUpdatedata();
+      let db = await this.afs.doc(`users/${idProfesor}`).collection('materias').doc(idMateria).collection('nomina').doc(idNomina).set(data, { merge: true });
+      //this.showUpdatedata();
       return db;
     } catch (error) {
       this.showError(error);
@@ -144,7 +144,8 @@ export class AuthService extends RoleValidator {
         email: user.email,
         emailVerified: user.emailVerified,
         codigoUnico: codigoUnico,
-        role: 'EDITOR'
+        role: 'EDITOR',
+        photoUrl:''
       };
 
       return await userRef.set(data, { merge: true });
@@ -194,10 +195,25 @@ export class AuthService extends RoleValidator {
   public async createMateria(data: any) {
     try {
       const create = await this.afs.doc<any>(`users/${this.dataUser}`).collection('materiasEstudiante').add(data);
-      this.showRegisterQR();
+      //this.showRegisterQR();
       return create;
     } catch (error) {
       this.showError(error);
+    }
+  }
+
+  public delecteMateria(documentId: any) {
+    try {
+      this.afs.doc(`users/${this.dataUser}`).collection('materiasEstudiante').doc(documentId).delete();
+    } catch (error) {
+    }
+  }
+
+  public delecteMateriaId(documentId: any){
+    try {
+      this.afs.doc(`users/${this.dataUser}`).collection('materiasEstudiante').doc(documentId).delete();
+      this.showDeletedata();
+    } catch (error) {
     }
   }
 
@@ -216,7 +232,9 @@ export class AuthService extends RoleValidator {
     }
   }
 
-
+  showDeletedata() {
+    this.showSuccess("Se ha eliminado la información");
+  }
   //toast Info
   async showInfo(mensaje: string) {
     let color = 'secondary';
@@ -234,6 +252,8 @@ export class AuthService extends RoleValidator {
     let color = 'success';
     this.presentToast(mensaje, color);
   }
+
+
 
   showUpdatedata() {
     this.showSuccess("Se ha actualizado su información");
@@ -263,15 +283,6 @@ export class AuthService extends RoleValidator {
     }
   }
 
-  //Obtener la materia con el id
-  /*  public getMateriaId(idUser: any, id: any) {
-      try {
-        let db = this.afs.doc<Curso>(`users/${idUser}`).collection('materias').doc(id).snapshotChanges();
-        return db;
-      } catch (error) {
-        this.showError(error);
-      }
-    }*/
   public getMateriaId(idProfesor: any, id: any) {
     try {
       let db = this.afs.doc<Curso>(`users/${idProfesor}`).collection('materias').doc(id).snapshotChanges();
@@ -283,14 +294,13 @@ export class AuthService extends RoleValidator {
 
   //nombre
   public async updateName(valor: string) {
-    this.verifyConnection();
     try {
       const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${this.dataUser}`);
       const data: User = {
         nombre: valor
       };
       const dataUpdate = await userRef.set(data, { merge: true });
-      console.log('asdasdasjdkasbdhasjd' + dataUpdate);
+      //console.log('asdasdasjdkasbdhasjd' + dataUpdate);
 
 
       return { dataUpdate };
@@ -341,7 +351,7 @@ export class AuthService extends RoleValidator {
       await this.reauthenticate(oldPass);
       await user.updatePassword(newPass);
       data = 1;
-      console.log(data + "se ha actualizado");
+      //console.log(data + "se ha actualizado");
       return data;
     } catch (error) {
       this.showError(error);
@@ -367,7 +377,7 @@ export class AuthService extends RoleValidator {
   }
 
 
-  public getDataMateriaId(idMateria:any) {
+  public getDataMateriaId(idMateria: any) {
     try {
       let db = this.afs.doc<any>(`users/${this.dataUser}`).collection('materiasEstudiante').doc(idMateria).snapshotChanges();
       return db;
@@ -391,4 +401,55 @@ export class AuthService extends RoleValidator {
     toast.present();
   }
 
+  //cambiar el estado del escaner
+  public iniciaScanner(){
+    this.stateScanner.next({estado:false});
+  }
+
+  public finalizarScanner(){
+    this.stateScanner.next({estado:true});
+  }
+
+  //Delete user
+  public async updateAcoountUser(oldPass: string,image:any): Promise<Number> {
+    //estado cero no se logro, estado 1 se ha logrado 
+    let data: number;
+    try {
+      let userAccount = firebase.auth().currentUser;
+      await this.reauthenticate(oldPass);
+      await this.updateEstadoEliminar();
+      if(image!=''){
+        this.deleteImagePerfil(image);
+      }
+      await userAccount.delete();
+      this.showSuccess('Usted ha eliminado su cuenta de NIVAL EASY ATTENDANCE CONTROL');
+      this.logout();
+      return data = 1;
+    } catch (error) {
+      this.showError(error);
+      return data = 0;
+    }
+  }
+
+  public async updateEstadoEliminar() {
+    try {
+      const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${this.dataUser}`);
+      const data = {
+        EliminarCuenta: 'EliminarCuenta'
+      };
+      const dataUpdate = await userRef.set(data, { merge: true });
+      this.showUpdatedata();
+      return { dataUpdate };
+
+    } catch (error) {
+      this.showError(error);
+    }
+  }
+
+  public deleteImagePerfil(imageName: string) {
+    let splitted = imageName.split("perfil%2F")[1];
+    let name =  splitted.split("?alt")[0];
+    const fileref = this.storage.ref(`${this.MEDIA_STORAGE_PATH_PERFIL}/${name}`);
+    fileref.delete();
+  }
 }

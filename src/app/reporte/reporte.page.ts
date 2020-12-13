@@ -47,7 +47,7 @@ export class ReportePage implements OnInit {
   cargar() {
     let obj = {};
     this.authService.getDataMateriaId(this.dataId).subscribe((data) => {
-      console.log(data.payload.data());
+      //console.log(data.payload.data());
       let materia: any = data.payload.data();
       let idProfesor = materia.idProfesor;
       let idMateria = materia.uidMateria;
@@ -59,7 +59,7 @@ export class ReportePage implements OnInit {
         this.ejemplo.length = 0;
         this.displayedColumns.length = 0;
         dataNominaCurso.nomina.forEach((dataMateria: any) => {
-          console.log('foreach nomina', dataMateria)
+          //console.log('foreach nomina', dataMateria)
           filas = filas + 1;
           let cont = 0;
           let porcentaje = 0;
@@ -89,7 +89,7 @@ export class ReportePage implements OnInit {
               }
               this.ejemplo.push(obj);
               obj = {};
-              console.log(this.ejemplo);
+              //console.log(this.ejemplo);
 
             });
             
@@ -109,12 +109,12 @@ export class ReportePage implements OnInit {
         }
         this.dataSource = new MatTableDataSource(this.ejemplo.sort());
       })
-      console.log('informacion', materia);
+      //console.log('informacion', materia);
     });
   }
 
   getColor(data: any) {
-    ////console.log(data);
+    //////console.log(data);
     switch (data) {
       case 'Presente':
         return '#3f51b5';

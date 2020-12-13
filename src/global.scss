@@ -31,6 +31,19 @@
     padding: 0px;
     margin: 0px;
 }
+
+#logoScanner2{
+  height: 30vh;
+  padding: 0px;
+  margin: 0px;
+}
+
+#logoScanner{
+  height: 10vh;
+  padding-bottom: 5px;
+  margin: 0px;
+}
+
 #logoToolbar{
    height: 100%;
    object-position: 0px;
@@ -183,10 +196,7 @@
     text-align: center;
   }
   
-  .example-header-image {
-      background-size: cover;
-  }
-
+ 
 
   //perfil
   .bd-callout {
@@ -201,6 +211,7 @@
 .bd-callout-info {
     border-left-color: #5bc0de;
 }
+
 
 
 .bd-callout-default {
@@ -246,13 +257,15 @@ a{
     padding-left: .2rem;
 }
 
-.avatarNival {     
-  width:100% !important;  
-  height : 100% !important;  
-  max-width: 140px !important;  //any size
-  max-height: 140px !important; //any size 
+.imagePerfil{
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
+  height: 140px;
+  width: 140px;
 }
 
+
 .mat-dialog-container {
-  padding: 5px !important;
+  padding: 10px !important;
 }

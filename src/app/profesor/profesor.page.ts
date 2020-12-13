@@ -13,7 +13,7 @@ import { AuthService } from 'src/app/service/auth.service';
 export class ProfesorPage implements OnInit {
 
   image = "../../../assets/icon/profe.jpg";
-  perfil = "https://firebasestorage.googleapis.com/v0/b/easyacnival.appspot.com/o/imageCurso%2FwithoutUser.jpg?alt=media&token=61ba721c-b7c1-42eb-8712-829f4c465680";
+  perfil = "";
   nombre = "";
   apellido = "";
   oficina = "";
@@ -30,27 +30,42 @@ export class ProfesorPage implements OnInit {
   AnioLectivoFin = "dd/mm/yyyy";
 
   val = true;
+  ///controla e init
+  contInit:number=0;
 
   private suscripcion1: Subscription;
-  private suscripcion3: Subscription;
 
   constructor(
     public ventana: MatDialog,
     private authService: AuthService,
-    private router: Router,
     private _route: ActivatedRoute
   ) { }
 
   dato: any;
-  ngOnInit(): void {
-    this.dato = this._route.snapshot.paramMap.get('data');
-    this.dataUser(this.dato);
+  ngOnInit(){
+    if (this.contInit == 0) {
+      this.dato = this._route.snapshot.paramMap.get('data');
+      this.dataUser(this.dato);
+    }
   }
 
-  ngOnDestroy() {
-    this.suscripcion1.unsubscribe();
+
+  ionViewWillEnter(){
+    this.contInit = this.contInit + 1;
+    if (this.contInit > 1) {
+      this.dato = this._route.snapshot.paramMap.get('data');
+      this.dataUser(this.dato);
+    }
   }
 
+
+
+  ionViewDidLeave() {
+    if (this.suscripcion1) {
+      this.suscripcion1.unsubscribe();
+      //console.log('se cancela la suscripcion 1');
+    }
+  }
   dataUser(dato) {
     this.suscripcion1 = this.authService.getDataProfesor(dato).subscribe((data) => {
       let dataUser: any = [data.payload.data()];
@@ -61,7 +76,9 @@ export class ProfesorPage implements OnInit {
       this.oficina = dataUser[0].oficina;
       this.AnioLectivoInicio = dataUser[0].anioInicio;
       this.AnioLectivoFin = dataUser[0].anioFin;
-      this.perfil = dataUser[0].photoUrl;
+      if(dataUser[0].photoUrl!=''){
+        this.perfil = dataUser[0].photoUrl;
+      }
     });
   }
 

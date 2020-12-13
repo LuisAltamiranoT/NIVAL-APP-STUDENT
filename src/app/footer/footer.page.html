@@ -3,23 +3,26 @@
     <ion-grid>
       <ion-row>
         <ion-col>
-          <ion-button class="main-button" color="white" expand="full" [routerLink]="['/horario']">
+          <ion-button class="main-button" color="white" expand="full" [routerLink]="['/horario']"
+          [disabled]="!validateScanner">
             <ion-icon name="calendar-outline"></ion-icon>
           </ion-button>
         </ion-col>
         <ion-col>
           <ion-button class="main-button" color="white" fill="solid" expand="full" [routerLink]="['/scanner']"
-            [disabled]="networkStatus && networkStatus.connected ? 'false':'true'">
+            [disabled]="networkStatus && networkStatus.connected && validateScanner ? 'false':'true'">
             <ion-icon name="scan-outline"></ion-icon>
           </ion-button>
         </ion-col>
         <ion-col>
-          <ion-button class="main-button" color="white" fill="solid" expand="full" [routerLink]="['/admin']">
+          <ion-button class="main-button" color="white" fill="solid" expand="full" [routerLink]="['/admin']"
+          [disabled]="!validateScanner">
             <ion-icon name="library-outline"></ion-icon>
           </ion-button>
         </ion-col>
         <ion-col>
-          <ion-button (click)="onPerfil()" class="main-button" color="white" fill="solid" expand="full">
+          <ion-button (click)="onPerfil()" class="main-button" color="white" fill="solid" expand="full"
+          [disabled]="!validateScanner">
             <ion-icon name="person-outline"></ion-icon>
           </ion-button>
         </ion-col>

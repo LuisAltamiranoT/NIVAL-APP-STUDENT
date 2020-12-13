@@ -9,8 +9,7 @@
                 <ion-col col-12 col-sm-6 class="ion-align-self-center">
                     <mat-card class="example-card">
                         <mat-card-header>
-                            <div mat-card-avatar class="example-header-image"
-                                [ngStyle]="{'background-image':'url('+curso.photoProfesor+')'}"></div>
+                            <img mat-card-avatar [src]='curso.photoProfesor' alt="perfil" fallimg="perfil">
                             <mat-card-title>{{curso.materia}} - {{curso.aula}} </mat-card-title>
                             <mat-card-subtitle>
                                 <a [routerLink]="['/profesor', curso.idProfesor]"
@@ -18,11 +17,23 @@
                             </mat-card-subtitle>
                         </mat-card-header>
                         <a (click)="openPhoto(curso.photoCurso)">
-                            <img class="text-center" mat-card-image [src]="curso.photoCurso" alt="Image Curso">
+                            <img class="text-center" mat-card-image [src]="curso.photoCurso" alt="Image Curso"
+                                fallimg="curso">
                         </a>
-                        <ion-button expand="full" size="small" color="info">
-                            <ion-icon name="send-sharp"></ion-icon>
-                        </ion-button>
+                        <ion-grid>
+                            <ion-row>
+                                <ion-col>
+                                    <ion-button expand="full" size="small" color="info" (click)="openCurso(curso.idMateriaCurso)">
+                                        <ion-icon name="reader-outline"></ion-icon>
+                                    </ion-button>
+                                </ion-col>
+                                <ion-col>
+                                    <ion-button expand="full" size="small" color="red" (click)="openEliminarCurso(curso.idMateriaCurso,curso.materia,curso.aula)">
+                                        <ion-icon name="trash-outline"></ion-icon>
+                                    </ion-button>
+                                </ion-col>
+                            </ion-row>
+                        </ion-grid>
                     </mat-card>
                 </ion-col>
             </ion-row>
@@ -39,7 +50,7 @@
         <ion-grid>
             <ion-row class="ion-justify-content-center">
                 <ion-img class="imageEmpty" [src]="'../../assets/icon/logoCompleto.PNG'" id="logo"></ion-img>
-                <ion-label color="dark" class="ion-margin-top imageEmpty">Sin registros</ion-label>
+                <ion-label color="dark" class="ion-margin-top imageEmpty">Sin Registros</ion-label>
             </ion-row>
         </ion-grid>
     </div>

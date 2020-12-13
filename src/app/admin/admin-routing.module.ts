@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: '',
     component: AdminPage
+  },
+  {
+    path: 'delete-materia',
+    loadChildren: () => import('./delete-materia/delete-materia.module').then( m => m.DeleteMateriaPageModule)
   }
 ];
 

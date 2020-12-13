@@ -71,7 +71,7 @@ export class PasswordPage implements OnInit {
       if (control.parent) {
         let data = control.value;
         const value = control.parent.controls[controlKey].value;
-        console.log(value);
+        //console.log(value);
         if (data === value && value!=="") {
           this.mensaje = 'La nueva contraseña es igual a la anterior';
           return {

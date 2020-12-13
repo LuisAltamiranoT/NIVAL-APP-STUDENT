@@ -13,6 +13,7 @@ import { IonicModule } from '@ionic/angular';
 import { ProfesorPageRoutingModule } from './profesor-routing.module';
 
 import { ProfesorPage } from './profesor.page';
+import { NgFallimgModule } from 'ng-fallimg';
 
 @NgModule({
   imports: [
@@ -25,7 +26,8 @@ import { ProfesorPage } from './profesor.page';
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
-    MatDialogModule
+    MatDialogModule,
+    NgFallimgModule
   ],
   declarations: [ProfesorPage]
 })

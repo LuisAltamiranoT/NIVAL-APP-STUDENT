@@ -19,6 +19,7 @@ import { NavbarPage } from './navbar/navbar.page';
 import { AuthService } from './service/auth.service';
 import { AuthGuard } from './shared/auth.guard';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { NgFallimgModule } from 'ng-fallimg';
 
 
 @NgModule({
@@ -31,6 +32,11 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
     BrowserModule, 
     IonicModule.forRoot(), 
     AppRoutingModule,
+    NgFallimgModule.forRoot({
+      default:'assets/icon/withoutUser.jpg',
+      perfil:'assets/icon/withoutUser.jpg',
+      curso:'assets/icon/clase.jpg',
+    }),
     AngularFireAuthModule,
     BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),

@@ -1,0 +1,38 @@
+<form [formGroup]="passwordForm" (ngSubmit)="onClick()">
+  <h2 mat-dialog-title class="pb-1">Eliminar Cuenta:</h2>
+  <p>Al eliminar su cuenta perdera toda su inforamción alojada en el sistema</p>
+
+  <div *ngIf="validate else barra">
+  </div>
+
+  <mat-form-field class="input-modal" appearance="standard">
+    <mat-label>Contraseña Actual</mat-label>
+    <input matInput #pass [type]="hide ? 'password' : 'text'" formControlName="oldPassword" spellcheck="false"
+      autocomplete="off" placeholder="**********">
+    <a mat-icon-button matSuffix (click)="hide = !hide" [attr.arial-label]="'Hide password'"
+      [attr.arial-pressed]="hide">
+      <mat-icon>{{hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+    </a>
+  </mat-form-field>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col col-12 col-sm-6>
+        <ion-button type="submit" expand="full" size="small" [disabled]="!passwordForm.valid">
+          <ion-icon name="send-sharp"></ion-icon>
+        </ion-button>
+      </ion-col>
+      <ion-col col-12 col-sm-6>
+        <ion-button (click)=" dimissModal()" color="red" expand="full" size="small">
+          <ion-icon name="close-sharp"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</form>
+
+
+
+<ng-template #barra>
+  <ion-progress-bar type="indeterminate"></ion-progress-bar>
+</ng-template>
