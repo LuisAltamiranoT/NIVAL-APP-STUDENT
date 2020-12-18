@@ -12,7 +12,7 @@ import { AuthService } from 'src/app/service/auth.service';
 })
 export class ProfesorPage implements OnInit {
 
-  image = "../../../assets/icon/profe.jpg";
+  img = "../../assets/icon/withoutUser.jpg";
   perfil = "";
   nombre = "";
   apellido = "";

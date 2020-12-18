@@ -15,6 +15,7 @@ import { DeletePage } from './delete/delete.page';
   styleUrls: ['./perfil.page.scss'],
 })
 export class PerfilPage implements OnInit {
+  img = "../../assets/icon/withoutUser.jpg";
   perfil = '';
   nombre = "Prueba";
   apellido = "Preuab";

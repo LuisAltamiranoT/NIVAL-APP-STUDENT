@@ -5,7 +5,8 @@
   <ion-grid>
     <ion-row>
       <ion-col class="ion-text-center" style="display: flex; justify-content: center">
-        <img (click)="photoInput.click()" src="{{photoSelected}}" class="imagePerfil">
+        <div (click)="photoInput.click()" [style.background-image]="'url('+photoSelected+')'" class="avatarNival avatarDiv">
+        </div>
       </ion-col>
     </ion-row>
   </ion-grid>

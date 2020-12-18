@@ -9,7 +9,10 @@
                 <ion-col col-12 col-sm-6 class="ion-align-self-center">
                     <mat-card class="example-card">
                         <mat-card-header>
-                            <img mat-card-avatar [src]='curso.photoProfesor' alt="perfil" fallimg="perfil">
+                            <div mat-card-avatar [style.background-image]="'url('+img+')'" class="avatarDiv">
+                                <div mat-card-avatar [style.background-image]="'url('+curso.photoProfesor+')'" class="avatarDiv">
+                                </div>
+                              </div>
                             <mat-card-title>{{curso.materia}} - {{curso.aula}} </mat-card-title>
                             <mat-card-subtitle>
                                 <a [routerLink]="['/profesor', curso.idProfesor]"

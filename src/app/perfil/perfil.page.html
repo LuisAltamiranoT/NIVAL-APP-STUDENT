@@ -7,7 +7,10 @@
   <ion-grid>
     <ion-row>
       <ion-col class="ion-text-center" style="display: flex; justify-content: center">
-        <img [src]="perfil" fallimg="perfil" class="imagePerfil">
+        <div [style.background-image]="'url('+img+')'" class="avatarNival avatarDiv">
+          <div [style.background-image]="'url('+perfil+')'" class="avatarNival avatarDiv">
+          </div>
+        </div>
         <a class="secondaryNival">
           <mat-icon class="fa-nival" matSuffix (click)="openPhoto()">add_photo_alternate</mat-icon>
         </a>

@@ -24,7 +24,10 @@ import { NgFallimgModule } from 'ng-fallimg';
     MatInputModule,
     MatIconModule,
     MatDialogModule,
-    NgFallimgModule,
+    NgFallimgModule.forRoot({
+      default:'../../assets/icon/withoutUser.jpg',
+      perfil:'../../assets/icon/withoutUser.jpg'
+    }),
   ],
   declarations: [PerfilPage]
 })

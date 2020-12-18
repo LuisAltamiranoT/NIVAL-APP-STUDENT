@@ -10,7 +10,7 @@ import * as firebase from 'firebase/app';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 
 import { Observable, of, Subject } from 'rxjs';
-import { first, switchMap, catchError, map } from 'rxjs/operators';
+import { first, switchMap, map } from 'rxjs/operators';
 import { AngularFireStorage } from '@angular/fire/storage';
 
 //import * as firebase from 'firebase/app';

@@ -16,7 +16,8 @@ import { DeleteMateriaPage } from './delete-materia/delete-materia.page';
 export class AdminPage implements OnInit {
   validate: boolean = false;
   width = 20;
-  imgProfesor = 'https://material.angular.io/assets/img/examples/shiba1.jpg';
+
+  img='../../assets/icon/withoutUser.jpg';
 
   // Carga la información de la base de datos acerca de las materias
   public materias = [];

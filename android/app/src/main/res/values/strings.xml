@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Nival Estudiante</string>
+    <string name="title_activity_main">Nival Estudiante</string>
+    <string name="package_name">com.nivalstudent.app</string>
+    <string name="custom_url_scheme">com.nivalstudent.app</string>
+</resources>

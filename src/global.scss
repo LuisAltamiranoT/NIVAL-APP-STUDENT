@@ -257,15 +257,19 @@ a{
     padding-left: .2rem;
 }
 
-.imagePerfil{
+.avatarNival {    
   border-radius: 50%;
-  object-fit: cover;
-  object-position: center;
-  height: 140px;
-  width: 140px;
+  width:140px !important;  
+  height : 140px !important;  
+  max-width: 140px !important;  //any size
+  max-height: 140px !important; //any size 
 }
 
 
-.mat-dialog-container {
-  padding: 10px !important;
+.avatarDiv{
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 }
+
+
