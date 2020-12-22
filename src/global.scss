@@ -198,14 +198,13 @@
   
  
 
-  //perfil
-  .bd-callout {
-    padding: 1rem;
-    margin-top: .25rem;
-    margin-bottom: .25rem;
-    border: 1px solid #eee;
-    border-left-width: .25rem;
-    border-radius: .25rem;
+.bd-callout {
+  padding: 0.4rem;
+  margin-top: .25rem;
+  margin-bottom: .25rem;
+  border: 1px solid #eee;
+  border-left-width: .25rem;
+  border-radius: .25rem;
 }
 
 .bd-callout-info {
@@ -240,7 +239,14 @@ p{
 }
 
 .fa-nival{
-    vertical-align: middle;
+  vertical-align: middle;
+  font-size: 20px;
+  //padding-bottom: 4px;
+}
+.fa-nival-bottom{
+vertical-align: middle;
+font-size: 20px;
+padding-bottom: 4px;
 }
 
 #font-p{
@@ -273,3 +279,30 @@ a{
 }
 
 
+.spinnerA{
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+  
+.hr-nival{
+  margin-top: 0.4rem;
+  margin-bottom: 0rem;
+  border: 0;
+  border-top: 1px solid rgba(0,0,0,.1);
+}
+
+.myapp-no-padding-dialog .mat-dialog-container {
+  padding-top: 4px;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-bottom: 0px;
+}
+
+.myapp-no-padding-dialog2 .mat-dialog-container {
+  padding-top: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 5px;
+}

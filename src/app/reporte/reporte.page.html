@@ -8,14 +8,15 @@
     <ion-row>
       <ion-col size="12">
         <h3 class="font-weight-normal">
-          <mat-icon class="fa-nival" matSuffix>list_alt</mat-icon> Reportes
+          <ion-icon name="reader-outline" class="fa-nival-bottom" style="padding-right: 3px;"></ion-icon>Reporte
+          {{nombre}}
         </h3>
-        <hr class="hr-nival">
       </ion-col>
     </ion-row>
+    <hr class="hr-nival" style="margin-top: -0.4rem;">
     <ion-row>
       <ion-col size="12">
-        <div class="example-container mat-elevation-z3">
+        <div class="example-container mat-elevation-z2">
           <table mat-table [dataSource]="dataSource" #table>
             <ng-container *ngFor="let disCol of displayedColumns; let colIndex = index" [ngSwitch]="disCol"
               matColumnDef="{{disCol}}">

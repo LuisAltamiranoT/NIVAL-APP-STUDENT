@@ -3,7 +3,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content *ngIf="validateSpinner else barra">
   <ion-grid>
     <ion-row>
       <ion-col class="ion-text-center" style="display: flex; justify-content: center">
@@ -12,14 +12,14 @@
           </div>
         </div>
         <a class="secondaryNival">
-          <mat-icon class="fa-nival" matSuffix (click)="openPhoto()">add_photo_alternate</mat-icon>
+          <ion-icon class="fa-nival" name="image-outline" (click)="openPhoto()"></ion-icon>
         </a>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col size="12" class="ion-text-center">
         <div>
-          <h2 id="font-p">{{nombre+' '+ apellido}}</h2>
+          <h3 id="font-p">{{nombre+' '+ apellido}}</h3>
           <p id="fontNival-p">{{correo}}</p>
         </div>
       </ion-col>
@@ -27,9 +27,9 @@
     <ion-row>
       <ion-col size="12">
         <div class="bd-callout bd-callout-default">
-          <h2>
-            <mat-icon class="fa-nival" matSuffix>person</mat-icon> Información:
-          </h2>
+          <h3>
+            <ion-icon class="fa-nival-bottom" name="person-sharp"></ion-icon> Información:
+          </h3>
           <div class="fondo">
             <h4> Nombres:
               <a style="float: right;" (click)="openNombreModal()">
@@ -65,7 +65,7 @@
           <div class="fondo">
             <h4> Eliminar Cuenta
               <a style="float: right;" (click)="openDeleteModal()">
-                <mat-icon class="fa-nival" style="color: red;" matSuffix>delete_forever</mat-icon>
+                <ion-icon class="fa-nival" color="red" name="trash-outline"></ion-icon>
               </a>
             </h4>
           </div>
@@ -73,8 +73,13 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-
 </ion-content>
+
+<ng-template #barra>
+  <div class="spinnerA">
+    <ion-spinner color="info" icon="spiral"></ion-spinner>
+  </div>
+</ng-template>
 <ion-footer>
   <ion-toolbar>
   </ion-toolbar>

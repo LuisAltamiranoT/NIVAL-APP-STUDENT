@@ -19,6 +19,11 @@ export class SendEmailComponentPage implements OnDestroy {
     this.authService.logout();
   }
 
+  ionViewDidLeave(){
+    this.authService.logout();
+  }
+  
+
   onSendEmail():void{
     this.authService.sendVerificationEmail();
   }

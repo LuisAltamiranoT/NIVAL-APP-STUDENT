@@ -1,5 +1,5 @@
 <form [formGroup]="apellidoForm" (ngSubmit)="onClick()">
-  <h2 mat-dialog-title class="pb-1">Información:</h2>
+  <h3 mat-dialog-title class="pb-1"><strong>Información:</strong></h3>
   <div *ngIf="validate else login">
   </div>
   <mat-form-field hintLabel='{{mensaje}}' appearance="standard" class="input-modal">

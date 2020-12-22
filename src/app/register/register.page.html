@@ -45,6 +45,7 @@
             oninput="if(this.value.length > this.maxLength) this.value=this.value.slice(0,this.maxLength);"
             (keypress)="IngresarSoloNumeros($event)" required>
           <mat-icon matSuffix>school</mat-icon>
+          <mat-error *ngIf="registerForm.controls['codigoUnico'].invalid">No puede ingresar letras</mat-error>
           <mat-hint align="end">{{codigoU.value?.length || 0}}/9</mat-hint>
         </mat-form-field>
 

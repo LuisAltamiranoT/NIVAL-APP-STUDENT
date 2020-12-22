@@ -15,7 +15,7 @@ export class ApellidoPage implements OnInit {
   mensaje= '';
 
   apellidoForm = new FormGroup({
-    lastName: new FormControl('',[Validators.required, Validators.minLength(4),this.match()])
+    lastName: new FormControl('',[Validators.required, Validators.minLength(4),this.match(),Validators.pattern("[a-zA-ZáéíóúüÁÉÍÓÚÜ ]{2,48}")])
   })
 
   constructor(
@@ -36,7 +36,6 @@ export class ApellidoPage implements OnInit {
   async onClick(){
     try {
       this.validate=false;
-      this.mensaje= '';
       const { lastName } = this.apellidoForm.value;
       const dat = await this.authService.updateLastName(lastName);
         if (dat) {
@@ -74,6 +73,7 @@ export class ApellidoPage implements OnInit {
             match: true
           };
         }else if (data[0]+' '+data[1] === this.placeholder) {
+          this.mensaje='No hay cambios por guardar';
           return {
             match: true
           };
@@ -89,7 +89,7 @@ export class ApellidoPage implements OnInit {
           };
         }
       }
-      this.mensaje='';
+      this.mensaje='No puede ingresar números';
       return null;
     };
   }

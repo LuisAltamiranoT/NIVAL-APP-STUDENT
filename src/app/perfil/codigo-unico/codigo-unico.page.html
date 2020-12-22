@@ -1,5 +1,5 @@
 <form [formGroup]="form" (ngSubmit)="onClick()">
-  <h2 mat-dialog-title class="pb-1">Información:</h2>
+  <h3 mat-dialog-title class="pb-1"><strong>Información:</strong></h3>
   <div *ngIf="validate else login">
   </div>
   <mat-form-field hintLabel="Codigo único otorgado por la institución" appearance="standard" class="input-modal">
@@ -9,6 +9,7 @@
       oninput="if(this.value.length > this.maxLength) this.value=this.value.slice(0,this.maxLength);"
       (keypress)="IngresarSoloNumeros($event)">
       <mat-icon matSuffix (click)="eraser()">backspace</mat-icon>
+      <mat-error *ngIf="form.controls['code'].invalid">No puede ingresar letras</mat-error>
     <mat-hint align="end">{{codigoU.value?.length || 0}}/9</mat-hint>
   </mat-form-field>
   <ion-grid>

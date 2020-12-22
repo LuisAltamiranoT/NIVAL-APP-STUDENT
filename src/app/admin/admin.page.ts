@@ -17,6 +17,9 @@ export class AdminPage implements OnInit {
   validate: boolean = false;
   width = 20;
 
+  //valida la ceacion de la tabla
+  validateSpinner: boolean = false;
+
   img='../../assets/icon/withoutUser.jpg';
 
   // Carga la información de la base de datos acerca de las materias
@@ -104,6 +107,7 @@ export class AdminPage implements OnInit {
           })
         }
       });
+      this.validateSpinner = true;
     })
   }
 

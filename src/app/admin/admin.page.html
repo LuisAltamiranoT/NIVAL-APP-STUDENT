@@ -2,17 +2,27 @@
     <ion-toolbar>
     </ion-toolbar>
 </ion-header>
-<ion-content>
-    <div *ngIf="validate else reeplace">
-        <ion-grid>
+<ion-content *ngIf="validateSpinner else barra">
+    <ion-grid>
+        <ion-row class="ion-justify-content-center">
+            <ion-col col-12 col-sm-12 class="ion-align-self-center">
+                <h3 class="font-weight-normal">
+                    <ion-icon class="fa-nival-bottom" name="folder-outline"></ion-icon> Mis Clases
+                </h3>
+                <hr class="hr-nival">
+            </ion-col>
+        </ion-row>
+
+        <ng-container *ngIf="validate else reeplace">
             <ion-row class="ion-justify-content-center" *ngFor="let curso of materias">
                 <ion-col col-12 col-sm-6 class="ion-align-self-center">
                     <mat-card class="example-card">
                         <mat-card-header>
                             <div mat-card-avatar [style.background-image]="'url('+img+')'" class="avatarDiv">
-                                <div mat-card-avatar [style.background-image]="'url('+curso.photoProfesor+')'" class="avatarDiv">
+                                <div mat-card-avatar [style.background-image]="'url('+curso.photoProfesor+')'"
+                                    class="avatarDiv">
                                 </div>
-                              </div>
+                            </div>
                             <mat-card-title>{{curso.materia}} - {{curso.aula}} </mat-card-title>
                             <mat-card-subtitle>
                                 <a [routerLink]="['/profesor', curso.idProfesor]"
@@ -26,12 +36,14 @@
                         <ion-grid>
                             <ion-row>
                                 <ion-col>
-                                    <ion-button expand="full" size="small" color="info" (click)="openCurso(curso.idMateriaCurso)">
+                                    <ion-button expand="full" size="small" color="info"
+                                        (click)="openCurso(curso.idMateriaCurso)">
                                         <ion-icon name="reader-outline"></ion-icon>
                                     </ion-button>
                                 </ion-col>
                                 <ion-col>
-                                    <ion-button expand="full" size="small" color="red" (click)="openEliminarCurso(curso.idMateriaCurso,curso.materia,curso.aula)">
+                                    <ion-button expand="full" size="small" color="red"
+                                        (click)="openEliminarCurso(curso.idMateriaCurso,curso.materia,curso.aula)">
                                         <ion-icon name="trash-outline"></ion-icon>
                                     </ion-button>
                                 </ion-col>
@@ -40,13 +52,18 @@
                     </mat-card>
                 </ion-col>
             </ion-row>
-        </ion-grid>
-    </div>
+        </ng-container>
+    </ion-grid>
 </ion-content>
-<ion-footer>
-    <ion-toolbar>
-    </ion-toolbar>
-</ion-footer>
+
+
+<ng-template #barra>
+    <ion-content>
+        <div class="spinnerA">
+            <ion-spinner color="info" icon="spiral"></ion-spinner>
+        </div>
+    </ion-content>
+</ng-template>
 
 <ng-template #reeplace>
     <div id="containerEmpty">
@@ -58,3 +75,8 @@
         </ion-grid>
     </div>
 </ng-template>
+
+<ion-footer>
+    <ion-toolbar>
+    </ion-toolbar>
+</ion-footer>

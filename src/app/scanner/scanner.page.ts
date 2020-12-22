@@ -13,7 +13,7 @@ import { timer } from 'rxjs';
 })
 export class ScannerPage implements OnInit, AfterViewInit,OnDestroy {
   image = "src/assets/profe.jpg";
-  perfil = "https://firebasestorage.googleapis.com/v0/b/easyacnival.appspot.com/o/imageCurso%2FwithoutUser.jpg?alt=media&token=61ba721c-b7c1-42eb-8712-829f4c465680";
+  perfil = "";
   nombre = "";
   apellido = "";
   codigoUnico = "";
@@ -47,7 +47,7 @@ export class ScannerPage implements OnInit, AfterViewInit,OnDestroy {
   validacionBar: any = false;
 
   //timer controler
-  timeLeft: number = 3;
+  timeLeft: number = 6;
   interval: any;
   subscribeTimer: any;
 
@@ -291,7 +291,7 @@ export class ScannerPage implements OnInit, AfterViewInit,OnDestroy {
 
       if (data.payload.data()) {
         this.validacionMateria = true;
-        this.timeLeft = 3;
+        this.timeLeft = 6;
         let datos: any = data.payload.data();
 
         datos.cursos.forEach((element: any) => {
@@ -312,7 +312,7 @@ export class ScannerPage implements OnInit, AfterViewInit,OnDestroy {
         ////console.log(validacion);
         if (this.validacionCurso) {
           this.pauseTimer();
-          this.timeLeft = 3;
+          this.timeLeft = 6;
           this.getNomina(this.idProfesor, this.idMateria, this.idNomina, this.codigoQr)
         } else {
           this.validacionMateria = false;
@@ -339,7 +339,7 @@ export class ScannerPage implements OnInit, AfterViewInit,OnDestroy {
           this.validacionNomina = false;
         } else {
           this.validacionNomina = true;
-          this.timeLeft = 3;
+          this.timeLeft = 6;
           dataNomina.nomina.forEach(element => {
             //console.log(this.correo, element.correo)
             if (this.correo != element.correo) {
@@ -347,7 +347,7 @@ export class ScannerPage implements OnInit, AfterViewInit,OnDestroy {
             } else {
               //valida si se encuntra registrado el estudiante en el sistema
               this.validacionGuardado = true;
-              this.timeLeft = 3;
+              this.timeLeft = 6;
 
               //validar si el estuiante no tiene asistencias
               if (element.asistencia.length == 0 && dataNomina.historial.length > 1) {
@@ -414,14 +414,14 @@ export class ScannerPage implements OnInit, AfterViewInit,OnDestroy {
                 if (data) {
                   this.stopScan();
                   this.pauseTimer();
-                  this.timeLeft = 3;
+                  this.timeLeft = 6;
                   this.authService.showInfo('Su Asistencia Ha Sido Registrado');
                 }
 
               } else {
                 this.stopScan();
                 this.pauseTimer();
-                this.timeLeft = 3;
+                this.timeLeft = 6;
                 this.authService.showInfo('Su Asistencia Ya Esta Registrada');
               }
             }
@@ -451,7 +451,7 @@ export class ScannerPage implements OnInit, AfterViewInit,OnDestroy {
           this.stopScan();
         }
         this.pauseTimer();
-        this.timeLeft = 3;
+        this.timeLeft = 6;
       }
     }, 1000)
   }
@@ -472,7 +472,7 @@ export class ScannerPage implements OnInit, AfterViewInit,OnDestroy {
         }
 
         this.pauseTimer();
-        this.timeLeft = 3;
+        this.timeLeft = 6;
       }
     }, 1000)
   }

@@ -16,7 +16,7 @@ export class NombrePage implements OnInit {
   mensaje = '';
 
   nombreForm = new FormGroup({
-    name: new FormControl('', [Validators.required, Validators.minLength(4), this.match()])
+    name: new FormControl('', [Validators.required, Validators.minLength(4), this.match(),Validators.pattern("[a-zA-ZáéíóúüÁÉÍÓÚÜ ]{2,48}")])
   })
 
   constructor(
@@ -64,35 +64,36 @@ export class NombrePage implements OnInit {
   }
 
   //validar dos nombres
-  match() {
+ match() {
     return (control: AbstractControl): { [s: string]: boolean } => {
-      if (control.parent) {
+      if (control.parent) { 
         let data = control.value.split(' ');
         let long = data.length;
         //console.log(data);
         //console.log(long)
         if (long > 2) {
-          this.mensaje = 'Solo puede ingresar dos nombres';
+          this.mensaje='Solo puede ingresar dos apellidos';
           return {
             match: true
           };
-        } else if (data[0] + ' ' + data[1] === this.placeholder) {
+        }else if (data[0]+' '+data[1] === this.placeholder) {
+          this.mensaje='No hay cambios por guardar';
           return {
             match: true
           };
-        } else if (data[0] === "") {
-          this.mensaje = 'No use espacios al inicio del primer nombre';
+        }else if (data[0]==="") {
+          this.mensaje='No use espacios al inicio del primer apellido';
           return {
             match: true
           };
-        } else if (data[1] === "" || data[1] === undefined) {
-          this.mensaje = 'Debe ingresar dos nombres';
+        }else if (data[1]==="" || data[1]===undefined) {
+          this.mensaje='Debe ingresar dos apellidos';
           return {
             match: true
           };
         }
       }
-      this.mensaje = '';
+      this.mensaje='No puede ingresar números';
       return null;
     };
   }

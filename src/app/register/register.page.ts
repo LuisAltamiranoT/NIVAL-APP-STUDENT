@@ -12,16 +12,19 @@ import { Router } from '@angular/router';
   styleUrls: ['./register.page.scss'],
 })
 export class RegisterPage implements OnInit {
+
+  validate = true;
+
   validacionPass:boolean = false;
   //validacionEmail:boolean = false;
 
   registerForm = new FormGroup({
-    nombre: new FormControl('', [Validators.required, Validators.minLength(2), this.match_nombre()]),
-    apellido: new FormControl('', [Validators.required, Validators.minLength(2), this.match_apellido()]),
+    nombre: new FormControl('', [Validators.required, Validators.minLength(2),Validators.pattern("[a-zA-ZáéíóúüÁÉÍÓÚÜ ]{2,48}"), this.match_nombre()]),
+    apellido: new FormControl('', [Validators.required, Validators.minLength(2),Validators.pattern("[a-zA-ZáéíóúüÁÉÍÓÚÜ ]{2,48}"), this.match_apellido()]),
     email: new FormControl('',[Validators.required, Validators.email,this.matchEmail()]),
     password: new FormControl('',[Validators.required, Validators.minLength(6)]),
     _password: new FormControl('', [Validators.required, Validators.minLength(6),this.match('password')]),
-    codigoUnico: new FormControl('',[Validators.required, Validators.minLength(9)])
+    codigoUnico: new FormControl('',[Validators.required, Validators.minLength(9),Validators.pattern("[0-9]{9}")])
   })
 
   mensaje_nombre = '';
@@ -43,10 +46,12 @@ export class RegisterPage implements OnInit {
   }
 
   async onRegister(){
+    this.validate = false;
     try{
       const { email,password,nombre,apellido,codigoUnico } = this.registerForm.value;
       const user = await this.authService.register(email,password,nombre,apellido,codigoUnico);
       if(user){
+        this.validate=true;
         //const verifiedEmail=this.authService.isEmailVerified(user);
         this.dismiss();
         this.router.navigate(['/send-email-component']);
@@ -157,7 +162,7 @@ export class RegisterPage implements OnInit {
           };
         }
       }
-      this.mensaje_nombre = '';
+      this.mensaje_nombre = 'No puede ingresar números';
       return null;
     };
   }
@@ -187,7 +192,7 @@ export class RegisterPage implements OnInit {
           };
         }
       }
-      this.mensaje_apellido = '';
+      this.mensaje_apellido = 'No puede ingresar números';
       return null;
     };
   }

@@ -16,7 +16,7 @@ export class CodigoUnicoPage implements OnInit {
   mensaje= '';
 
   form = new FormGroup({
-    code: new FormControl('',[Validators.required, Validators.minLength(9), this.match()])
+    code: new FormControl('',[Validators.required, Validators.minLength(9), this.match(),Validators.pattern("[0-9]{9}")])
   })
 
   constructor(
