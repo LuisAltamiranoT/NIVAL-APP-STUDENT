@@ -45,7 +45,6 @@ export class FotoPage implements OnInit {
   ) { }
 
   ngOnInit(): void {
-//console.log('image', this.infoUser)
     this.photoSelected = '../../../assets/icon/aqui.jpg';
 
     this.stateImage = this.authService.finalizoImage$.subscribe(() => {
@@ -62,8 +61,6 @@ export class FotoPage implements OnInit {
       this.file = <File>event.target.files[0];
       this.validImage = this.uploadImage.validateType(this.file.type);
       this.validateSize = this.uploadImage.validateSize(this.file.size);
-      ////console.log('esto es a imagen',this.file.size);
-      ////console.log('esto es el tamaño',this.validateSize);
       if (this.validImage) {
         if (this.validateSize) {
           const reader = new FileReader();

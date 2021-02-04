@@ -39,14 +39,12 @@ export class PerfilPage implements OnInit {
 
   ngOnInit() {
     if (this.contInit == 0) {
-      //console.log('se ejecuta init');
       this.dataUser();
     }
   }
   ionViewWillEnter() {
     this.contInit = this.contInit + 1;
     if (this.contInit > 1) {
-      //console.log('se ejecuta initview');
       this.dataUser();
     }
   }
@@ -54,7 +52,6 @@ export class PerfilPage implements OnInit {
   ionViewDidLeave() {
     if (this.suscripcion1) {
       this.suscripcion1.unsubscribe();
-      //console.log('se cancela la suscripcion 1');
     }
   }
 

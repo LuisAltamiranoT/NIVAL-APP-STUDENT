@@ -84,14 +84,12 @@ export class ScannerPage implements OnInit, AfterViewInit,OnDestroy {
     const isInStandaloneMode = () =>
       'standalone' in window.navigator && window.navigator['standalone'];
     if (this.plt.is('ios') && isInStandaloneMode()) {
-      //console.log('I am a an iOS PWA!');
       // E.g. hide the scan functionality!
     }
   }
 
   ngOnInit() {
     if (this.contInit == 0) {
-      //console.log('se ejecuta init');
       this.dataUser();
       this.getMateriaEstudiante();
     }
@@ -100,7 +98,6 @@ export class ScannerPage implements OnInit, AfterViewInit,OnDestroy {
   ionViewWillEnter() {
     this.contInit = this.contInit + 1;
     if (this.contInit > 1) {
-      //console.log('se ejecuta initView');
       this.dataUser();
       this.getMateriaEstudiante();
     }
@@ -117,11 +114,9 @@ export class ScannerPage implements OnInit, AfterViewInit,OnDestroy {
     this.stopScan();
     if (this.suscripcion1) {
       this.suscripcion1.unsubscribe();
-      //console.log('se cancela la suscripcion 1');
     }
     if (this.suscripcion2) {
       this.suscripcion2.unsubscribe();
-      //console.log('se cancela la suscripcion 2');
     }
   }
 
@@ -129,11 +124,9 @@ export class ScannerPage implements OnInit, AfterViewInit,OnDestroy {
     this.stopScan();
     if (this.suscripcion1) {
       this.suscripcion1.unsubscribe();
-      //console.log('se cancela la suscripcion 1');
     }
     if (this.suscripcion2) {
       this.suscripcion2.unsubscribe();
-      //console.log('se cancela la suscripcion 2');
     }
   }
 
@@ -143,11 +136,9 @@ export class ScannerPage implements OnInit, AfterViewInit,OnDestroy {
   async showQrToast() {
     var informacion = '2sllmtu2=uTZq@%%jl9w'
     //variable con la información del código qr
-    ////console.log('resultado', this.scanResult)
     //aqui leer el qr y registrar la asistencia
     var cadena = CryptoJS.AES.decrypt(this.scanResult.trim(), informacion.trim()).toString(CryptoJS.enc.Utf8);
     this.splitted = cadena.split("//");
-    ////console.log('ver splitted', this.splitted, 'valor', this.splitted.length);
     if (this.splitted.length === 5) {
       this.idProfesor = this.splitted[0];
       this.idMateria = this.splitted[1];
@@ -155,16 +146,11 @@ export class ScannerPage implements OnInit, AfterViewInit,OnDestroy {
       this.idNomina = this.splitted[3];
       this.codigoQr = this.splitted[4];
 
-      ////console.log('cadena', cadena);
-      ////console.log('datos profesor',  this.idProfesor);
-      ////console.log('datos curso',  this.idCurso);
-      ////console.log('datos materia',  this.idMateria);
 
       this.getMateria(this.idProfesor, this.idMateria, this.idCurso);
     }
     else {
       this.authService.showError('Código QR desconocido. Vuelva a intentarlo');
-      //this.startScan();
     }
 
   }
@@ -184,15 +170,12 @@ export class ScannerPage implements OnInit, AfterViewInit,OnDestroy {
     this.validacionBar = false;
     if (this.suscripcion3) {
       this.suscripcion3.unsubscribe();
-      //console.log('se cancela la suscripcion 3');
     }
     if (this.suscripcion4) {
       this.suscripcion4.unsubscribe();
-      //console.log('se cancela la suscripcion 4');
     }
     if (this.suscripcion5) {
       this.suscripcion5.unsubscribe();
-      //console.log('se cancela la suscripcion 5');
     }
   }
 
@@ -266,7 +249,6 @@ export class ScannerPage implements OnInit, AfterViewInit,OnDestroy {
       this.perfil = dataUser.photoUrl;
       this.correo = dataUser.email;
       this.codigoUnico = dataUser.codigoUnico;
-      //console.log('este es el usuario', dataUser);
     });
   }
 
@@ -279,7 +261,6 @@ export class ScannerPage implements OnInit, AfterViewInit,OnDestroy {
           dataEstuiante.payload.doc.data().idCurso
         )
       })
-      //console.log('materias', this.materiasEstudiante);
     })
   }
 
@@ -309,7 +290,6 @@ export class ScannerPage implements OnInit, AfterViewInit,OnDestroy {
           }
         })
 
-        ////console.log(validacion);
         if (this.validacionCurso) {
           this.pauseTimer();
           this.timeLeft = 6;
@@ -327,10 +307,8 @@ export class ScannerPage implements OnInit, AfterViewInit,OnDestroy {
 
 
   getNomina(idProfesor: any, idMateria: any, idNomina: any, codigoQr: any) {
-    //console.log('llega al getnomina');
     this.startTimerNomina();
     this.suscripcion4 = this.authService.getDataNominaCursoId(idProfesor, idMateria, idNomina).subscribe((data: any) => {
-      //console.log(data.payload.data(), this.codigoQr)
 
       if (data.payload.data()) {
         let dataNomina: any = data.payload.data();
@@ -341,7 +319,6 @@ export class ScannerPage implements OnInit, AfterViewInit,OnDestroy {
           this.validacionNomina = true;
           this.timeLeft = 6;
           dataNomina.nomina.forEach(element => {
-            //console.log(this.correo, element.correo)
             if (this.correo != element.correo) {
 
             } else {
@@ -363,11 +340,9 @@ export class ScannerPage implements OnInit, AfterViewInit,OnDestroy {
                     dia: dia,
                     estado: false
                   })
-                  //console.log(dia, fecha, element);
                 }
               }
 
-              //console.log('estos son los valores', element.asistencia.length, Number(dataNomina.numeroAlmacenado));
 
               if (element.asistencia.length == Number(dataNomina.numeroAlmacenado)) {
                 let splittedUltimo = dataNomina.historial[dataNomina.historial.length - 1].split("//");
@@ -398,12 +373,10 @@ export class ScannerPage implements OnInit, AfterViewInit,OnDestroy {
                 element.uidUser = this.uidEstudiante;
                 element.nombre = this.nombre + ' ' + this.apellido;
                 element.codigoUnico = this.codigoUnico;
-                ////console.log('sip array de asistencia',element.asistencia.length);
 
                 //almacenamiento de la nueva nomina
                 let data = this.authService.updateNominaEstudiante(idProfesor, idMateria, idNomina, dataNomina.nomina);
 
-                //console.log(this.materiasEstudiante)
 
                 if (this.materiasEstudiante.includes(this.idCurso)) {
 
@@ -436,7 +409,6 @@ export class ScannerPage implements OnInit, AfterViewInit,OnDestroy {
   oberserableTimer() {
     const source = timer(1000, 2000);
     this.suscripcion5 = source.subscribe(val => {
-      //console.log(val, '-');
       this.subscribeTimer = this.timeLeft - val;
     });
   }

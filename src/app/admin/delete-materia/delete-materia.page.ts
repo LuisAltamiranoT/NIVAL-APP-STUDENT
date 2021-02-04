@@ -17,7 +17,6 @@ export class DeleteMateriaPage implements OnInit {
   idMateriaEstudiante: any = '';
 
   materiaForm = new FormGroup({
-    //materia: new FormControl('')
   })
 
   constructor(
@@ -29,7 +28,6 @@ export class DeleteMateriaPage implements OnInit {
   ngOnInit() {
     this.materia = this.infoUser.nombre;
     this.idMateriaEstudiante = this.infoUser.idMateria;
-    console.log(this.infoUser);
   }
 
 

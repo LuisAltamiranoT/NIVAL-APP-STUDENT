@@ -63,7 +63,6 @@ export class ProfesorPage implements OnInit {
   ionViewDidLeave() {
     if (this.suscripcion1) {
       this.suscripcion1.unsubscribe();
-      //console.log('se cancela la suscripcion 1');
     }
   }
   dataUser(dato) {

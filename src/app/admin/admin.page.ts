@@ -23,7 +23,7 @@ export class AdminPage implements OnInit {
   img='../../assets/icon/withoutUser.jpg';
 
   // Carga la información de la base de datos acerca de las materias
-  public materias = [];
+  public materias:any[] = [];
   //controla el init view
   contInit:number= 0
 
@@ -36,7 +36,6 @@ export class AdminPage implements OnInit {
 
   ngOnInit() {
     if (this.contInit == 0) {
-      //console.log('se ejecuta init');
       this.getMateriaEstudiante();
     }
   }
@@ -44,7 +43,6 @@ export class AdminPage implements OnInit {
   ionViewWillEnter(){
     this.contInit = this.contInit + 1;
     if (this.contInit > 1) {
-      //console.log('se ejecuta initView');
       this.getMateriaEstudiante();
     }
   }
@@ -55,8 +53,7 @@ export class AdminPage implements OnInit {
   getMateriaEstudiante() {
     this.authService.getDataMateria().subscribe(data => {
       this.materias.length = 0;
-      ////console.log('son los datos',data.length);
-      //funcion ternaria
+      
       this.validate = data.length != 0 ? true : false;
 
       data.forEach(element => {
@@ -70,7 +67,6 @@ export class AdminPage implements OnInit {
 
             if (dataMateria.payload.data()) {
               let informacionCurso: any = dataMateria.payload.data();
-              ////console.log('busca materias',informacionCurso,idCurso);
 
               let NombreMateria = informacionCurso.nombre;
               let NombreProfesor = informacionCurso.profesor;
@@ -80,7 +76,6 @@ export class AdminPage implements OnInit {
                 PhotoProfesor = informacionCurso.photoUrl
               }
 
-              ////console.log('busqueda',dataMateria.payload.data())
               informacionCurso.cursos.forEach(element => {
 
                 let imageCursoSeleccionado: any = '';
@@ -101,7 +96,6 @@ export class AdminPage implements OnInit {
                   });
                 }
               });
-              ////console.log('materias',this.materias);
 
             }
           })

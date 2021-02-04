@@ -65,8 +65,6 @@ export class ApellidoPage implements OnInit {
       if (control.parent) { 
         let data = control.value.split(' ');
         let long = data.length;
-        //console.log(data);
-        //console.log(long)
         if (long > 2) {
           this.mensaje='Solo puede ingresar dos apellidos';
           return {

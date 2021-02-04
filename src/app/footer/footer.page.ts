@@ -19,7 +19,6 @@ export class FooterPage implements OnInit {
 
   networkStatus: NetworkStatus;
   networkListener: PluginListenerHandle;
-  //controlar el estado del scanner
   validateScanner:boolean=true;
 
   constructor(
@@ -29,13 +28,11 @@ export class FooterPage implements OnInit {
 
   async ngOnInit() {
     this.networkListener = Network.addListener('networkStatusChange', status => {
-      //console.log('network', status);
       this.networkStatus = status;
     });
 
     this.stateScanner = this.authService.stateScanner.subscribe((data:any) => {
       this.validateScanner=data.estado;
-      //console.log('estado del escaneer',this.validateScanner);
     })
 
     this.networkStatus = await Network.getStatus();

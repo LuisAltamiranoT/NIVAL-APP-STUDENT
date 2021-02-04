@@ -13,7 +13,6 @@ import { Observable, of, Subject } from 'rxjs';
 import { first, switchMap, map } from 'rxjs/operators';
 import { AngularFireStorage } from '@angular/fire/storage';
 
-//import * as firebase from 'firebase/app';
 
 @Injectable({
   providedIn: 'root'
@@ -302,7 +301,6 @@ export class AuthService extends RoleValidator {
         nombre: valor
       };
       const dataUpdate = await userRef.set(data, { merge: true });
-      //console.log('asdasdasjdkasbdhasjd' + dataUpdate);
 
 
       return { dataUpdate };
@@ -353,7 +351,6 @@ export class AuthService extends RoleValidator {
       await this.reauthenticate(oldPass);
       await user.updatePassword(newPass);
       data = 1;
-      //console.log(data + "se ha actualizado");
       return data;
     } catch (error) {
        this.showError('Verifica los datos. Algo salio mal');

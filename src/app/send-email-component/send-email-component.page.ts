@@ -1,6 +1,8 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AuthService } from '../service/auth.service';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-send-email-component',
@@ -9,22 +11,25 @@ import { AuthService } from '../service/auth.service';
 })
 export class SendEmailComponentPage implements OnDestroy {
 
-  public user$:Observable<any>=this.authService.afAuth.user;
+  public user$: Observable<any> = this.authService.afAuth.user;
 
   constructor(
-    private authService:AuthService
+    private authService: AuthService,
+    private router: Router,
   ) { }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.authService.logout();
+    this.router.navigate(['/home']);
   }
 
-  ionViewDidLeave(){
+  ionViewDidLeave() {
     this.authService.logout();
+    this.router.navigate(['/home']);
   }
-  
 
-  onSendEmail():void{
+
+  onSendEmail(): void {
     this.authService.sendVerificationEmail();
   }
 

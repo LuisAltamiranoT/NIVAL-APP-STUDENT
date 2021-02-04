@@ -61,7 +61,6 @@ export class HorarioPage implements OnInit {
 
   ngOnInit() {
     if (this.contInit == 0) {
-      //console.log('se ejecuta init',this.cont);
       this.getMateriaEstudiante();
     }
   }
@@ -69,7 +68,6 @@ export class HorarioPage implements OnInit {
   ionViewWillEnter(){
     this.contInit = this.contInit + 1;
     if (this.contInit > 1) {
-      //console.log('se ejecuta initView',this.cont);
       this.getMateriaEstudiante();
     }
   }
@@ -85,7 +83,6 @@ export class HorarioPage implements OnInit {
     let validate = false;
     this.authService.getDataMateria().subscribe((data: any) => {
       this.materias.length=0;
-      ////console.log('se ejecuta authservice', data);
       data.forEach(element => {
         if (element.payload.doc.data()) {
           let idProfesor = element.payload.doc.data().idProfesor;
@@ -96,36 +93,25 @@ export class HorarioPage implements OnInit {
           this.authService.getMateriaId(idProfesor, idMateria).subscribe((dataMateria: any) => {
             validate = false;
             if (dataMateria.payload.data()) {
-              ////console.log('existe');
-              ////console.log('es el auth service consulta',dataMateria.payload.data());
               let nombreMateria = dataMateria.payload.data().nombre;
-              ////console.log('informacion buscaa', dataMateria.payload.data().nombre);
               dataMateria.payload.data().cursos.forEach(elementCursos => {
-                ////console.log('esta validando si es',elementCursos.id, idCurso)
                 if (elementCursos.id != idCurso) {
-                  ////console.log('no llega a ejecutarse');
                 } else {
                   validate = true
-                  //console.log('llega a ejecutarse');
-                  ////console.log(elementCursos)
                   this.materias.push({
                     data: elementCursos,
                     nombre: nombreMateria,
                     id: IdMateriaEstudiante
                   });
-                  ////console.log(this.materias);
                 }
               });
 
               if (validate) {
               } else {
-                ////console.log('no existe el cusro');
                 this.authService.delecteMateria(IdMateriaEstudiante);
               }
-              ////console.log(this.materias);
               this.replaceHorario();
             } else {
-              ////console.log('no existe materia');
               this.authService.delecteMateria(IdMateriaEstudiante);
             }
 
@@ -139,20 +125,15 @@ export class HorarioPage implements OnInit {
 
   replaceHorario() {
     this.cont=-1;
-    ////console.log('no esta llegando');
-    //console.log(this.materias.length)
     if (this.materias.length != 0) {
       this.materias.forEach(element => {
-        ////console.log('datos a imprimir', element.data)
         if (this.cont < this.color.length - 1) {
           this.cont = this.cont + 1
         } else {
           this.cont = 0;
         }
         element.data.horario.forEach(elementHorario => {
-          ////console.log('este es el horario', elementHorario)
           let idCurso = element.id;
-          ////console.log('uid nomina',elementCurso.uidNomina);
           this.horarioVista[elementHorario.posicion][elementHorario.dia] = element.nombre + ' - ' + element.data.aula;
           if (elementHorario.dia === 'lunes') {
             this.horarioVista[elementHorario.posicion]['LC'] = this.color[this.cont];
@@ -177,7 +158,6 @@ export class HorarioPage implements OnInit {
         });
       });
     } 
-    ////console.log(this.horarioVista);
   }
 
   applyFilter(event: Event) {

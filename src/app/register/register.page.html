@@ -14,6 +14,10 @@
     <ion-row class="ion-justify-content-center">
       <ion-img [src]="'../../assets/icon/logoNival.PNG'" id="logoRegister"></ion-img>
     </ion-row>
+    <ion-row class="ion-margin-top">
+      <div *ngIf="validate else login">
+      </div>
+    </ion-row>
     <ion-row class="ion-margin-top ion-justify-content-center">
       <form [formGroup]="registerForm" class="input-modal" (ngSubmit)="onRegister()">
 
@@ -71,3 +75,7 @@
     </ion-row>
   </ion-grid>
 </ion-content>
+
+<ng-template #login>
+  <ion-progress-bar type="indeterminate"></ion-progress-bar>
+</ng-template>

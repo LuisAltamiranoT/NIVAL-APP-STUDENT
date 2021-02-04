@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { AuthService } from 'src/app/service/auth.service';
+import { Router } from '@angular/router';
 
 
 
@@ -27,7 +28,8 @@ export class DeletePage implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<DeletePage>,
     @Inject(MAT_DIALOG_DATA) public infoUser: any,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -41,6 +43,7 @@ export class DeletePage implements OnInit {
       this.validate = true;
     } else {
       this.dimissModal();
+      this.router.navigate(['/home']);
     }
   }
 
