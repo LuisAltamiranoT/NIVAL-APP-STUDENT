@@ -22,7 +22,7 @@ export class AuthService extends RoleValidator {
   private estadoImgenUpdate = new Subject<void>();
   public finalizoImage$ = this.estadoImgenUpdate.asObservable();
 
-  public stateScanner= new Subject<any>();
+  public stateScanner = new Subject<any>();
 
   public user$: Observable<User>;
   public stateUser$: Observable<any>;
@@ -61,7 +61,7 @@ export class AuthService extends RoleValidator {
       let db = this.afs.doc<User>(`users/${this.dataUser}`).snapshotChanges();
       return db;
     } catch (error) {
-       this.showError('Verifica los datos. Algo salio mal');
+      this.showError('Verifica los datos. Algo salio mal');
     }
   }
 
@@ -71,7 +71,7 @@ export class AuthService extends RoleValidator {
       let db = this.afs.doc<User>(`users/${datos}`).snapshotChanges();
       return db;
     } catch (error) {
-       this.showError('Verifica los datos. Algo salio mal');
+      this.showError('Verifica los datos. Algo salio mal');
     }
   }
 
@@ -82,7 +82,11 @@ export class AuthService extends RoleValidator {
       await this.updateUserData(user);
       return user;
     } catch (error) {
-       this.showError('Verifica los datos. Algo salio mal');
+      if (error.code === "auth/wrong-password" || error.code === "auth/user-not-found") {
+        this.showError('El correo electrónico o la contraseña ingresada es incorrecta');
+      } else {
+        this.showError('Verifica los datos. Algo salio mal');
+      }
     }
   }
 
@@ -98,7 +102,7 @@ export class AuthService extends RoleValidator {
       let db = this.afs.doc<any>(`users/${idProfesor}`).collection('materias').doc(idMateria).collection('nomina').doc(idNomina).snapshotChanges();
       return db;
     } catch (error) {
-       this.showError('Verifica los datos. Algo salio mal');
+      this.showError('Verifica los datos. Algo salio mal');
     }
   }
 
@@ -113,7 +117,7 @@ export class AuthService extends RoleValidator {
       //this.showUpdatedata();
       return db;
     } catch (error) {
-       this.showError('Verifica los datos. Algo salio mal');
+      this.showError('Verifica los datos. Algo salio mal');
     }
   }
 
@@ -129,11 +133,15 @@ export class AuthService extends RoleValidator {
       await this.sendVerificationEmail();
       return user;
     } catch (error) {
-       this.showError('Verifica los datos. Algo salio mal');
+      if (error.code === "auth/email-already-in-use") {
+        this.showError('El correo ingresado ya se encuentra registrado');
+      } else {
+        this.showError('Verifica los datos. Algo salio mal');
+      }
     }
   }
 
-  
+
 
   private async registerDataUser(user: User, nombre: string, apellido: string, codigoUnico: string) {
     try {
@@ -146,21 +154,21 @@ export class AuthService extends RoleValidator {
         emailVerified: user.emailVerified,
         codigoUnico: codigoUnico,
         role: 'EDITOR',
-        photoUrl:''
+        photoUrl: ''
       };
 
       return await userRef.set(data, { merge: true });
 
     } catch (error) {
-       this.showError('Verifica los datos. Algo salio mal');
+      this.showError('Verifica los datos. Algo salio mal');
     }
   }
 
-  async resetPassword(email: string): Promise<void> {
+  async resetPassword(email: string) {
     try {
-      return this.afAuth.sendPasswordResetEmail(email);
+      return await this.afAuth.sendPasswordResetEmail(email);
     } catch (error) {
-       this.showError('Verifica los datos. Algo salio mal');
+      return error.code;
     }
   }
 
@@ -168,7 +176,7 @@ export class AuthService extends RoleValidator {
     try {
       return (await this.afAuth.currentUser).sendEmailVerification();
     } catch (error) {
-       this.showError('Verifica los datos. Algo salio mal');
+      this.showError('Verifica los datos. Algo salio mal');
     }
   }
 
@@ -177,7 +185,7 @@ export class AuthService extends RoleValidator {
     try {
       await this.afAuth.signOut();
     } catch (error) {
-       this.showError('Verifica los datos. Algo salio mal');
+      this.showError('Verifica los datos. Algo salio mal');
     }
   }
 
@@ -199,7 +207,7 @@ export class AuthService extends RoleValidator {
       //this.showRegisterQR();
       return create;
     } catch (error) {
-       this.showError('Verifica los datos. Algo salio mal');
+      this.showError('Verifica los datos. Algo salio mal');
     }
   }
 
@@ -210,7 +218,7 @@ export class AuthService extends RoleValidator {
     }
   }
 
-  public delecteMateriaId(documentId: any){
+  public delecteMateriaId(documentId: any) {
     try {
       this.afs.doc(`users/${this.dataUser}`).collection('materiasEstudiante').doc(documentId).delete();
       this.showDeletedata();
@@ -229,7 +237,7 @@ export class AuthService extends RoleValidator {
       this.estadoImgenUpdate.next();
 
     } catch (error) {
-       this.showError('Verifica los datos. Algo salio mal');
+      this.showError('Verifica los datos. Algo salio mal');
     }
   }
 
@@ -270,7 +278,7 @@ export class AuthService extends RoleValidator {
       let db = this.afs.doc<User>(`users/${idUser}`).snapshotChanges();
       return db;
     } catch (error) {
-       this.showError('Verifica los datos. Algo salio mal');
+      this.showError('Verifica los datos. Algo salio mal');
     }
   }
 
@@ -280,7 +288,7 @@ export class AuthService extends RoleValidator {
       let db = this.afs.doc<Curso>(`users/${idUser}`).collection('cursos').doc(id).snapshotChanges();
       return db;
     } catch (error) {
-       this.showError('Verifica los datos. Algo salio mal');
+      this.showError('Verifica los datos. Algo salio mal');
     }
   }
 
@@ -289,7 +297,7 @@ export class AuthService extends RoleValidator {
       let db = this.afs.doc<Curso>(`users/${idProfesor}`).collection('materias').doc(id).snapshotChanges();
       return db;
     } catch (error) {
-       this.showError('Verifica los datos. Algo salio mal');
+      this.showError('Verifica los datos. Algo salio mal');
     }
   }
 
@@ -306,7 +314,7 @@ export class AuthService extends RoleValidator {
       return { dataUpdate };
 
     } catch (error) {
-       this.showError('Verifica los datos. Algo salio mal');
+      this.showError('Verifica los datos. Algo salio mal');
     }
   }
 
@@ -322,7 +330,7 @@ export class AuthService extends RoleValidator {
       return { dataUpdate };
 
     } catch (error) {
-       this.showError('Verifica los datos. Algo salio mal');
+      this.showError('Verifica los datos. Algo salio mal');
     }
   }
 
@@ -337,7 +345,7 @@ export class AuthService extends RoleValidator {
       return { dataUpdate };
 
     } catch (error) {
-       this.showError('Verifica los datos. Algo salio mal');
+      this.showError('Verifica los datos. Algo salio mal');
     }
   }
 
@@ -353,7 +361,7 @@ export class AuthService extends RoleValidator {
       data = 1;
       return data;
     } catch (error) {
-       this.showError('Verifica los datos. Algo salio mal');
+      this.showError('Verifica los datos. Algo salio mal');
       return data = 0;
     }
   }
@@ -371,7 +379,7 @@ export class AuthService extends RoleValidator {
       let db = this.afs.doc<any>(`users/${this.dataUser}`).collection('materiasEstudiante').snapshotChanges();
       return db;
     } catch (error) {
-       this.showError('Verifica los datos. Algo salio mal');
+      this.showError('Verifica los datos. Algo salio mal');
     }
   }
 
@@ -381,7 +389,7 @@ export class AuthService extends RoleValidator {
       let db = this.afs.doc<any>(`users/${this.dataUser}`).collection('materiasEstudiante').doc(idMateria).snapshotChanges();
       return db;
     } catch (error) {
-       this.showError('Verifica los datos. Algo salio mal');
+      this.showError('Verifica los datos. Algo salio mal');
     }
   }
 
@@ -401,29 +409,29 @@ export class AuthService extends RoleValidator {
   }
 
   //cambiar el estado del escaner
-  public iniciaScanner(){
-    this.stateScanner.next({estado:false});
+  public iniciaScanner() {
+    this.stateScanner.next({ estado: false });
   }
 
-  public finalizarScanner(){
-    this.stateScanner.next({estado:true});
+  public finalizarScanner() {
+    this.stateScanner.next({ estado: true });
   }
 
   //Delete user
- public async updateAcoountUser(oldPass: string, imagen: any): Promise<Number> {
+  public async updateAcoountUser(oldPass: string, imagen: any): Promise<Number> {
     let data: number;
     try {
       let userAccount = firebase.auth().currentUser;
       await this.reauthenticate(oldPass);
       await this.updateEstadoEliminar();
-      
+
 
       if (imagen != '') {
         let splitted = imagen.split("perfil%2F")[1];
         let name = splitted.split("?alt")[0];
         const fileref = this.storage.ref(`${this.MEDIA_STORAGE_PATH_PERFIL}/${name}`);
         fileref.delete();
-      } 
+      }
 
       await userAccount.delete();
       this.showSuccess('Usted ha eliminado su cuenta de NIVAL EASY ATTENDANCE CONTROL');
@@ -446,13 +454,13 @@ export class AuthService extends RoleValidator {
       return { dataUpdate };
 
     } catch (error) {
-       this.showError('Verifica los datos. Algo salio mal');
+      this.showError('Verifica los datos. Algo salio mal');
     }
   }
 
   public deleteImagePerfil(imageName: string) {
     let splitted = imageName.split("perfil%2F")[1];
-    let name =  splitted.split("?alt")[0];
+    let name = splitted.split("?alt")[0];
     const fileref = this.storage.ref(`${this.MEDIA_STORAGE_PATH_PERFIL}/${name}`);
     fileref.delete();
   }

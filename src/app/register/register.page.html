@@ -3,7 +3,7 @@
     <ion-title class="ion-text-center"></ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="dismiss()">
-        <ion-icon name="close"></ion-icon>
+        <ion-icon name="close-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -55,17 +55,23 @@
 
         <mat-form-field hintLabel="Mínimo 6 Caracteres" appearance="standard" class="input-modal">
           <mat-label>Contraseña</mat-label>
-          <input matInput #pass [type]="'password'" autocomplete="off" spellcheck="false" placeholder="**********"
-            formControlName="password" required>
-          <mat-icon matSuffix>lock</mat-icon>
+          <input matInput #pass [type]="hide ? 'password' : 'text'" autocomplete="off" spellcheck="false"
+            placeholder="**********" formControlName="password" required>
+          <a class="aNival" mat-icon-button matSuffix (click)="hide = !hide" [attr.arial-label]="'Hide password'"
+            [attr.arial-pressed]="hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </a>
           <mat-hint align="end">{{pass.value?.length || 0}}/6</mat-hint>
         </mat-form-field>
 
         <mat-form-field appearance="standard" class="input-modal">
           <mat-label>Repetir Contraseña</mat-label>
-          <input matInput [type]="'password'" autocomplete="off" spellcheck="false" placeholder="**********"
-            formControlName="_password" required>
-          <mat-icon matSuffix>lock</mat-icon>
+          <input matInput [type]="hide2 ? 'password' : 'text'" autocomplete="off" spellcheck="false"
+            placeholder="**********" formControlName="_password" required>
+          <a class="aNival" mat-icon-button matSuffix (click)="hide2 = !hide2" [attr.arial-label]="'Hide password'"
+            [attr.arial-pressed]="hide2">
+            <mat-icon>{{hide2 ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </a>
           <mat-hint *ngIf="!validacionPass" style="color: red;">Las contraseñas no coinciden</mat-hint>
         </mat-form-field>
 

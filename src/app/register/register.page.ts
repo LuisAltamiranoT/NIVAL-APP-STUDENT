@@ -14,13 +14,15 @@ import { Router } from '@angular/router';
 export class RegisterPage implements OnInit {
 
   validate = true;
+  hide = true;
+  hide2 = true;
 
   validacionPass:boolean = false;
   //validacionEmail:boolean = false;
 
   registerForm = new FormGroup({
-    nombre: new FormControl('', [Validators.required, Validators.minLength(2),Validators.pattern("[a-zA-ZáéíóúüÁÉÍÓÚÜ ]{2,48}"), this.match_nombre()]),
-    apellido: new FormControl('', [Validators.required, Validators.minLength(2),Validators.pattern("[a-zA-ZáéíóúüÁÉÍÓÚÜ ]{2,48}"), this.match_apellido()]),
+    nombre: new FormControl('', [Validators.required, Validators.minLength(2),Validators.pattern("[a-zA-ZáéíóúüÁÉÍÓÚÜñÑ ]{2,48}"), this.match_nombre()]),
+    apellido: new FormControl('', [Validators.required, Validators.minLength(2),Validators.pattern("[a-zA-ZáéíóúüÁÉÍÓÚÜñÑ ]{2,48}"), this.match_apellido()]),
     email: new FormControl('',[Validators.required, Validators.email,this.matchEmail()]),
     password: new FormControl('',[Validators.required, Validators.minLength(6)]),
     _password: new FormControl('', [Validators.required, Validators.minLength(6),this.match('password')]),
@@ -52,9 +54,10 @@ export class RegisterPage implements OnInit {
       const user = await this.authService.register(email,password,nombre,apellido,codigoUnico);
       if(user){
         this.validate=true;
-        //const verifiedEmail=this.authService.isEmailVerified(user);
         this.dismiss();
         this.router.navigate(['/send-email-component']);
+      }else{
+        this.validate=true;
       }
     }catch(error){
       this.authService.showError(error);
